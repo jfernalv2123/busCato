@@ -1,0 +1,46 @@
+package com.ugurcanlacin.simple.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "item", catalog = "canotaje")
+public class Item implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2590490733345777076L;
+	private Integer idItem;
+	private String nombre;
+	
+	public Item(){
+		
+	}
+	public Item(String name){
+		this.nombre=name;
+		
+	}
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_item", unique = true, nullable = false)
+	public Integer getId_item() {
+		return idItem;
+	}
+	public void setId_item(Integer id_item) {
+		this.idItem = id_item;
+	}
+	@Column(name = "nombre", length = 20)
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	
+}

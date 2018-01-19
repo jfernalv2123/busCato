@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+<script src="jquery.min.js"></script>
+ <script src="JsBarcode.all.js"></script>
+</h:head>
+
+<body>
+					
+
+
+		<h:form id="barcodeForm">
+
+		<p:dataGrid id="lista" var="area" layout="grid" columns="5"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                 paginator="true" rows="20" style="margin-bottom:20px;font-size: 9px;"
+			value="#{articuloBean.listaArticulos()}">
+			 <p:panel header="#{area.articulo}" style="text-align:center;font-size: 9px;">
+			 <h:panelGrid columns="1" style="width:100%;font-size: 9px;" >
+<canvas  id="#{area.idArticulos}"></canvas>
+							<script>
+    	$(document).ready(function(){
+    		$("##{area.idArticulos}").JsBarcode("#{area.idArticulos}",{displayValue:true,fontSize:20});
+             
+		});    
+    </script>
+   </h:panelGrid>
+			 </p:panel>
+
+			</p:dataGrid>
+
+			</h:form>
+
+
+</body>
+</html>

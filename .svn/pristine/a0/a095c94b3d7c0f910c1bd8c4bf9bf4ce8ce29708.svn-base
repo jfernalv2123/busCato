@@ -1,0 +1,120 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.Articulos;
+import municipalidad.pto.model.Proveedor;
+import municipalidad.pto.service.IngresoService;
+import municipalidad.pto.service.ProveedorService;
+
+@ManagedBean
+@SessionScoped
+public class IngresoBean implements Serializable {
+
+	@ManagedProperty(value="#{ingresoService}")
+	IngresoService ingresoService;
+	@ManagedProperty(value="#{proveedorService}")
+	ProveedorService proveedorService;
+	
+	private String Observacion;
+	private Date fecha;
+	private Integer proveedor;
+	private String ordenDeCompra;
+	private String factura;
+	private String guiaDeDespacho;
+	private String destino;
+	private boolean inventariable;
+	private String lugarAlmacenaje;
+	private boolean conforme;
+	private boolean prestamo;
+	private List<Articulos> listaArticulos = new ArrayList<Articulos>();
+	public String getObservacion() {
+		return Observacion;
+	}
+	public void setObservacion(String observacion) {
+		Observacion = observacion;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public Integer getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Integer proveedor) {
+		this.proveedor = proveedor;
+	}
+	public String getOrdenDeCompra() {
+		return ordenDeCompra;
+	}
+	public void setOrdenDeCompra(String ordenDeCompra) {
+		this.ordenDeCompra = ordenDeCompra;
+	}
+	public String getFactura() {
+		return factura;
+	}
+	public void setFactura(String factura) {
+		this.factura = factura;
+	}
+	public String getGuiaDeDespacho() {
+		return guiaDeDespacho;
+	}
+	public void setGuiaDeDespacho(String guiaDeDespacho) {
+		this.guiaDeDespacho = guiaDeDespacho;
+	}
+	public String getDestino() {
+		return destino;
+	}
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+	public boolean isInventariable() {
+		return inventariable;
+	}
+	public void setInventariable(boolean inventariable) {
+		this.inventariable = inventariable;
+	}
+	public String getLugarAlmacenaje() {
+		return lugarAlmacenaje;
+	}
+	public void setLugarAlmacenaje(String lugarAlmacenaje) {
+		this.lugarAlmacenaje = lugarAlmacenaje;
+	}
+	public boolean isConforme() {
+		return conforme;
+	}
+	public void setConforme(boolean conforme) {
+		this.conforme = conforme;
+	}
+	public boolean isPrestamo() {
+		return prestamo;
+	}
+	public void setPrestamo(boolean prestamo) {
+		this.prestamo = prestamo;
+	}
+	public void setIngresoService(IngresoService ingresoService) {
+		this.ingresoService = ingresoService;
+	}
+	
+	public List<Articulos> getListaArticulos() {
+		return listaArticulos;
+	}
+	public void setListaArticulos(List<Articulos> listaArticulos) {
+		this.listaArticulos = listaArticulos;
+	}
+	public void Guardar(){
+		
+	}
+	public void addArticulo(){
+		
+	}
+}

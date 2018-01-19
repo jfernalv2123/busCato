@@ -1,0 +1,20 @@
+package com.ugurcanlacin.simple.dao;
+
+import java.util.List;
+
+import com.ugurcanlacin.simple.model.Caja;
+
+public interface CajaDao {
+
+	void persistCaja(Caja caja);
+
+	Caja findCajaById(int id);
+
+	void updateCaja(Caja caja);
+
+	void deleteCaja(Caja caja);
+
+	List<Caja> listaCaja();
+	Integer cajaActual();
+	
+}

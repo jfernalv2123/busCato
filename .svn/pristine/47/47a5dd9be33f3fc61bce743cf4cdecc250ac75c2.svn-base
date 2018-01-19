@@ -1,0 +1,14 @@
+package municipalidad.pto.service;
+
+import java.util.List;
+
+import municipalidad.pto.model.RelInformeArticulo;
+
+public interface RelInformeArticuloService {
+	RelInformeArticulo findRelInformeArticuloById(int id);
+	List<RelInformeArticulo> listaRelIngresoArticulo();
+	void guardarRelInformeArticulos(RelInformeArticulo rel);
+	void updateRelInformeArticulo(RelInformeArticulo rel);
+	void deleteRelInformeArticulo(RelInformeArticulo rel);
+	List<RelInformeArticulo> listaRelInformeArticuloByInforme(int id);
+}

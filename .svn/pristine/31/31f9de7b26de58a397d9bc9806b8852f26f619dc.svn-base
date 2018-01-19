@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<title>Articulos</title>
+	<style type="text/css">
+.ui-widget-content {
+	border: none;
+}
+</style>
+</h:head>
+<body>
+	<h:outputScript>
+ var idArticulo;
+ function nuevaFotos(id){
+ idArticulo=id;
+ }
+ </h:outputScript>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="44" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				 <p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				 <p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				 <p:menuitem value="Administracion select" url="administracion.xhtml" />
+				
+				
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+			<h:form id="formTablaArticulo">
+				<p:growl id="msgPrTablaArticulo" showDetail="true" />
+				<p:dataTable id="articulos" var="artic" style="font-size: 11px;"
+					resizableColumns="true" value="#{articuloBean.listaArticulos()}"
+					editable="true" rows="10" paginator="true"
+					filteredValue="#{articuloBean.listaArticuloBuscar}"
+					emptyMessage="No encontrado"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:ajax event="rowEdit" listener="#{articuloBean.onRowEdit}"
+						update=":formTablaArticulo:msgPrTablaArticulo :formTablaArticulo:articulos" />
+					<p:ajax event="rowEditCancel"
+						listener="#{articuloBean.onRowCancel}"
+						update=":formTablaArticulo:msgPrTablaArticulo :formTablaArticulo:articulos" />
+
+					<p:column headerText="Id" filterMatchMode="exact"
+						filterBy="#{artic.idArticulos}" style="width:32px">
+						<h:outputText value="#{artic.idArticulos}" />
+					</p:column>
+
+					<p:column headerText="Cod" filterMatchMode="exact"
+						filterBy="#{artic.codigoAntiguo}" style="width:32px">
+						
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.codigoAntiguo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{articuloBean.codigoAntiguo}" style="width:100%"
+									label="Proveedor" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Articulo" filterBy="#{artic.articulo}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.articulo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{articuloBean.articulo}" style="width:100%"
+									label="Proveedor" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Estado" filterBy="#{artic.estado.estado}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.estado.estado}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{articuloBean.estado}" required="true"
+									label="Categoria">
+									<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+									<f:selectItems value="#{estadoBean.selectItem()}" var="estado" />
+
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Area" filterBy="#{artic.area.area}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.area.area}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{articuloBean.area}" required="true"
+									label="Area">
+									<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+									<f:selectItems value="#{areaBean.comboArea()}" var="estado" />
+
+								</p:selectOneMenu>
+
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Tipo" filterBy="#{artic.tipo.tipo}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.tipo.tipo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{articuloBean.tipo}" required="true"
+									label="Tipo">
+									<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+									<f:selectItems value="#{tipoBean.comboTipo()}" var="estado" />
+
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Unidad medida"
+						filterBy="#{artic.unidadMedida.unidadMedida}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.unidadMedida.unidadMedida}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{articuloBean.unidadMedida}"
+									required="true" label="UnidadM">
+									<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+									<f:selectItems value="#{unidadMedidaBean.comboUnidad()}"
+										var="estado" />
+
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Ubicacion"
+						filterBy="#{artic.ubicacion.ubicacion}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.ubicacion.ubicacion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{articuloBean.ubicacion}" required="true"
+							label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="estado" />
+
+						</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Marca" filterBy="#{artic.marca}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{artic.marca}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{articuloBean.marca}" style="width:100%"
+									label="Proveedor" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Cargar fotos">
+						<!-- 						<p:commandButton value="Guardar" -->
+						<!-- 							action="#{fotoArticuloBean.idArticulo(artic.idArticulos)}" -->
+						<!-- 							onclick="AgregarFotos.show()" style="font-size: 13px;" /> -->
+					<h:link outcome="fotosArticulos" value="agregar ver">
+							<f:param name="articuloId" value="#{artic.idArticulos}" />
+						</h:link>
+
+						
+					</p:column>
+
+					<p:column style="width:32px">
+						<p:commandButton icon="ui-icon-close"
+							action="#{articuloBean.deleteArticulo(artic.idArticulos)}"
+							update=":formTablaArticulo:msgPrTablaArticulo :formTablaArticulo:articulos" />
+					</p:column>
+					<p:column style="width:32px">
+						<p:rowEditor />
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+		
+		</p:layoutUnit>
+
+
+
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+			<p:commandButton value="Nuevo Articulo" type="button"
+				onclick="nuevoArticulo.show()" style="font-size: 13px;" />
+
+			<p:dialog widgetVar="nuevoArticulo" header="Nuevo Articulo"
+				modal="false" resizable="false" style="font-size: 13px;">
+				<h:form id="nuevoArticuloForm">
+					<p:growl id="msgNuevoArticulo" showDetail="true" />
+					<h:panelGrid columns="8" cellpadding="5">
+						<h:outputText for="nombreArticulo" value="Articulo:" />
+						<p:inputText id="nombreArticulo" value="#{articuloBean.articulo}" />
+						<h:outputText for="codigo" value="CodAntiguo:" />
+						<p:inputText id="codigo" value="#{articuloBean.codigoAntiguo}" />
+						<h:outputText for="marcaArticulo" value="Marca:" />
+						<p:inputText id="marcaArticulo" value="#{articuloBean.marca}" />
+
+						<h:outputText value="Estado:" />
+						<p:selectOneMenu value="#{articuloBean.estado}" required="true"
+							label="Estado">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{estadoBean.selectItem()}" var="estado" />
+
+						</p:selectOneMenu>
+
+						<h:outputText value="Area:" />
+						<p:selectOneMenu value="#{articuloBean.area}" required="true"
+							label="Area">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{areaBean.comboArea()}" var="estado" />
+
+						</p:selectOneMenu>
+
+						<h:outputText value="Tipo:" />
+						<p:selectOneMenu value="#{articuloBean.tipo}" required="true"
+							label="Tipo">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{tipoBean.comboTipo()}" var="estado" />
+
+						</p:selectOneMenu>
+
+						<h:outputText value="Unidad Medida:" />
+						<p:selectOneMenu value="#{articuloBean.unidadMedida}"
+							required="true" label="UnidadM">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{unidadMedidaBean.comboUnidad()}"
+								var="estado" />
+
+						</p:selectOneMenu>
+
+						<h:outputText value="Ubicacion:" />
+						<p:selectOneMenu value="#{articuloBean.ubicacion}" required="true"
+							label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="estado" />
+
+						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+
+					<p:commandButton value="Guardar" action="#{articuloBean.guardar()}"
+						update=":nuevoArticuloForm:msgNuevoArticulo :formTablaArticulo:articulos" />
+					<br />
+				</h:form>
+
+			</p:dialog>
+		
+			<p:dialog widgetVar="AgregarFotos" header="Agregar Fotos"
+				modal="false" resizable="false" style="font-size: 13px;">
+				<h:form id="fotoArticulo" enctype="multipart/form-data">
+
+
+
+					<p:inputText id="IdArticuloFoto" value="#{fotoArticuloBean.id}" />
+
+					<p:commandButton value="Submit"
+						actionListener="#{fotoArticuloBean.persistImagen}" disabled="true"
+						style="display: none" />
+
+					<p:fileUpload value="#{fotoArticuloBean.file}" mode="advanced"
+						fileUploadListener="#{fotoArticuloBean.persistImagen}"
+						update=":formTablaArticulo:msgPrTablaArticulo" multiple="true"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|txt)$/"
+						uploadLabel="Cargar" cancelLabel="Cancelar" label="Buscar archivo" />
+				</h:form>
+			</p:dialog>
+
+		</p:layoutUnit>
+	</p:layout>
+
+
+
+</body>
+</html>

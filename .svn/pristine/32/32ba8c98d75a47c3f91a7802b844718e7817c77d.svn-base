@@ -1,0 +1,15 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import municipalidad.pto.model.Proveedor;
+
+public interface ProveedorDao {
+
+	Proveedor findProveedorById(int id);
+	List<Proveedor> listaProveedor();
+	List<SelectItem> comboProveedor();
+	Proveedor proveedorBynombre(String proveedor);
+}

@@ -1,0 +1,39 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.RelSalidaArticuloDao;
+
+import municipalidad.pto.model.RelSalidaArticulo;
+@Repository("relSalidaArticuloDao")
+public class RelSalidaArticuloDaoImpl implements RelSalidaArticuloDao{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public RelSalidaArticulo findRelSalidaArticuloById(int id) {
+		return (RelSalidaArticulo) sessionFactory.getCurrentSession().get(RelSalidaArticulo.class, id);
+	}
+
+	public List<RelSalidaArticulo> listaRelSalidaArticulo() {
+
+		String query="FROM RelSalidaArticulo";
+		List<RelSalidaArticulo> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+	public List<RelSalidaArticulo> listaRelSalidaArticuloByIngreso(int id){
+		String query="FROM RelSalidaArticulo as r where r.salida.idSalida="+id;
+		List<RelSalidaArticulo> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+		return aux;
+	}
+	public Long salidaArticulo(int id){
+		String query="select sum(r.cantidad) FROM RelSalidaArticulo as r where r.articulo.idArticulos="+id;
+		List<Long> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+		return aux.get(0);
+	}
+}

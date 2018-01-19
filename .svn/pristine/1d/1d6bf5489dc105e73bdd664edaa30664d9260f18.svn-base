@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+<title>Proveedores</title>
+</h:head> 
+<body> 
+<p:layout fullPage="true">
+ <p:layoutUnit position="north" size="130"  resizable="true" closable="true" collapsible="true">
+<h:form id="buscar">
+<h:panelGrid columns="8" cellpadding="5" style="font-size: 13px;">
+<h:outputText value="Id:"  />
+<pe:inputNumber value="#{proveedorBean.idProveedor}" />
+
+<h:outputText value="Proveedor:"  />
+<p:inputText value="#{proveedorBean.proveedor}" />
+
+<h:outputText value="Credito:"  />
+<p:selectBooleanButton id="gastoBuscar" value="#{proveedorBean.credito}"
+							onLabel="Yes" offLabel="No" style="width:60px" />
+
+<h:outputText value="Producto:"  />
+<p:inputText value="#{proveedorBean.producto}" />
+
+<h:outputText value="Categoria:"  />
+<p:selectOneMenu id="categoriaBuscar" value="#{proveedorBean.categoria}"
+							required="true" label="Categoria">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{categoriaBean.comboCategoria()}"
+								var="user" />
+
+						</p:selectOneMenu>
+
+<h:outputText value="Fono:"  />
+
+<p:inputText value="#{proveedorBean.fono}" />
+
+<h:outputText value="Mail:"  />
+<p:inputText value="#{proveedorBean.mail}" />
+<h:outputText value=""  />
+<p:commandButton icon="ui-icon-search"
+			value="Buscar"			action="#{tipoBean.borrar(tip.idTipo)}" ajax="false" />
+</h:panelGrid>
+</h:form>
+</p:layoutUnit>
+<p:layoutUnit position="center" size="100"  resizable="true" closable="true" collapsible="true" >
+<h:form id="formTabla">
+			<p:dataTable id="proveedores" var="pro" style="font-size: 13px;" 
+				value="#{proveedorBean.listaProveedor()}" editable="true" rows="10"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="Id">
+					<h:outputText value="#{pro.idProveedor}" />
+				</p:column>
+				<p:column headerText="Proveedor">
+					<h:outputText value="#{pro.proveedor}" />
+				</p:column>
+				<p:column headerText="Categoria">
+					<h:outputText value="#{pro.categoria}" />
+				</p:column>
+				<p:column headerText="Credito">
+					<h:outputText value="#{pro.credito}" />
+				</p:column>
+				<p:column headerText="Fono">
+					<h:outputText value="#{pro.fono}" />
+				</p:column>
+				<p:column headerText="Mail">
+					<h:outputText value="#{pro.mail}" />
+				</p:column>
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{pro.cantidadArticulos}" />
+				</p:column>
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrar(pro.idProveedor)}" ajax="false" />
+				</p:column>
+			</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="south" size="50"  resizable="true" closable="true" collapsible="true" style="text-align: center;">
+
+
+			<p:commandButton value="Nuevo Proveedor" type="button"
+				onclick="dlg2.show()" style="font-size: 13px;"/>
+			<p:dialog widgetVar="dlg2" header="Nuevo Proveedor" modal="false" resizable="false" style="font-size: 13px;">
+				<h:form id="nuevo">
+				<p:growl id="msgPr" showDetail="true"/>
+					<h:panelGrid columns="6" cellpadding="5">
+				
+						<h:outputText for="nombreProveedor" value="Proveedor:" />
+						<p:inputText id="nombreProveedor" value="#{proveedorBean.proveedor}" />
+						
+						<h:outputText for="categoria" value="Categoria: " />
+						<p:selectOneMenu id="categoria" value="#{proveedorBean.categoria}"
+							required="true" label="Categoria">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{categoriaBean.comboCategoria()}"
+								var="user" />
+
+						</p:selectOneMenu>
+				
+						<h:outputLabel  value="Credito: *" />
+						<p:selectBooleanButton id="gasto" value="#{proveedorBean.credito}"
+							onLabel="Yes" offLabel="No" style="width:60px" />
+						
+					</h:panelGrid>
+					<h:panelGrid columns="6" cellpadding="5">
+					<h:outputText for="idFono" value="Fono: " />
+					<p:inputText id="idFono" value="#{proveedorBean.fono}" />
+					<p:commandButton id="btn_addFono" value="Add" update="listFono msgPr" action="#{proveedorBean.addFono()}" />
+                    <h:outputText for="idMail" value="Mail: " />
+					<p:inputText id="idMail" value="#{proveedorBean.mail}" />
+					<p:commandButton id="btn_addMail" value="Add" update="listMail msgPr" action="#{proveedorBean.addMail()}" />
+					</h:panelGrid>
+					<h:panelGrid columns="2" style="width:100%">
+					 <p:dataList id="listFono" value="#{proveedorBean.listFono}" var="fon" type="ordered" style="display: inline-block;width:100px">
+					#{fon}
+					 <p:commandLink value=" elimininar " update=":nuevo:listFono" process=":nuevo:listFono">
+                    <p:collector value="#{fon}" removeFrom="#{proveedorBean.listFono}" unique="true"/>
+                </p:commandLink>
+					</p:dataList>
+					<p:dataList id="listMail" value="#{proveedorBean.lisMail}" var="mai" type="ordered" style="display: inline-block;width:100px">
+					#{mai}
+					<p:commandLink value=" elimininar " update=":nuevo:listMail" process=":nuevo:listMail">
+                    <p:collector value="#{mai}" removeFrom="#{proveedorBean.lisMail}" unique="true"/>
+                </p:commandLink>
+					</p:dataList>
+					</h:panelGrid>
+					<br />
+					<p:commandButton  value="Guardar"
+							action="#{proveedorBean.guardar()}" update=":formTabla:proveedores msgPr @all" />
+							 
+					</h:form>
+			</p:dialog>
+			
+			
+		</p:layoutUnit>
+</p:layout>
+</body> 
+</html>

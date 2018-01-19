@@ -1,0 +1,130 @@
+package municipalidad.pto.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ingreso", catalog = "pto")
+public class Ingreso implements Serializable{
+	
+	private Integer idIngreso;
+	private String Observacion;
+	private Date fecha;
+	private Proveedor proveedor;
+	private String ordenDeCompra;
+	private String factura;
+	private String guiaDeDespacho;
+	private String destino;
+	private boolean inventariable;
+	private String lugarAlmacenaje;
+	private boolean conforme;
+	public Ingreso(String observacion, Date fecha, Proveedor proveedor, String ordenDeCompra, String factura,
+			String guiaDeDespacho, String destino, boolean inventariable, String lugarAlmacenaje, boolean conforme) {
+		super();
+		Observacion = observacion;
+		this.fecha = fecha;
+		this.proveedor = proveedor;
+		this.ordenDeCompra = ordenDeCompra;
+		this.factura = factura;
+		this.guiaDeDespacho = guiaDeDespacho;
+		this.destino = destino;
+		this.inventariable = inventariable;
+		this.lugarAlmacenaje = lugarAlmacenaje;
+		this.conforme = conforme;
+	}
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_ingreso", unique = true, nullable = false)
+	public Integer getIdIngreso() {
+		return idIngreso;
+	}
+	public void setIdIngreso(Integer idIngreso) {
+		this.idIngreso = idIngreso;
+	}
+	@Column(name = "observacion", length = 255)
+	public String getObservacion() {
+		return Observacion;
+	}
+	public void setObservacion(String observacion) {
+		Observacion = observacion;
+	}
+	@Column(name = "fecha")
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_proveedor")
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+	@Column(name = "orden_compra", length = 45)
+	public String getOrdenDeCompra() {
+		return ordenDeCompra;
+	}
+	public void setOrdenDeCompra(String ordenDeCompra) {
+		this.ordenDeCompra = ordenDeCompra;
+	}
+	@Column(name = "factura", length = 45)
+	public String getFactura() {
+		return factura;
+	}
+	public void setFactura(String factura) {
+		this.factura = factura;
+	}
+	@Column(name = "guia_despacho", length = 45)
+	public String getGuiaDeDespacho() {
+		return guiaDeDespacho;
+	}
+	public void setGuiaDeDespacho(String guiaDeDespacho) {
+		this.guiaDeDespacho = guiaDeDespacho;
+	}
+	@Column(name = "destino", length = 45)
+	public String getDestino() {
+		return destino;
+	}
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+	@Column(name = "inventariable")
+	public boolean isInventariable() {
+		return inventariable;
+	}
+	public void setInventariable(boolean inventariable) {
+		this.inventariable = inventariable;
+	}
+	@Column(name = "lugar_almacenaje", length = 100)
+	public String getLugarAlmacenaje() {
+		return lugarAlmacenaje;
+	}
+	public void setLugarAlmacenaje(String lugarAlmacenaje) {
+		this.lugarAlmacenaje = lugarAlmacenaje;
+	}
+	@Column(name = "recibe_conforme")
+	public boolean isConforme() {
+		return conforme;
+	}
+	public void setConforme(boolean conforme) {
+		this.conforme = conforme;
+	}
+	
+	
+	
+
+}

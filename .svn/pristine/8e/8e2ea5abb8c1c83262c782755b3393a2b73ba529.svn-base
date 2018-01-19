@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head></h:head> 
+<body> 
+
+	<h:form>
+		
+
+		
+			 <p:panel id="caja" header="ingreso caja" style="width: 50%;display: inline-block;">
+			 <h:panelGrid columns="2" cellpadding="5">
+			  <h:outputLabel for="valor" value="Valor: *" />
+				<pe:inputNumber id="valor" value="#{cajaBean.valor}" decimalPlaces="0" required="true" label="valor"/>
+				 <h:outputLabel for="detalle" value="Detalle: *" />	
+				<p:inputText id="detalle" value="#{cajaBean.detalle}" required="true" label="Nombre" />
+			</h:panelGrid>
+			<div style="text-align: right;">
+			 <p:commandButton value="Guardar"
+						action="#{cajaBean.persistCaja()}" /> 
+			 </div>
+			 </p:panel>
+			 </h:form>
+</body> 
+</html>

@@ -1,0 +1,11 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import municipalidad.pto.model.RelIngresoArticulo;
+
+public interface RelIngresoArticuloDao {
+
+	RelIngresoArticulo findRelIngresoArticuloById(int id);
+	List<RelIngresoArticulo> listaRelIngresoArticulo();
+}

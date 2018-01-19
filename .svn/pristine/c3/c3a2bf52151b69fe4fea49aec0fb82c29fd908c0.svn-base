@@ -1,0 +1,54 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.IngresoDao;
+import municipalidad.pto.model.Ingreso;
+import municipalidad.pto.service.IngresoService;
+
+@Service("ingresoService")
+public class IngresoServiceImpl implements IngresoService {
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	IngresoDao ingresoDao;
+
+	@Transactional
+	public void persistIngreso(Ingreso ingreso) {
+		genericDao.Guardar(ingreso);
+
+	}
+
+	@Transactional
+	public Ingreso findIngresoById(int id) {
+
+		return ingresoDao.findIngresoById(id);
+	}
+
+	@Transactional
+	public void updateIngreso(Ingreso ingreso) {
+		genericDao.update(ingreso);
+
+	}
+
+	@Transactional
+	public void deleteIngreso(Ingreso ingreso) {
+		genericDao.delete(ingreso);
+
+	}
+
+	@Transactional
+	public List<Ingreso> listaIngresos() {
+		return ingresoDao.listaIngresos();
+	}
+	@Transactional
+	public Integer ingresosByProveedor(int proveedor){
+		return ingresoDao.ingresosByProveedor(proveedor);
+	}
+}

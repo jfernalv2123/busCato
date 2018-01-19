@@ -1,0 +1,8 @@
+package com.ugurcanlacin.simple.service;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public interface GenericService {
+	byte[] convertirTobyteArray(InputStream is) throws IOException;
+}

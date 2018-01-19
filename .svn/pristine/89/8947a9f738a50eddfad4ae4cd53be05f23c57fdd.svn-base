@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+<h:head>
+
+</h:head>
+<style type="text/css">
+#total {
+	width: 180px;
+	
+}
+</style>
+<body>
+
+
+
+
+
+	<h:form>
+		
+
+		
+			 <p:panel id="nuevoGasto" header="New Gasto" style="width: 70%;display: inline-block;">
+			 <h:panelGrid columns="6" cellpadding="5">
+			 <h:outputLabel for="nombre" value="Nombre: *" />
+				<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+						required="true" label="Nombre" />
+				<h:outputLabel for="monto" value="Monto: *" />
+				<pe:inputNumber id="monto" value="#{ingresosBean.monto}"
+						decimalPlaces="0" required="true" label="Monto" />
+				<h:outputLabel for="boleta" value="Boleta: *" />
+		<p:selectOneMenu id="boleta"
+						value="#{ingresosBean.idImagen}" required="true" label="persona">
+						<p:ajax update="imagen" />
+						<f:selectItem itemLabel="Seleccione..." itemValue="120" />
+						<f:selectItems value="#{imagenBean.comboImagen()}" var="imagen" />
+
+					</p:selectOneMenu>
+		
+			<h:outputLabel for="fecha" value="Fecha: *" />
+				<p:calendar id="fecha" value="#{ingresosBean.fecha}"
+						required="true" label="Nombre" />
+			<h:outputLabel for="persona" value="Persona: *" />
+			<p:selectOneMenu id="persona"
+						value="#{ingresosBean.idPersona}" required="true" label="persona">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{userBean.comboUser()}" var="user" />
+
+					</p:selectOneMenu>
+			
+			
+				<h:outputLabel for="item" value="Item: *" />
+				<p:selectOneMenu id="item" value="#{ingresosBean.idItem}"
+						required="true" label="item">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{itemBean.comboItem()}" var="items" />
+
+					</p:selectOneMenu>
+				<h:outputLabel for="gasto" value="Gasto: *" />
+				<p:selectBooleanButton id="gasto"
+						value="#{ingresosBean.gasto}" onLabel="Yes" offLabel="No"
+						style="width:60px" />
+			 
+			 
+			 </h:panelGrid>
+			 <div style="text-align: right;">
+			 <p:commandButton value="Guardar"
+						action="#{ingresosBean.persistIngresos()}" /> 
+			 </div>
+			
+
+			
+		</p:panel>
+		<p:panel id="vistaboleta" header="Vista" style="width: 183px;display: inline-block">
+				<p:graphicImage id="imagen" style="display: inline-block;"
+					value="#{ingresosBean.imageById()}" width="150px" height="176px" />
+			</p:panel>
+	</h:form>
+	<br />
+		<h:form>
+
+
+		<p:dataTable id="ingresos" var="ingr"
+			value="#{ingresosBean.listaGastos()}">
+
+			<p:column headerText="Gasto" style="width:30%" resizable="true">
+				<h:outputText value="#{ingr.nombre}" />
+			</p:column>
+			<p:column headerText="Monto">
+				<h:outputText value="$ #{ingr.monto}" />
+			</p:column>
+			<p:column headerText="Fecha">
+				<h:outputText value="#{ingr.fecha}" />
+			</p:column>
+			<p:column headerText="Item">
+				<h:outputText value="#{ingr.item}" />
+			</p:column>
+			<p:column headerText="Persona">
+				<h:outputText value="#{ingr.persona}" />
+			</p:column>
+<f:facet name="footer">
+          <h:outputText value="Total : $ #{ingresosBean.totalGastos()}" />
+        </f:facet>
+		</p:dataTable>
+
+
+
+
+	</h:form>
+</body>
+</html>

@@ -1,0 +1,16 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import municipalidad.pto.model.User;
+
+public interface UserDao {
+	void persistUser(User user);
+	User findUserById(int id);
+	void updateUser(User user);
+	void deleteUser(User user);
+	List<User> listaUsuarios();
+	List<SelectItem> comboUser();
+}

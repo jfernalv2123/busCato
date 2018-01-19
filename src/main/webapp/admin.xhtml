@@ -1,0 +1,859 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+
+<h:head>
+	<title>Administración</title>
+</h:head>
+<body>
+	<p:breadCrumb style="font-size: 13px;">
+		<p:menuitem value="Vender" url="index.xhtml" />
+		<p:menuitem value="Administrar" url="admin.xhtml" />
+	</p:breadCrumb>
+
+	<p:panel id="busPanel" header="Buses" toggleable="true"
+		toggleSpeed="500" widgetVar="panelBus" collapsed="true"
+		style="margin-bottom:1px;margin-top:15px">
+		<h:form id="busesT">
+			<p:dataTable id="busT" var="bus" value="#{busBean.listaBuses()}"
+				style="font-size: 11px;">
+
+				<p:column headerText="Patente" filterMatchMode="contains"
+					filterBy="#{bus.patente}" style="width:32px">
+					<h:outputText value="#{bus.patente}" />
+				</p:column>
+				<p:column headerText="Asientos" filterMatchMode="contains"
+					filterBy="#{bus.asientos}" style="width:32px">
+					<h:outputText value="#{bus.asientos}" />
+				</p:column>
+				<p:column headerText="Pisos" filterMatchMode="contains"
+					filterOptions="#{busBean.filtroPisos()}" filterBy="#{bus.pisos}"
+					style="width:32px">
+					<h:outputText value="#{bus.pisos}" />
+				</p:column>
+				<p:column headerText="Baños" filterMatchMode="contains"
+					filterOptions="#{busBean.filtroWc()}" filterBy="#{bus.wc}"
+					style="width:32px">
+					<h:outputText value="#{bus.wc}" />
+				</p:column>
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificarBus.show()" actionListener="#{busBean.carga(bus)}" update=":busesModificar:mod"/>
+				</p:column>
+				
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{busBean.borrar(bus)}" update=":busesT:busT" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoBus.show()" />
+		</div>
+
+
+		<h:form id="busesNuevo">
+			<p:dialog widgetVar="nuevoBus" header="Nuevo Bus" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs3" showDetail="true" />
+				<h:panelGrid columns="4" cellpadding="5">
+
+					<h:outputText value="patente : " />
+					<p:inputText value="#{busBean.patente}" />
+					<h:outputText value=" asientos : " />
+					<pe:inputNumber value="#{busBean.asientos}" decimalPlaces="0"/>
+					<h:outputText value=" pisos : " />
+					<pe:inputNumber value="#{busBean.pisos}" decimalPlaces="0"/>
+					<h:outputText value=" wc : " />
+					<pe:inputNumber value="#{busBean.wc}" decimalPlaces="0"/>
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{busBean.guardar()}" update=":busesT:busT :busesModificar:mod" oncomplete="nuevoBus.hide()"/>
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+		
+		
+			<p:dialog widgetVar="modificarBus" header="Modifica Bus" modal="false"
+				resizable="false" style="font-size: 13px;">
+<h:form id="busesModificar">
+				
+				<h:panelGrid id="mod" columns="4" cellpadding="5">
+
+					<h:outputText value="patente : " />
+					<p:inputText value="#{busBean.bus.patente}" />
+					<h:outputText value=" asientos : " />
+					<pe:inputNumber value="#{busBean.bus.asientos}" decimalPlaces="0"/>
+					<h:outputText value=" pisos : " />
+					<pe:inputNumber value="#{busBean.bus.pisos}" decimalPlaces="0"/>
+					<h:outputText value=" wc : " />
+					<pe:inputNumber value="#{busBean.bus.wc}" decimalPlaces="0"/>
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{busBean.actualizar()}" update=":busesT:busT" oncomplete="modificarBus.hide()"/>
+
+				</div>
+
+</h:form>
+			</p:dialog>
+		
+	</p:panel>
+
+<!-- SECCION PANEL CHOFER INICIO-->
+	<p:panel id="choferPanel" header="Chofer" toggleable="true"
+		toggleSpeed="500" widgetVar="panelChofer" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="choferF">
+			<p:dataTable id="choferT" var="chofer"
+				value="#{choferBean.listaChofer()}" style="font-size: 11px;">
+
+				<p:column headerText="Rut" filterMatchMode="contains"
+					filterBy="#{chofer.rut}" style="width:32px">
+					<h:outputText value="#{chofer.rut}" />
+				</p:column>
+				<p:column headerText="Nombre" filterMatchMode="contains"
+					filterBy="#{chofer.nombre}" style="width:32px">
+					<h:outputText value="#{chofer.nombre}" />
+				</p:column>
+				<p:column headerText="Apellido" filterMatchMode="contains"
+					filterBy="#{chofer.apellido}" style="width:32px">
+					<h:outputText value="#{chofer.apellido}" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificarChofer.show()"
+						actionListener="#{choferBean.carga(chofer)}"
+						update=":choferModificar:modChofer" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{choferBean.borrar(chofer)}"
+						update=":choferF:choferT" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoChofer.show()" />
+		</div>
+
+
+		<h:form id="choferNuevo">
+			<p:dialog widgetVar="nuevoChofer" header="Nuevo Chofer" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs4" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Rut : " />
+					<p:inputText value="#{choferBean.rut}" />
+					<h:outputText value=" Nombre : " />
+					<p:inputText value="#{choferBean.nombre}" />
+					<h:outputText value=" Apellido : " />
+					<p:inputText value="#{choferBean.apellido}" />
+
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{choferBean.guardar()}"
+						update=":choferF:choferT :choferNuevo:msgs4"
+						oncomplete="nuevoChofer.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificarChofer" header="Modifica Chofer"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="choferModificar">
+
+				<h:panelGrid id="modChofer" columns="4" cellpadding="5">
+
+					<h:outputText value="Rut : " />
+					<p:inputText value="#{choferBean.choferAux.rut}" />
+					<h:outputText value=" Nombre : " />
+					<p:inputText value="#{choferBean.choferAux.nombre}" />
+					<h:outputText value=" Apellido : " />
+					<p:inputText value="#{choferBean.choferAux.apellido}" />
+
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{choferBean.actualizar()}"
+						update=":choferF:choferT :choferNuevo:msgs4"
+						oncomplete="modificarChofer.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+<!-- SECCION PANEL CHOFER FIN-->
+<!-- SECCION PANEL CIUDAD INICIO-->
+
+<p:panel id="ciudadPanel" header="Ciudad" toggleable="true"
+		toggleSpeed="500" widgetVar="panelCiudad" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="ciudadF">
+			<p:dataTable id="ciudadT" var="ciudad"
+				value="#{ciudadBean.listaCiudad()}" style="font-size: 11px;">
+
+				<p:column headerText="Ciudad" filterMatchMode="contains"
+					filterBy="#{ciudad.ciudad}" style="width:32px">
+					<h:outputText value="#{ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Region" filterMatchMode="contains"
+					filterBy="#{ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					<h:outputText value="#{ciudad.region.region}" />
+				</p:column>
+				
+
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificarCiudad.show()"
+						actionListener="#{ciudadBean.carga(ciudad)}"
+						update=":ciudadModificar:modCiudad" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{ciudadBean.borrar(ciudad)}"
+						update=":ciudadF:ciudadT :ciudadNuevo:msgs5" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoCiudad.show()" />
+		</div>
+
+
+		<h:form id="ciudadNuevo">
+			<p:dialog widgetVar="nuevoCiudad" header="Nuevo Ciudad" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs5" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Ciudad : " />
+					<p:inputText value="#{ciudadBean.ciudad}" />
+					<h:outputText value=" Region : " />
+					<p:selectOneMenu
+							value="#{ciudadBean.idRegion}"
+							required="true" label="region">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
+
+						</p:selectOneMenu>
+					
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{ciudadBean.guardar()}"
+						update=":ciudadF:ciudadT :ciudadNuevo:msgs5"
+						oncomplete="nuevoCiudad.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificarCiudad" header="Modifica Ciudad"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="ciudadModificar">
+
+				<h:panelGrid id="modCiudad" columns="4" cellpadding="5">
+
+					<h:outputText value="Ciudad : " />
+					<p:inputText value="#{ciudadBean.ciudadAux.ciudad}" />
+					<h:outputText value=" region : " />
+					<p:selectOneMenu
+							value="#{ciudadBean.ciudadAux.region.id}"
+							required="true" label="region">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
+
+						</p:selectOneMenu>
+
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{ciudadBean.actualizar()}"
+						update=":ciudadF:ciudadT :ciudadNuevo:msgs5"
+						oncomplete="modificarCiudad.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+	<!-- SECCION CIUDAD FIN-->
+	
+<!-- SECCION TERMINALES INICIO-->
+
+<p:panel id="terminalPanel" header="Terminal" toggleable="true"
+		toggleSpeed="500" widgetVar="panelTerminal" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="terminalF">
+			<p:dataTable id="terminalT" var="terminal"
+				value="#{terminalBean.listaTerminal()}" style="font-size: 11px;">
+
+				<p:column headerText="Ciudad" filterMatchMode="contains"
+					filterBy="#{terminal.ciudad.ciudad}" style="width:32px">
+					<h:outputText value="#{terminal.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Region" filterMatchMode="contains"
+					filterBy="#{terminal.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					<h:outputText value="#{terminal.ciudad.region.region}" />
+				</p:column>
+				<p:column headerText="Terminal" filterMatchMode="contains"
+					filterBy="#{terminal.terminal}" style="width:32px">
+					<h:outputText value="#{terminal.terminal}" />
+				</p:column>
+				<p:column headerText="Andenes" filterMatchMode="contains"
+					filterBy="#{terminal.andenes}" filterOptions="#{terminalBean.filtroAndenes()}" style="width:32px">
+					<h:outputText value="#{terminal.andenes}" />
+				</p:column>
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificarTerminal.show()"
+						actionListener="#{terminalBean.carga(terminal)}"
+						update=":terminalModificar:modTerminal" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{terminalBean.borrar(terminal)}"
+						update=":terminalF:terminalT :terminalNuevo:msgs6" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoTerminal.show()" />
+		</div>
+
+
+		<h:form id="terminalNuevo">
+			<p:dialog widgetVar="nuevoTerminal" header="Nuevo Terminal" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs6" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Terminal : " />
+					<p:inputText value="#{terminalBean.terminal}" />
+					<h:outputText value="Andenes : " />
+					<pe:inputNumber value="#{terminalBean.andenes}" decimalPlaces="0"/>
+					<h:outputText value="Ciudad : " />
+					<p:selectOneMenu
+							value="#{terminalBean.idCiudad}"
+							required="true" label="ciudad">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
+
+						</p:selectOneMenu>
+					
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{terminalBean.guardar()}"
+						update=":terminalF:terminalT :terminalNuevo:msgs6"
+						oncomplete="nuevoTerminal.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificarTerminal" header="Modifica Terminal"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="terminalModificar">
+
+				<h:panelGrid id="modTerminal" columns="4" cellpadding="5">
+
+					<h:outputText value="Terminal : " />
+					<p:inputText value="#{terminalBean.terminalAux.terminal}" />
+					<h:outputText value="Andenes : " />
+					<p:inputText value="#{terminalBean.terminalAux.andenes}" />
+					<h:outputText value=" Ciudad : " />
+					<p:selectOneMenu
+							value="#{terminalBean.terminalAux.ciudad.id}"
+							required="true" label="ciudad">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
+
+						</p:selectOneMenu>
+
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{terminalBean.actualizar()}"
+						update=":terminalF:terminalT :terminalNuevo:msgs6"
+						oncomplete="modificarTerminal.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+	<!-- SECCION PANEL TERMINAL FIN-->
+<!-- SECCION RECORRIDO INICIO-->
+<p:panel id="recorridoPanel" header="Recorrido" toggleable="true"
+		toggleSpeed="500" widgetVar="panelRecorrido" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="recorridoF">
+			<p:dataTable id="recorridoT" var="recorrido"
+				value="#{recoridoBean.listaRecorrido()}" style="font-size: 11px;">
+
+				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
+					filterBy="#{recorrido.origen.ciudad.ciudad}" style="width:32px">
+					<h:outputText value="#{recorrido.origen.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Region Origen" filterMatchMode="contains"
+					filterBy="#{recorrido.origen.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					<h:outputText value="#{recorrido.origen.ciudad.region.region}" />
+				</p:column>
+				<p:column headerText="Ciudad Destino" filterMatchMode="contains"
+					filterBy="#{recorrido.destino.ciudad.ciudad}" style="width:32px">
+					<h:outputText value="#{recorrido.destino.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Region Destino" filterMatchMode="contains"
+					filterBy="#{recorrido.destino.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					<h:outputText value="#{recorrido.destino.ciudad.region.region}" />
+				</p:column>
+				<p:column headerText="Bus" filterMatchMode="contains"
+					filterBy="#{recorrido.bus.bus}" filterOptions="#{busBean.filtroBus()}" style="width:32px">
+					<h:outputText value="#{recorrido.bus.patente}" />
+				</p:column>
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificaRecorrido.show()"
+						actionListener="#{recoridoBean.carga(recorrido)}"
+						update=":recorridoModificar:modRecorrido" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{recoridoBean.borrar(recorrido)}"
+						update=":recorridoF:recorridoT :recorridoNuevo:msgs7" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoRecorrido.show()" />
+		</div>
+
+
+		<h:form id="recorridoNuevo">
+			<p:dialog widgetVar="nuevoRecorrido" header="Nuevo Recorrido" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs7" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Terminal Origen : " />
+					<p:selectOneMenu value="#{recoridoBean.idOrigen}" required="true"
+						label="terminalOrigen">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="terminalOrigen" />
+
+					</p:selectOneMenu>
+					<h:outputText value="Terminal Destino : " />
+					<p:selectOneMenu value="#{recoridoBean.idDestino}" required="true"
+						label="terminalDestino">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="terminalDestino" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Bus : " />
+						<p:selectOneMenu value="#{recoridoBean.idBus}"
+							required="true" label="bus">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{busBean.comboBus()}"
+								var="bus" />
+						</p:selectOneMenu>
+					<p:outputLabel for="fSalida" value="Fecha Salida" />
+					<p:calendar id="fSalida" value="#{recoridoBean.fechaSalida}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+					<p:outputLabel for="fLlegada" value="Fecha Llegada" />
+					<p:calendar id="fLlegada" value="#{recoridoBean.fechaLlegada}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{recoridoBean.guardar()}"
+						update=":recorridoF:recorridoT :recorridoNuevo:msgs7"
+						oncomplete="nuevoRecorrido.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificaRecorrido" header="Modifica Recorrido"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="recorridoModificar">
+
+				<h:panelGrid id="modRecorrido" columns="2" cellpadding="5">
+
+										<h:outputText value="Terminal Origen : " />
+					<p:selectOneMenu value="#{recoridoBean.recorridoAux.origen.id}" required="true"
+						label="terminalOrigen">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="terminalOrigen" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Terminal Destino : " />
+					<p:selectOneMenu value="#{recoridoBean.recorridoAux.destino.id}" required="true"
+						label="terminalDestino">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="terminalDestino" />
+						<h:outputText value="Bus : " />
+						</p:selectOneMenu>
+						<h:outputText value="Bus : " />
+						<p:selectOneMenu value="#{recoridoBean.recorridoAux.bus.bus}"
+							required="true" label="terminalDestino">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{busBean.comboBus()}"
+								var="bus" />
+
+						</p:selectOneMenu>
+						<p:outputLabel for="fSalidaMod" value="Fecha Salida" />
+					<p:calendar id="fSalidaMod" value="#{recoridoBean.recorridoAux.fechaSalida}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+					<p:outputLabel for="fLlegadaMod" value="Fecha Llegada" />
+					<p:calendar id="fLlegadaMod" value="#{recoridoBean.recorridoAux.fechaLlegada}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{recoridoBean.actualizar()}"
+						update=":recorridoF:recorridoT :recorridoNuevo:msgs7"
+						oncomplete="modificaRecorrido.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+	
+<!-- SECCION PANEL RECORRIDO FIN-->
+<!-- SECCION CHOFER-RECORRIDO INICIO-->
+<p:panel id="chofeRecorridoPanel" header="Chofe Recorrido" toggleable="true"
+		toggleSpeed="500" widgetVar="panelChofeRecorrido" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="chofeRecorridoF">
+			<p:dataTable id="chofeRecorridoT" var="cR"
+				value="#{choferRecorridoBean.listaChoferRecorrido()}" style="font-size: 11px;">
+
+				<p:column headerText="Rut Chofer" filterMatchMode="contains"
+					filterBy="#{cR.chofer.rut}" style="width:32px">
+					<h:outputText value="#{cR.chofer.rut}" />
+				</p:column>
+				<p:column headerText="Nombre" filterMatchMode="contains"
+					filterBy="#{cR.chofer.nombre}"  style="width:32px">
+					<h:outputText value="#{cR.chofer.nombre}" />
+				</p:column>
+				<p:column headerText="Apellido" filterMatchMode="contains"
+					filterBy="#{cR.chofer.apellido}" style="width:32px">
+					<h:outputText value="#{cR.chofer.apellido}" />
+				</p:column>
+				<p:column headerText="Tiempo de Conducción" filterMatchMode="contains"
+					filterBy="#{cR.tiempo}" style="width:32px">
+					<h:outputText value="#{cR.tiempo}" />
+				</p:column>
+				<p:column headerText="Destino" filterMatchMode="contains"
+					filterBy="#{cR.recorrido.destino.ciudad.ciudad}"  style="width:32px">
+					<h:outputText value="#{cR.recorrido.destino.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Origen" filterMatchMode="contains"
+					filterBy="#{cR.recorrido.origen.ciudad.ciudad}"  style="width:32px">
+					<h:outputText value="#{cR.recorrido.origen.ciudad.ciudad}" />
+				</p:column>
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificaChofeRecorrido.show()"
+						actionListener="#{choferRecorridoBean.carga(cR)}"
+						update=":chofeRecorridoModificar:modChofeRecorrido" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{choferRecorridoBean.borrar(cR)}"
+						update=":chofeRecorridoF:chofeRecorridoT :chofeRecorridoNuevo:msgs8" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoChofeRecorrido.show()" />
+		</div>
+
+
+		<h:form id="chofeRecorridoNuevo">
+			<p:dialog widgetVar="nuevoChofeRecorrido" header="Nuevo Chofer-Recorrido" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs8" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Chofer : " />
+					<p:selectOneMenu value="#{choferRecorridoBean.idChofer}" required="true"
+						label="choferR">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{choferBean.comboChofer()}"
+							var="choferR" />
+
+					</p:selectOneMenu>
+					
+					<h:outputText value="Recorrido : " />
+					<p:selectOneMenu value="#{choferRecorridoBean.idRecorrido}" required="true"
+						label="recorrido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
+							var="recorrido" />
+					</p:selectOneMenu>
+					
+			<h:outputText value=" Minutos de Conducción : " />
+					<pe:inputNumber value="#{choferRecorridoBean.tiempo}" decimalPlaces="0" minValue="1" maxValue="240"/>
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{choferRecorridoBean.guardar()}"
+						update=":chofeRecorridoF:chofeRecorridoT :chofeRecorridoNuevo:msgs8"
+						oncomplete="nuevoChofeRecorrido.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificaChofeRecorrido" header="Modifica Chofer-Recorrido"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="chofeRecorridoModificar">
+
+				<h:panelGrid id="modChofeRecorrido" columns="2" cellpadding="5">
+
+										<h:outputText value="Chofer : " />
+					<p:selectOneMenu value="#{choferRecorridoBean.choferRecorridoAux.chofer.id}" required="true"
+						label="choferRe">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{choferBean.comboChofer()}"
+							var="choferRe" />
+
+					</p:selectOneMenu>
+					
+					<h:outputText value="Recorrido : " />
+					<p:selectOneMenu value="#{choferRecorridoBean.choferRecorridoAux.recorrido.id}" required="true"
+						label="recorridoM">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
+							var="recorridoM" />
+					</p:selectOneMenu>
+					
+			<h:outputText value=" Minutos de Conducción : " />
+					<pe:inputNumber value="#{choferRecorridoBean.choferRecorridoAux.tiempo}" minValue="1" maxValue="240" decimalPlaces="0"/>
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{choferRecorridoBean.actualizar()}"
+						update=":chofeRecorridoF:chofeRecorridoT :chofeRecorridoNuevo:msgs8"
+						oncomplete="modificaChofeRecorrido.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+	
+	<!-- SECCION PANEL CHOFER-RECORRIDO FIN-->
+<!-- SECCION PARADAS INICIO-->
+
+<p:panel id="paradaPanel" header="Parada" toggleable="true"
+		toggleSpeed="500" widgetVar="panelParada" collapsed="true"
+		style="margin-bottom:1px">
+		<h:form id="paradaF">
+			<p:dataTable id="paradaT" var="parada"
+				value="#{paradasBean.listaParadas()}" style="font-size: 11px;">
+				<p:column headerText="N° Parada" filterMatchMode="contains"
+					filterBy="#{parada.parada}"
+					style="width:32px">
+					<h:outputText value="#{parada.parada}" />
+				</p:column>
+				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
+					filterBy="#{parada.recorrido.origen.ciudad.ciudad}" style="width:32px">
+					<h:outputText value="#{parada.recorrido.origen.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Ciudad" filterMatchMode="contains"
+					filterBy="#{parada.terminal.ciudad.ciudad}"  style="width:32px">
+					<h:outputText value="#{parada.terminal.ciudad.ciudad}" />
+				</p:column>
+			
+				<p:column headerText="Terminal" filterMatchMode="contains"
+					filterBy="#{parada.terminal.terminal}" style="width:32px">
+					<h:outputText value="#{parada.terminal.terminal}" />
+				</p:column>
+					<p:column headerText="Recorrido" filterMatchMode="contains"
+					filterBy="#{parada.recorrido.origen}"  style="width:32px">
+					<h:outputText value="#{parada.recorrido.origen.ciudad.ciudad}-#{parada.recorrido.destino.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Anden" filterMatchMode="contains"
+					filterBy="#{parada.anden}" style="width:32px">
+					<h:outputText value="#{parada.anden}" />
+				</p:column>
+				<p:column headerText="Fecha Salida" filterMatchMode="contains"
+					filterBy="#{parada.llegada}"  style="width:32px">
+					<h:outputText value="#{parada.llegada}" />
+				</p:column>
+				<p:column headerText="Hora Salida" filterMatchMode="contains"
+					filterBy="#{parada.llegada.hours}"  style="width:32px">
+					<h:outputText value="#{parada.llegada.hours}:#{parada.llegada.minutes}" />
+				</p:column>
+				
+				<p:column style="width:24px" headerText="Modificar">
+					<p:commandButton value="Modificar" oncomplete="modificaParada.show()"
+						actionListener="#{paradasBean.carga(parada)}"
+						update=":paradaModificar:modParada" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{paradasBean.borrar(parada)}"
+						update=":paradaF:paradaT :paradaNuevo:msgs9" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoParada.show()" />
+		</div>
+
+
+		<h:form id="paradaNuevo">
+			<p:dialog widgetVar="nuevoParada" header="Nuevo Parada" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs9" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<h:outputText value="Terminal : " />
+					<p:selectOneMenu value="#{paradasBean.idTerminal}" required="true"
+						label="choferR">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="choferR" />
+
+					</p:selectOneMenu>
+					
+					<h:outputText value="Recorrido : " />
+					<p:selectOneMenu value="#{paradasBean.idRecorrido}" required="true"
+						label="recorrido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
+							var="recorrido" />
+					</p:selectOneMenu>
+					
+			<h:outputText value="Anden : " />
+					<pe:inputNumber value="#{paradasBean.anden}" decimalPlaces="0"/>
+					
+					<h:outputText value="Salida : " />
+					<p:calendar  value="#{paradasBean.llegada}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{paradasBean.guardar()}"
+						update=":paradaF:paradaT :paradaNuevo:msgs9"
+						oncomplete="nuevoParada.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+
+
+		<p:dialog widgetVar="modificaParada" header="Modifica Parada"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<h:form id="paradaModificar">
+
+				<h:panelGrid id="modParada" columns="2" cellpadding="5">
+
+													<h:outputText value="Terminal : " />
+					<p:selectOneMenu value="#{paradasBean.paradasAux.terminal.id}" required="true"
+						label="choferR">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{terminalBean.comboTerminal()}"
+							var="choferR" />
+
+					</p:selectOneMenu>
+					
+					<h:outputText value="Recorrido : " />
+					<p:selectOneMenu value="#{paradasBean.paradasAux.recorrido.id}" required="true"
+						label="recorrido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
+							var="recorrido" />
+					</p:selectOneMenu>
+					
+			<h:outputText value="Anden : " />
+					<pe:inputNumber value="#{paradasBean.paradasAux.anden}" decimalPlaces="0"/>
+					<h:outputText value="Parada N° : " />
+					<pe:inputNumber value="#{paradasBean.paradasAux.parada}" decimalPlaces="0"/>
+					<h:outputText value="Salida: " />
+					<p:calendar  value="#{paradasBean.paradasAux.llegada}"
+						pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Modificar"
+						actionListener="#{paradasBean.actualizar()}"
+						update=":paradaF:paradaT :paradaNuevo:msgs9"
+						oncomplete="modificaParada.hide()" />
+
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</p:panel>
+</body>
+</html>

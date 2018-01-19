@@ -1,0 +1,101 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
+import org.primefaces.event.RowEditEvent;
+
+import municipalidad.pto.model.AreaArticulo;
+import municipalidad.pto.model.Estado;
+import municipalidad.pto.service.AreaService;
+
+
+@ManagedBean
+@SessionScoped
+public class AreaBean implements Serializable{
+
+	@ManagedProperty(value="#{areaService}")
+	AreaService areaService;
+	
+	
+	 private String nombreArea;
+
+
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+
+	public String getNombreArea() {
+		return nombreArea;
+	}
+
+	public void setNombreArea(String nombreArea) {
+		this.nombreArea = nombreArea;
+	}
+
+	public void persistArea() {
+		AreaArticulo area=new AreaArticulo();
+		area.setArea(getNombreArea());
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(getNombreArea().equals("")){
+	        context.addMessage(null, new FacesMessage("Error",  "debe ingresar un Area") );
+		}else{
+		areaService.persistArea(area);
+		context.addMessage(null, new FacesMessage("Guardado",  getNombreArea()) );
+		}
+		setNombreArea(null);
+	}
+
+	public AreaArticulo findAreaById(int id) {
+	
+		return areaService.findAreaById(id);
+	}
+
+	public void deleteArea(Integer id) {
+
+		AreaArticulo area = areaService.findAreaById(id);
+		areaService.deleteArea(area);
+
+	}
+	
+	
+	public List<AreaArticulo> listaAreas() {
+		return areaService.listaAreas();
+	}
+	
+	public List<SelectItem> comboArea(){
+		return areaService.comboArea();
+	}
+	public List<SelectItem> filtroArea(){
+		List<SelectItem> aux =areaService.comboArea();
+		SelectItem s= new SelectItem();
+		s.setLabel("Seleccione");
+		s.setValue("");
+		aux.add(s);
+		return aux;
+	}
+	public void onRowEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Editado", ((AreaArticulo) event.getObject()).getArea() + " a " + getNombreArea());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		AreaArticulo are = (AreaArticulo) event.getObject(); 
+		if(!getNombreArea().equals("")){
+			are.setArea(getNombreArea());
+			areaService.updateArea(are);
+		}
+		
+		setNombreArea(null);;
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Cancelada", ((AreaArticulo) event.getObject()).getArea());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	 
+}

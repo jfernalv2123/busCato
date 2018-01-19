@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head></h:head>
+<body onload="modlogin.show();">
+
+	<h:form id="loginForm">
+		<p:dialog widgetVar="modlogin" header="Login" id="LoginDialog"
+			modal="false" resizable="false" style="font-size: 13px;">
+			<p:growl id="msglogin" showDetail="true" />
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:outputText value="Usuario: " />
+				<p:inputText value="#{userBean.name}" required="true" />
+				<h:outputText value="Pass: " />
+				<p:password value="#{userBean.pass}" required="true" />
+
+			</h:panelGrid>
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:commandButton value="Login" icon="ui-icon-key"
+					action="#{userBean.login()}" oncomplete="modlogin.hide();"
+					update=":loginForm:msglogin" />
+
+				<h:link outcome="/admin/Articulo">Solo ver</h:link>
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+</body>
+</html>

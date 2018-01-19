@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+	<title>Salida</title>
+
+	<style type="text/css">
+</style>
+</h:head>
+<body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="46" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				<p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				<p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				<p:menuitem value="Salida" url="salida.xhtml" />
+				<p:menuitem value="Administracion select" url="administracion.xhtml" />
+
+
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+
+			<h:form id="formTablaSalida">
+				<p:growl id="msgPrTablaSalida" showDetail="true" />
+
+				<p:dataTable id="salidaTabla" var="salida" style="font-size: 11px;"
+					resizableColumns="true" value="#{salidaBean.listaSalida()}"
+					editable="true" rows="11" paginator="true"
+					filteredValue="#{salidaBean.listaSalidaAux}"
+					emptyMessage="No encontrado" widgetVar="ingresoWidget"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+					<p:column headerText="Id Salida" filterMatchMode="exact"
+						filterBy="#{salida.idSalida}" style="width:32px">
+						<h:outputText value="#{salida.idSalida}" />
+					</p:column>
+					<p:column headerText="N° Solicitud" filterMatchMode="contains"
+						filterBy="#{salida}" style="width:32px">
+						<h:outputText value="#{salida.nSolicitud}" />
+					</p:column>
+					<p:column headerText="N° Salida" filterMatchMode="contains"
+						filterBy="#{salida.idSalida}" style="width:32px">
+						<h:outputText value="#{salida.nSalida}" />
+					</p:column>
+					<p:column headerText="Solicitante" filterMatchMode="contains"
+						filterBy="#{salida.idSalida}" style="width:32px">
+						<h:outputText value="#{salida.solicitante}" />
+					</p:column>
+
+					<p:column headerText="Prestamo" filterMatchMode="contains"
+						filterBy="#{salida.idSalida}" style="width:32px">
+						<h:outputText value="#{salidaBean.afirmacion(salida.prestamo)}" />
+					</p:column>
+					<p:column headerText="Fecha" filterMatchMode="contains"
+						filterBy="#{salida.idSalida}" style="width:32px">
+						<h:outputText value="#{salida.fecha}" />
+
+					</p:column>
+					<p:column headerText="Obcervaciones" filterMatchMode="contains"
+						filterBy="#{salida.idSalida}" style="width:50px">
+						<h:outputText value="#{salida.observaciones}" />
+					</p:column>
+					<p:column style="width:32px">
+						<p:commandButton
+							actionListener="#{salidaBean.cargarListaDevolucion(salida)}"
+							oncomplete="devolver.show();"
+							rendered="#{salidaBean.devuelto(salida.prestamo,salida.idSalida)}"
+							value="Devolver" update=":devolverForm:devolverSalida" />
+						<h:outputText value="Devuelto"
+							rendered="#{!salidaBean.devuelto(salida.prestamo,salida.idSalida)}" />
+
+					</p:column>
+					<p:column style="width:32px">
+
+						<h:link outcome="printSalida">
+							<f:param name="Id" value="#{salida.idSalida}" />
+							<h:graphicImage value="../imagenes/Impresora.png" width="32px"
+								height="32px" />
+						</h:link>
+					</p:column>
+					<p:column style="width:32px">
+						<p:commandLink actionListener="#{salidaBean.modificar(salida)}"
+							oncomplete="modSalida.show();"
+							update=":salidaUpdate:updateSalida">
+							<h:graphicImage value="../imagenes/edit.png" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:32px">
+						<p:commandButton icon="ui-icon-close"
+							actionListener="#{salidaBean.borrarSalida(salida.idSalida)}"
+							update=":formTablaSalida:msgPrTablaSalida :formTablaSalida:salidaTabla" />
+
+
+					</p:column>
+<f:facet name="footer">
+       <p:commandLink value="Perdidas y Devoluciones" type="button"
+				onclick="perdidas.show()" style="font-size: 13px;" />
+    </f:facet>
+				</p:dataTable>
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+
+			<p:commandButton value="Nueva Salida" type="button"
+				onclick="newSalida.show()" style="font-size: 13px;" />
+
+
+			<p:dialog widgetVar="newSalida" header="Nueva Salida" modal="false"
+				resizable="false" style="font-size: 13px;" showEffect="pop">
+				<h:form id="salidaForm">
+					<h:panelGrid columns="6" cellpadding="5">
+						<h:outputText value="N° Solicitud: " />
+						<p:inputText value="#{salidaBean.numeroSolicitud}" required="true" />
+
+						<h:outputText value="N° Salida: " />
+						<p:inputText value="#{salidaBean.numeroSalida}" required="true" />
+
+						<h:outputText value="Solicitante: " />
+						<p:inputText value="#{salidaBean.solicitante}" />
+
+
+						<h:outputText value="Prestamo: " />
+						<p:selectBooleanButton id="prestamo"
+							value="#{salidaBean.prestamo}" onLabel="Si" offLabel="No"
+							style="width:60px" />
+						<h:outputText value="Fecha: " />
+						<p:calendar value="#{salidaBean.fecha}" />
+
+						<h:outputText value="Ubicacion:" />
+						<p:selectOneMenu value="#{salidaBean.ubicacion}" required="true"
+							label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="ubic" />
+
+						</p:selectOneMenu>
+
+
+					</h:panelGrid>
+					<h:outputText value="Observacion: " />
+					<p:inputTextarea rows="2" cols="100" required="true"
+						value="#{salidaBean.observacion}" maxlength="250"
+						autoResize="false" />
+					<h:panelGrid columns="4" cellpadding="5">
+						<h:outputText for="articulo" value="articulo: " />
+						<pe:inputNumber id="articulo" value="#{salidaBean.idArticulo}" />
+						<h:outputText for="cantidad" value="Cantidad: " />
+						<pe:inputNumber id="cantidad" value="#{salidaBean.cantidad}" />
+
+					</h:panelGrid>
+					<p:commandButton id="btn_addArticulo" value="Add"
+						update=":salidaForm:listArticulos :formTablaSalida:msgPrTablaSalida"
+						action="#{salidaBean.addArticuloCantidad()}" />
+
+					<p:dataTable id="listArticulos"
+						value="#{salidaBean.listaCantidadArticulos}" var="artCant"
+						type="ordered" style="display: inline-block;width:100%">
+						<p:column headerText="id">
+							<h:outputText value="#{artCant.articulo.idArticulos}" />
+						</p:column>
+						<p:column headerText="cod">
+							<h:outputText value="#{artCant.articulo.codigoAntiguo}" />
+						</p:column>
+						<p:column headerText="Articulo">
+							<h:outputText value="#{artCant.articulo.articulo}" />
+						</p:column>
+						<p:column headerText="Ubicacion">
+							<h:outputText value="#{artCant.articulo.ubicacion.ubicacion}" />
+						</p:column>
+						<p:column headerText="Marca">
+							<h:outputText value="#{artCant.articulo.marca}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText
+								value="#{artCant.cantidad} #{artCant.articulo.unidadMedida.unidadMedida}" />
+						</p:column>
+						<p:column>
+							<p:commandLink value=" X " update=":salidaForm:listArticulos"
+								process=":salidaForm:listArticulos">
+								<p:collector value="#{artCant}"
+									removeFrom="#{salidaBean.listaCantidadArticulos}" unique="true" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					<p:commandButton value="Guardar"
+						action="#{salidaBean.guardarSalida()}"
+						onclick="newIngreso.hiden()"
+						update=":formTablaSalida:msgPrTablaSalida :formTablaSalida:salidaTabla" />
+				</h:form>
+			</p:dialog>
+			<h:form id="salidaUpdate">
+				<p:dialog widgetVar="modSalida" header="Modificar Salida"
+					id="updateSalida" modal="false" resizable="false"
+					style="font-size: 13px;">
+					<h:panelGrid columns="6" cellpadding="5">
+
+						<h:outputText value="N° Solicitud :" />
+						<p:inputText value="#{salidaBean.salida.nSolicitud}" />
+						<h:outputText value="N° Salida :" />
+						<p:inputText value="#{salidaBean.salida.nSalida}" />
+						<h:outputText value="Solicitante :" />
+						<p:inputText value="#{salidaBean.salida.solicitante}" />
+						<h:outputText value="Prestamo :" />
+						<p:selectBooleanButton value="#{salidaBean.salida.prestamo}"
+							onLabel="Si" offLabel="No" style="width:60px" />
+						<h:outputText value="fecha :" />
+						<p:calendar value="#{salidaBean.salida.fecha}" />
+						<h:outputText value="Observación :" />
+						<p:inputTextarea rows="6" cols="33"
+							value="#{salidaBean.salida.observaciones}" />
+
+					</h:panelGrid>
+					<p:commandButton value="Modificar" icon="ui-icon-check"
+						update=":formTablaSalida:msgPrTablaSalida :formTablaSalida:salidaTabla"
+						actionListener="#{salidaBean.guardarSalidaMod()}"
+						oncomplete="modSalida.hide();" />
+				</p:dialog>
+			</h:form>
+
+			<h:form id="devolverForm">
+				<p:dialog widgetVar="devolver" header="Devolver" id="devolverSalida"
+					modal="false" resizable="false" style="font-size: 13px;" >
+					<p:layout style="min-width:800px;min-height:210px;">
+						<p:layoutUnit position="north" size="85"  >
+						<br />
+							<h:panelGrid columns="10" cellpadding="5">
+
+
+								<h:outputText value="N° Solicitud : "
+									style="font-size: 16px; color: blue;" />
+								<h:outputText value="#{salidaBean.salida.nSolicitud}"
+									style="font-size: 15px;" />
+								<h:outputText value="N° Salida : "
+									style="font-size: 16px; color: blue;" />
+								<h:outputText value="#{salidaBean.salida.nSalida}"
+									style="font-size: 15px;" />
+								<h:outputText value="Solicito : "
+									style="font-size: 16px; color: blue;" />
+								<h:outputText value="#{salidaBean.salida.solicitante}"
+									style="font-size: 15px;" />
+								<h:outputText value="Fecha : "
+									style="font-size: 16px; color: blue;" />
+								<h:outputText value="#{salidaBean.salida.fecha}"
+									style="font-size: 15px;" />
+								<h:outputText value="Observacion : "
+									style="font-size: 16px; color: blue;" />
+								<h:outputText value="#{salidaBean.salida.observaciones}"
+									style="font-size: 15px;" />
+							</h:panelGrid>
+
+
+
+						</p:layoutUnit>
+						<p:layoutUnit position="center" size="60">
+							<br />
+							<h:panelGrid columns="4" cellpadding="10">
+								<h:outputText value="Perdida : "
+									style="font-size: 16px; color: blue;" />
+								<p:selectBooleanButton id="prestamo"
+									value="#{salidaBean.prestamo}" onLabel="Si" offLabel="No"
+									style="width:60px" />
+								<h:outputText value="Observación : "
+									style="font-size: 16px; color: blue;" />
+								<p:inputTextarea rows="4" cols="55" required="true"
+									value="#{salidaBean.observacion}" maxlength="250"
+									autoResize="false" />
+
+							</h:panelGrid>
+
+						</p:layoutUnit>
+					</p:layout>
+					<br />
+					<p:dataTable id="listArticulosDevolver"
+						value="#{salidaBean.listaCantidadArticulos}" var="artCant"
+						type="ordered" style="display: inline-block;width:100%">
+						<p:column headerText="id">
+							<h:outputText value="#{artCant.articulo.idArticulos}" />
+						</p:column>
+						<p:column headerText="cod">
+							<h:outputText value="#{artCant.articulo.codigoAntiguo}" />
+						</p:column>
+						<p:column headerText="Articulo">
+							<h:outputText value="#{artCant.articulo.articulo}" />
+						</p:column>
+						<p:column headerText="Ubicacion">
+							<h:outputText value="#{artCant.articulo.ubicacion.ubicacion}" />
+						</p:column>
+						<p:column headerText="Marca">
+							<h:outputText value="#{artCant.articulo.marca}" />
+						</p:column>
+
+						<p:column headerText="Devolver">
+							<pe:inputNumber value="#{artCant.cantidad}" minValue="0"
+								maxValue="#{artCant.cantidad}" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="Check"
+								update=":salidaForm:listArticulos :devolverForm:listArticulosDevolver :formTablaSalida:msgPrTablaSalida"
+								action="#{salidaBean.addArticuloCantidadDevolucion(artCant)}" />
+
+						</p:column>
+					</p:dataTable>
+
+
+
+					<p:commandButton value="Devolver" icon="ui-icon-check"
+						update=":formTablaSalida:msgPrTablaSalida :formTablaSalida:salidaTabla"
+						actionListener="#{salidaBean.devolver()}"
+						oncomplete="devolver.hide();" />
+
+				</p:dialog>
+			</h:form>
+			<h:form id="perdidaForm">
+				<p:dialog widgetVar="perdidas" header="Perdidas y Devoluciones" id="perdidaSalida"
+					modal="false" resizable="false" style="font-size: 13px;">
+					
+					<p:dataTable id="devolucionesTabla" var="devolucion" style="font-size: 11px;"
+					resizableColumns="true" value="#{salidaBean.listaDevolucionesYPerdidas()}"
+					editable="true" rows="11" paginator="true"
+					filteredValue="#{salidaBean.listaDevolucionAux}"
+					emptyMessage="No encontrado" widgetVar="ingresoWidget"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    
+                    <p:column headerText="Id Articulo" filterMatchMode="exact"
+						filterBy="#{devolucion.articulo.idArticulos}" style="width:32px">
+						<h:outputText value="#{devolucion.articulo.idArticulos}" />
+					</p:column>
+
+
+					<p:column headerText="Articulo" filterMatchMode="contains"
+						filterBy="#{devolucion.articulo.articulo}" style="width:32px">
+						<h:outputText value="#{devolucion.articulo.articulo}" />
+					</p:column>
+					<p:column headerText="Cod Antiguo" filterMatchMode="contains"
+						filterBy="#{devolucion.articulo.codigoAntiguo}" style="width:32px">
+						<h:outputText value="#{devolucion.articulo.codigoAntiguo}" />
+					</p:column>
+					<p:column headerText="Cantidad" filterMatchMode="contains"
+						filterBy="#{devolucion.cantidad}" style="width:32px">
+						<h:outputText value="#{devolucion.cantidad} #{devolucion.articulo.unidadMedida.unidadMedida}" />
+					</p:column>
+					<p:column headerText="N° Salida" filterMatchMode="contains"
+						filterBy="#{devolucion.salida.nSalida}" style="width:32px">
+						<h:outputText value="#{devolucion.salida.nSalida}" />
+					</p:column>
+					<p:column headerText="Solicito" filterMatchMode="contains"
+						filterBy="#{devolucion.salida.solicitante}" style="width:32px">
+						<h:outputText value="#{devolucion.salida.solicitante}" />
+					</p:column>
+					<p:column headerText="Perdida" filterMatchMode="contains"
+						filterBy="#{devolucion.perdida}" style="width:32px">
+						<h:outputText value="#{salidaBean.afirmacion(devolucion.perdida)}" />
+					</p:column>
+					
+					</p:dataTable>
+					
+					
+					</p:dialog>
+					</h:form>
+		</p:layoutUnit>
+
+
+
+	</p:layout>
+</body>
+</html>

@@ -1,0 +1,61 @@
+package com.ugurcanlacin.simple.objetos;
+
+import java.util.Date;
+
+import org.primefaces.model.StreamedContent;
+
+public class Gastos {
+
+	private String nombre;
+	private Integer monto;
+	private String persona;
+	private Date fecha;
+	private String item;
+	private StreamedContent imagen;
+	private Integer idImagen;
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Integer getMonto() {
+		return monto;
+	}
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+	public String getPersona() {
+		return persona;
+	}
+	public void setPersona(String persona) {
+		this.persona = persona;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public String getItem() {
+		return item;
+	}
+	public void setItem(String item) {
+		this.item = item;
+	}
+	public StreamedContent getImagen() {
+		return imagen;
+	}
+	public void setImagen(StreamedContent imagen) {
+		this.imagen = imagen;
+	}
+	public Integer getIdImagen() {
+		return idImagen;
+	}
+	public void setIdImagen(Integer idImagen) {
+		this.idImagen = idImagen;
+	}
+	
+	
+}

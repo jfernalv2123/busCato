@@ -1,0 +1,15 @@
+package com.ugurcanlacin.simple.dao;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import com.ugurcanlacin.simple.model.Item;
+
+public interface ItemDao {
+	void persistItem(Item user);
+	Item findItemById(int id);
+	void updateItem(Item user);
+	void deleteItem(Item user);
+	List<SelectItem> comboItem();
+}

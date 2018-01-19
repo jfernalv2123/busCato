@@ -1,0 +1,55 @@
+package com.ugurcanlacin.simple.dao.impl;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ugurcanlacin.simple.dao.CajaDao;
+import com.ugurcanlacin.simple.model.Caja;
+import com.ugurcanlacin.simple.objetos.Gastos;
+
+@Repository("cajaDao")
+public class CajaDaoImpl implements CajaDao{
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public void persistCaja(Caja caja) {
+		sessionFactory.getCurrentSession().persist(caja);
+	}
+
+	public Caja findCajaById(int id) {
+		return (Caja) sessionFactory.getCurrentSession().get(Caja.class, id);
+	}
+
+	public void updateCaja(Caja caja) {
+		sessionFactory.getCurrentSession().update(caja);
+		
+	}
+
+	public void deleteCaja(Caja caja) {
+		sessionFactory.getCurrentSession().delete(caja);
+		
+	}
+
+	public List<Caja> listaCaja() {
+
+		String query="FROM Caja as u";
+		List<Caja> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+	public Integer cajaActual(){
+		Integer num=0;
+		String query="FROM Caja as c";
+		List<Caja> iter =sessionFactory.getCurrentSession().createQuery(query).list();
+		for(Caja n:iter){
+			num+=n.getValor();
+		}
+		
+		return num;
+	}
+}

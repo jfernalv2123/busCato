@@ -1,0 +1,14 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import municipalidad.pto.model.Devolucion;
+
+public interface DevolucionDao {
+	Devolucion findDevolucionById(int id);
+	List<Devolucion> listaDevolucion();
+	List<Devolucion> listaDevolucionBySalida(int id);
+	Long salidaDevolucion(int id);
+	Long salidaDevolucionBySalida(int id);
+	Long salidaDevolucionBySalidaAndArticulo(int idSalida,int idArticulo);
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+<script src="jquery.min.js"></script>
+ <script src="JsBarcode.all.js"></script>
+</h:head>
+
+<body>
+					
+
+	<p:panel id="listaArea" header="Areas" 
+		style="width: 45%;display: inline-block;">
+		<h:form>
+
+		<p:dataTable id="lista" var="area"
+			value="#{areaBean.listaAreas()}">
+			<p:column headerText="Cod" >
+<canvas  id="#{area.idArea}"></canvas>
+							<script>
+    	$(document).ready(function(){
+    		$("##{area.idArea}").JsBarcode("#{area.idArea}",{displayValue:true,fontSize:20});
+             
+		});    
+    </script>
+			</p:column>
+			
+			<p:column headerText="Area" >
+				<h:outputText value="#{area.area}" />
+			</p:column>
+			<p:column headerText="borrar" style="width: 15%">
+			<h:commandButton value="X" action="#{areaBean.deleteArea(area.idArea)}" />
+				
+			</p:column>
+			</p:dataTable>
+			</h:form>
+	</p:panel>
+	<p:panel id="ingreso" header="Nueva area"
+		style="width: 35%;display: inline-block;">
+		<h:panelGrid columns="3" cellpadding="5">
+			<h:form>
+			<h:outputLabel for="nombre" value="Area: * " />
+			<p:inputText id="nombre" value="#{areaBean.area}"
+				required="true" label="Nombre" />
+			<h:commandButton value="Guardar" action="#{areaBean.persistArea()}" />
+</h:form>
+
+		</h:panelGrid>
+
+
+	</p:panel>
+</body>
+</html>

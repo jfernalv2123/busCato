@@ -1,0 +1,53 @@
+package com.ugurcanlacin.simple.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ugurcanlacin.simple.dao.IngresosDao;
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.VisataIngresos;
+import com.ugurcanlacin.simple.objetos.Gastos;
+import com.ugurcanlacin.simple.service.IngresosService;
+
+@Service("ingresosService")
+public class IngresosServiceImpl implements IngresosService{
+    
+	@Autowired
+	IngresosDao ingresosDao;
+	
+	@Transactional
+	public void persistIngresos(Ingresos ingresos) {
+		ingresosDao.persistIngresos(ingresos);
+		
+	}
+	@Transactional
+	public Ingresos findIngresosById(int id) {
+	
+		return ingresosDao.findIngresosById(id);
+	}
+	@Transactional
+	public void updateIngresos(Ingresos ingresos) {
+		ingresosDao.updateIngresos(ingresos);
+		
+	}
+	@Transactional
+	public void deleteIngresos(Ingresos ingresos) {
+		ingresosDao.deleteIngresos(ingresos);
+		
+	}
+	@Transactional
+	public List<VisataIngresos> listaIngresos(){
+		return ingresosDao.listaIngresos();
+	}
+	@Transactional
+	public String totalGastos(){
+		return ingresosDao.totalGastos();
+	}
+	@Transactional
+	public List<Gastos> listaGastos(){
+		return ingresosDao.listaGastos();
+	}
+}

@@ -1,0 +1,51 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.UbicacionDao;
+
+import municipalidad.pto.model.Ubicacion;
+
+import municipalidad.pto.service.UbicacionService;
+
+@Service("userService")
+public class UbicacionServiceImpl implements UbicacionService{
+
+	@Autowired
+	UbicacionDao ubicacionDao;
+	
+	@Transactional
+	public void persistUbicacion(Ubicacion ubicacion) {
+		ubicacionDao.persistUbicacion(ubicacion);
+		
+	}
+	@Transactional
+	public Ubicacion findUbicacionById(int id) {
+	
+		return ubicacionDao.findUbicacionById(id);
+	}
+	@Transactional
+	public void updateUbicacion(Ubicacion ubicacion) {
+		ubicacionDao.updateUbicacion(ubicacion);
+		
+	}
+	@Transactional
+	public void deleteUbicacion(Ubicacion ubicacion) {
+		ubicacionDao.deleteUbicacion(ubicacion);
+		
+	}
+	@Transactional
+	public List<Ubicacion> listaUbicacion() {
+		return ubicacionDao.listaUbicacion();
+	}
+	@Transactional
+	public List<SelectItem> comboUbicacion(){
+		return ubicacionDao.comboUbicacion();
+	}
+}

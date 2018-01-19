@@ -1,0 +1,37 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.MailDao;
+import municipalidad.pto.model.Fono;
+import municipalidad.pto.model.Mail;
+
+@Repository("mailDao")
+public class MailDaoImpl implements MailDao {
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public Mail findMailById(int id) {
+		return (Mail) sessionFactory.getCurrentSession().get(Mail.class, id);
+	}
+
+	public List<Mail> listaMail() {
+
+		String query="FROM Mail as m";
+		List<Mail> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+	public List<Mail> listaMailByProveedor(Integer proveedor) {
+
+		String query="FROM Mail as m where m.proveedor.idProveedor="+proveedor;
+		List<Mail> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+}

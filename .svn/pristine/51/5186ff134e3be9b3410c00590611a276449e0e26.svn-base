@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<title>Bodega</title>
+<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head>
+<body> 
+<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="46" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Articulos" url="index.xhtml" />
+<!-- 				<p:menuitem value="Proveedores" url="proveedores.xhtml" /> -->
+<!-- 				<p:menuitem value="Ingreso" url="ingreso.xhtml" /> -->
+<!-- 				<p:menuitem value="Salida" url="salida.xhtml" /> -->
+				<p:menuitem value="Administración" url="admin/administracion.xhtml" />
+
+
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+			
+			<h:form id="formTablaArticulo">
+				<p:growl id="msgPrTablaArticulo" showDetail="true" />
+				<p:dataTable id="articulos" var="artic" style="font-size: 11px;"
+					resizableColumns="true" value="#{articuloBean.listaArticulos()}"
+					rows="10" paginator="true" selectionMode="single"
+					rendered="true" filteredValue="#{articuloBean.listaArticuloBuscar}"
+					rowsPerPageTemplate="5,10,15,20" emptyMessage="No encontrado"
+					rowKey="#{artic.idArticulos}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+					<p:column headerText="Id" filterMatchMode="exact"
+						filterBy="#{artic.idArticulos}" style="width:32px">
+						<h:outputText value="#{artic.idArticulos}" />
+					</p:column>
+
+					<p:column headerText="Cod" filterMatchMode="exact"
+						filterBy="#{artic.codigoAntiguo}" style="width:32px">
+
+					
+								<h:outputText value="#{artic.codigoAntiguo}" />
+						
+					</p:column>
+
+					<p:column headerText="Articulo" filterBy="#{artic.articulo}"
+						filterMatchMode="contains">
+					
+								<h:outputText value="#{artic.articulo}" />
+						
+					</p:column>
+
+					<p:column headerText="Estado" filterBy="#{artic.estado.estado}"
+						filterMatchMode="contains">
+					
+								<h:outputText value="#{artic.estado.estado}" />
+					
+					</p:column>
+
+					<p:column headerText="Area" filterBy="#{artic.area.area}"
+						filterMatchMode="contains">
+						
+								<h:outputText value="#{artic.area.area}" />
+						
+					</p:column>
+
+					<p:column headerText="Tipo" filterBy="#{artic.tipo.tipo}"
+						filterMatchMode="contains">
+						
+								<h:outputText value="#{artic.tipo.tipo}" />
+						
+					</p:column>
+
+					<p:column headerText="Unidad medida"
+						filterBy="#{artic.unidadMedida.unidadMedida}"
+						filterMatchMode="contains">
+					
+								<h:outputText value="#{artic.unidadMedida.unidadMedida}" />
+					
+					</p:column>
+
+					<p:column headerText="Ubicacion"
+						filterBy="#{artic.ubicacion.ubicacion}" filterMatchMode="contains">
+						
+								<h:outputText value="#{artic.ubicacion.ubicacion}" />
+						
+					</p:column>
+
+					<p:column headerText="Marca" filterBy="#{artic.marca}"
+						filterMatchMode="contains">
+						
+								<h:outputText value="#{artic.marca}" />
+						
+					</p:column>
+					<p:column headerText="Stock" >
+						
+								<h:outputText value="#{articuloBean.stock(artic.idArticulos)} #{artic.unidadMedida.unidadMedida}" />
+						
+					</p:column>
+					<p:column headerText="Cargar fotos">
+
+						<h:link outcome="verArticulo" >
+						<h:graphicImage value="imagenes/foto.png" width="32px" height="32px"/>
+							<f:param name="articuloId" value="#{artic.idArticulos}" />
+						</h:link>
+
+
+					</p:column>
+					
+
+					</p:dataTable>
+					</h:form>
+			
+			
+			</p:layoutUnit>
+		
+		</p:layout>
+</body> 
+</html>

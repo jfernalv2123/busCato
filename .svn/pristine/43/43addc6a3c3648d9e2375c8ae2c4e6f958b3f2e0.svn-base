@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>Proveedor</title>
+	<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head>
+<body>
+<f:metadata>
+    <f:viewParam name="Id" value="#{proveedorBean.id}" />
+    <f:viewParam name="proveedor" value="#{proveedorBean.proveedor}" />
+</f:metadata>
+<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				 <p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				 <p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				 <p:menuitem value="Salida" url="salida.xhtml" />
+				 <p:menuitem value="Administracion select" url="administracion.xhtml" />
+				
+				
+			</p:breadCrumb>
+	<p:panel id="pnl" header="Administración Fono, Mail y Direccion #{proveedorBean.proveedor}"
+		style="width: 95%;display: inline-block;font-size: 13px">
+
+<p:panel id="fonoPanel" header="Fonos" toggleable="true"  toggleSpeed="500"  widgetVar="panelFono" style="margin-bottom:20px">
+		<h:form id="fonos">
+			<p:growl id="msgsFonos" showDetail="true" />
+			<p:dataTable id="fonosT" var="fone" value="#{proveedorBean.listFonoByProveedor(proveedorBean.id)}"
+				editable="true">
+
+				<f:facet name="header">
+				<h:outputText value="Nuevo Fono : " />
+					<h:inputText value="#{proveedorBean.fono}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarFono()}" update=":fonos:fonosT"/>
+				</f:facet>
+				<p:ajax event="rowEdit" listener="#{proveedorBean.onRowEditFono}"
+					update=":fonos:msgsFonos" />
+				<p:ajax event="rowEditCancel" listener="#{proveedorBean.onRowCancelProveedor}"
+					update=":fonos:msgsFonos" />
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{fone.fono}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.fono}" style="width:100%"
+								label="fono" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarFono(fone.idFono)}" update=":fonos:fonosT" />
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+<p:panel id="mailPanel" header="Mail" toggleable="true"  toggleSpeed="500"  widgetVar="panelMail" style="margin-bottom:20px">
+		<h:form id="mailForm">
+			<p:growl id="msgsMail" showDetail="true" />
+			<p:dataTable id="mailTable" var="meil" value="#{proveedorBean.listMailByProveedor(proveedorBean.id)}"
+				editable="true">
+				<f:facet name="header">
+				<h:outputText value="Nuevo Mail : " />
+					<h:inputText value="#{estadoBean.estado}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarMail()}" update=":mailForm:mailTable"/>
+				</f:facet>
+				<p:ajax event="rowEdit" listener="#{proveedorBean.onRowEditMail}"
+					update=":mailForm:mailTable" />
+				<p:ajax event="rowEditCancel" listener="#{proveedorBean.onRowCancelProveedor()}"
+					update=":mailForm:mailTable" />
+
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{meil.mail}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.mail}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarMail(meil.idMail)}" update=":mailForm:mailTable" />
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+<p:panel id="DireccionPanel" header="Direccion" toggleable="true"  toggleSpeed="500"  widgetVar="panelDireccion" style="margin-bottom:20px">
+		<h:form id="direccionForm">
+			<p:growl id="msgsDireccion" showDetail="true" />
+			<p:dataTable id="DireccionTable" var="direc"
+				value="#{proveedorBean.listDireccionByProveedor(proveedorBean.id)}" editable="true">
+				<f:facet name="header">
+				<h:outputText value="Nueva Dirección : " />
+					<h:inputText value="#{proveedorBean.direccion}" />
+				
+					<h:inputText value="#{proveedorBean.ciudad}" />
+					
+					<h:inputText value="#{proveedorBean.region}" />
+					
+					<h:inputText value="#{proveedorBean.pais}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarDireccion()}"
+						update=":direccionForm:DireccionTable" />
+				</f:facet>
+				<p:ajax event="rowEdit" listener="#{proveedorBean.onRowEditDireccion}"
+					update=":direccionForm:DireccionTable" />
+				<p:ajax event="rowEditCancel" listener="#{proveedorBean.onRowCancelProveedor}"
+					update=":direccionForm:DireccionTable" />
+
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{direc.direccion}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.direccion}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{direc.ciudad}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.ciudad}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{direc.region}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.region}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{direc.pais}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{proveedorBean.pais}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarDireccion(direc.idDireccion)}" update=":direccionForm:DireccionTable" />
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+
+		
+	</p:panel>
+</body>
+</html>
+

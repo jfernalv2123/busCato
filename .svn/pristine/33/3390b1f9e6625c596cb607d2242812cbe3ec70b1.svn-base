@@ -1,0 +1,58 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.Estado;
+import municipalidad.pto.service.EstadoService;
+
+@ManagedBean
+@SessionScoped
+public class EstadoBean implements Serializable {
+
+	@ManagedProperty(value = "#{estadoService}")
+	EstadoService estadoService;
+
+	private Integer idEstado;
+	private String estado;
+
+	public void setEstadoService(EstadoService estadoService) {
+		this.estadoService = estadoService;
+	}
+
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public void guardar() {
+		Estado estado = new Estado(getEstado());
+		estadoService.persistEstado(estado);
+		estado.setEstado(null);
+	}
+
+	public void actualizar(int id) {
+		Estado estado = estadoService.findEstadoById(id);
+		estadoService.updateEstado(estado);
+	}
+
+	public void borrar(int id) {
+		Estado estado = estadoService.findEstadoById(id);
+		estadoService.deleteEstado(estado);
+	}
+
+}

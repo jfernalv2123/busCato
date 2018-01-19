@@ -1,0 +1,29 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.ArticuloDao;
+import municipalidad.pto.model.Articulos;
+
+@Repository("articuloDao")
+public class ArticuloDaoImpl implements ArticuloDao{
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	public Articulos findArticuloById(int id) {
+		return (Articulos) sessionFactory.getCurrentSession().get(Articulos.class, id);
+	}
+
+	public List<Articulos> listaArticulos() {
+
+		String query="FROM Articulos as a";
+		List<Articulos> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+}

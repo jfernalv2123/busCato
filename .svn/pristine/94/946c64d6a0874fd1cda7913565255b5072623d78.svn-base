@@ -1,0 +1,35 @@
+package com.ugurcanlacin.simple.dao.impl;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ugurcanlacin.simple.dao.PendientesDao;
+import com.ugurcanlacin.simple.model.Pendientes;
+import com.ugurcanlacin.simple.model.User;
+
+@Repository("pendientesDao")
+public class PendientesDaoImpl implements PendientesDao{
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public void persistPendientes(Pendientes pendientes) {
+		sessionFactory.getCurrentSession().persist(pendientes);
+	}
+
+	public Pendientes findPendientesById(int id) {
+		return (Pendientes) sessionFactory.getCurrentSession().get(Pendientes.class, id);
+	}
+
+	public void updatePendientes(Pendientes pendientes) {
+		sessionFactory.getCurrentSession().update(pendientes);
+		
+	}
+
+	public void deletePendientes(Pendientes pendientes) {
+		sessionFactory.getCurrentSession().delete(pendientes);
+		
+	}
+
+}

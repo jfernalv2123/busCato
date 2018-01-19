@@ -1,0 +1,87 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
+import org.primefaces.event.RowEditEvent;
+
+import municipalidad.pto.model.Tipo;
+import municipalidad.pto.service.TipoService;
+
+@ManagedBean
+@SessionScoped
+public class TipoBean implements Serializable{
+
+	@ManagedProperty(value="#{tipoService}")
+	TipoService tipoService;
+	
+	private String tipo;
+
+	public void setTipoService(TipoService tipoService) {
+		this.tipoService = tipoService;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public void guardar(){
+		Tipo tape=new Tipo();
+		tape.setTipo(getTipo());
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(getTipo().equals("")){
+			context.addMessage(null, new FacesMessage("Error",  "debe ingresar un Tipo") );
+		}else{
+			context.addMessage(null, new FacesMessage("Guardado",  getTipo()) );
+			tipoService.persistTipo(tape);	
+		}
+		setTipo(null);
+	}
+	public List<Tipo> listaTipos() {
+		return tipoService.listaTipos();
+	}
+	public void borrar(int id){
+		Tipo tape=tipoService.findTipoById(id);
+		tipoService.deleteTipo(tape);
+		setTipo(null);
+	}
+
+    public void onRowEdit(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Editado", ((Tipo) event.getObject()).getTipo()+" a "+getTipo());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        Tipo tape=(Tipo) event.getObject();
+        if(!getTipo().equals("")){
+        	tape.setTipo(getTipo());
+            tipoService.updateTipo(tape);
+        }
+        
+        setTipo(null);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Cancelada", ((Tipo) event.getObject()).getTipo());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    public List<SelectItem> comboTipo(){
+    	return tipoService.comboTipo();
+    }
+
+    public List<SelectItem> filtroTipo(){
+    	List<SelectItem> aux=tipoService.comboTipo();
+    	SelectItem s= new SelectItem();
+    	s.setLabel("Seleccione");
+    	s.setValue("");
+    	aux.add(s);
+    	return aux;
+    }
+}

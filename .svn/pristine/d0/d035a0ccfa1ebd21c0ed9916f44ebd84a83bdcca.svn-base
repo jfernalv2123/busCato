@@ -1,0 +1,19 @@
+package com.ugurcanlacin.simple.service;
+
+import java.util.List;
+import com.ugurcanlacin.simple.model.Caja;
+
+public interface CajaService {
+
+	void persistCaja(Caja caja);
+
+	Caja findCajaById(int id);
+
+	void updateCaja(Caja caja);
+
+	void deleteCaja(Caja caja);
+
+	List<Caja> listaCaja();
+
+	Integer cajaActual();
+}

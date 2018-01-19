@@ -1,0 +1,48 @@
+package com.ugurcanlacin.simple.beans;
+
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.Pendientes;
+import com.ugurcanlacin.simple.service.PendientesService;
+
+
+@ManagedBean
+@SessionScoped
+public class PendientesBean implements Serializable {
+	
+	@ManagedProperty(value="#{pendientesService}")
+	PendientesService pendientesService;
+
+	private Integer monto;
+	private Ingresos Ingresos;
+	
+	public void setPendientesService(PendientesService pendientesService){
+		this.pendientesService=pendientesService;
+	}
+
+	public Integer getMonto() {
+		return monto;
+	}
+
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+
+	public Ingresos getIngresos() {
+		return Ingresos;
+	}
+
+	public void setIngresos(Ingresos ingresos) {
+		Ingresos = ingresos;
+	}
+	public void persistPendientes(){
+		Pendientes pendiente=new Pendientes();
+		pendiente.setMonto(getMonto());
+		pendiente.setIdIngresos(getIngresos());
+	}
+}

@@ -1,0 +1,79 @@
+package municipalidad.pto.objetos;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import municipalidad.pto.model.DireccionProveedor;
+
+public class ProveedoresTabla implements Serializable{
+	
+	private Integer idProveedor;
+	private String proveedor;
+	private String credito;
+	private String mail;
+	private String fono;
+	private Integer cantidadArticulos;
+	private String categoria;
+	private String direccion;
+	private List<DireccionProveedor> direccionProveedor = new ArrayList<DireccionProveedor>();
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	public String getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	public String getCredito() {
+		return credito;
+	}
+	public void setCredito(String credito) {
+		this.credito = credito;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getFono() {
+		return fono;
+	}
+	public void setFono(String fono) {
+		this.fono = fono;
+	}
+	public Integer getCantidadArticulos() {
+		return cantidadArticulos;
+	}
+	public void setCantidadArticulos(Integer cantidadArticulos) {
+		this.cantidadArticulos = cantidadArticulos;
+	}
+	public String getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	public List<DireccionProveedor> getDireccionProveedor() {
+		return direccionProveedor;
+	}
+	public void setDireccionProveedor(List<DireccionProveedor> direccionProveedor) {
+		this.direccionProveedor = direccionProveedor;
+	}
+	
+	
+	
+	
+
+}

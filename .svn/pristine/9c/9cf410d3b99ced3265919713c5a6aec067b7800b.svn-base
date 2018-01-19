@@ -1,0 +1,18 @@
+package com.ugurcanlacin.simple.service;
+
+import java.util.List;
+
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.VisataIngresos;
+import com.ugurcanlacin.simple.objetos.Gastos;
+
+public interface IngresosService {
+	void persistIngresos(Ingresos ingresos);
+	Ingresos findIngresosById(int id);
+	void updateIngresos(Ingresos ingresos);
+	void deleteIngresos(Ingresos ingresos);
+	List<VisataIngresos> listaIngresos();
+	String totalGastos();
+	List<Gastos> listaGastos();
+	
+}

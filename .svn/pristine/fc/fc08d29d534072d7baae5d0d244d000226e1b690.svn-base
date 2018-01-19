@@ -1,0 +1,46 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.UnidadMedida;
+import municipalidad.pto.service.UnidadMedidaService;
+
+@ManagedBean
+@SessionScoped
+public class UnidadMedidaBean implements Serializable{
+
+	@ManagedProperty(value="#{unidadMedidaService}")
+	UnidadMedidaService unidadMedidaService;
+	
+	private String unidadMedida;
+
+	
+
+	public void setUnidadMedidaService(UnidadMedidaService unidadMedidaService) {
+		this.unidadMedidaService = unidadMedidaService;
+	}
+
+	public String getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(String unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+	public void guardar(){
+		UnidadMedida unidadM = new UnidadMedida(getUnidadMedida());
+		unidadMedidaService.persistUnidadMedida(unidadM);
+		setUnidadMedida(null);
+		
+	}
+	public void borrar(int id){
+		UnidadMedida unidadM = unidadMedidaService.findUnidadMedidaById(id);
+		unidadMedidaService.deleteUnidadMedida(unidadM);
+	}
+	
+	
+}

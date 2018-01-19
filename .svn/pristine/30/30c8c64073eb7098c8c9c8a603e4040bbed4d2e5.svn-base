@@ -1,0 +1,41 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.RelInformeArticuloDao;
+import municipalidad.pto.model.RelInformeArticulo;
+import municipalidad.pto.service.RelInformeArticuloService;
+
+@Service("relInformeArticuloService")
+public class RelInformeArticuloServiceImpl implements RelInformeArticuloService{
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	RelInformeArticuloDao relInformeArticuloDao;
+	
+	@Transactional
+	public RelInformeArticulo findRelInformeArticuloById(int id) {
+		return relInformeArticuloDao.findRelInformeArticuloById(id);
+	}
+	@Transactional
+	public List<RelInformeArticulo> listaRelIngresoArticulo() {
+		return relInformeArticuloDao.listaRelIngresoArticulo();
+	}
+	@Transactional
+	public void guardarRelInformeArticulos(RelInformeArticulo rel){
+		genericDao.Guardar(rel);
+	}
+	@Transactional
+	public void updateRelInformeArticulo(RelInformeArticulo rel){
+		genericDao.update(rel);
+	}
+	@Transactional
+	public void deleteRelInformeArticulo(RelInformeArticulo rel){
+		genericDao.delete(rel);
+	}
+}

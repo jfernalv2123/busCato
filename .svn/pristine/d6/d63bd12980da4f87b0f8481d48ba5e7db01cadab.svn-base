@@ -1,0 +1,51 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.ArticuloDao;
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.model.Articulos;
+import municipalidad.pto.service.ArticulosService;
+
+@Service("articulosService")
+public class ArticulosServiceImpl implements ArticulosService {
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	ArticuloDao articuloDao;
+
+	@Transactional
+	public void persistArticulos(Articulos articulo) {
+		genericDao.Guardar(articulo);
+
+	}
+
+	@Transactional
+	public Articulos findArticuloById(int id) {
+
+		return articuloDao.findArticuloById(id);
+	}
+
+	@Transactional
+	public void updateArticulos(Articulos articulo) {
+		genericDao.update(articulo);
+
+	}
+
+	@Transactional
+	public void deleteArticulos(Articulos articulo) {
+		genericDao.delete(articulo);
+
+	}
+
+	@Transactional
+	public List<Articulos> listaArticulos() {
+		return articuloDao.listaArticulos();
+	}
+
+}

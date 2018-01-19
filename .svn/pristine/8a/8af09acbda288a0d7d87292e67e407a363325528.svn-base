@@ -1,0 +1,42 @@
+package com.ugurcanlacin.simple.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+
+import com.ugurcanlacin.simple.model.Item;
+import com.ugurcanlacin.simple.service.ItemService;
+
+
+@ManagedBean
+@SessionScoped
+public class ItemBean implements Serializable  {
+
+	@ManagedProperty(value="#{itemService}")
+	ItemService itemService;
+	public void setItemService(ItemService itemService) {
+		this.itemService = itemService;
+	}
+    private String nombre;
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void persistItem(){
+		Item item=new Item();
+		item.setNombre(getNombre());
+		itemService.persistItem(item);
+		
+	}
+	public List<SelectItem> comboItem(){
+		return itemService.comboItem();
+	}
+}

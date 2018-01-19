@@ -1,0 +1,102 @@
+package municipalidad.pto.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.FonoDao;
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.IngresoDao;
+import municipalidad.pto.dao.MailDao;
+import municipalidad.pto.dao.ProveedorDao;
+import municipalidad.pto.model.Fono;
+import municipalidad.pto.model.Mail;
+import municipalidad.pto.model.Proveedor;
+import municipalidad.pto.objetos.ProveedoresTabla;
+import municipalidad.pto.service.ProveedorService;
+
+@Service("proveedorService")
+public class ProveedorServiceImpl implements ProveedorService{
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	ProveedorDao proveedorDao;
+	@Autowired
+	MailDao mailDao;
+	@Autowired
+	FonoDao fonoDao;
+	@Autowired
+	IngresoDao ingresoDao;
+	
+	@Transactional
+	public void persistProveedor(Proveedor proveedor) {
+		genericDao.Guardar(proveedor);
+		
+	}
+	@Transactional
+	public Proveedor findProveedorById(int id) {
+	
+		return proveedorDao.findProveedorById(id);
+	}
+	@Transactional
+	public void updateProveedor(Proveedor proveedor) {
+		genericDao.update(proveedor);
+		
+	}
+	@Transactional
+	public void deleteProveedor(Proveedor proveedor) {
+		genericDao.delete(proveedor);
+		
+	}
+	@Transactional
+	public List<Proveedor> listaProveedor() {
+		return proveedorDao.listaProveedor();
+	}
+	@Transactional
+	public List<SelectItem> comboProveedor(){
+		return proveedorDao.comboProveedor();
+	}
+	@Transactional
+	public Proveedor proveedorBynombre(String proveedor){
+		return proveedorDao.proveedorBynombre(proveedor);
+	}
+	@Transactional
+	public List<ProveedoresTabla> listaProveedores(){
+		List<Proveedor> listaPro=proveedorDao.listaProveedor();
+		List<ProveedoresTabla> listaAux=new ArrayList<ProveedoresTabla>();
+		for(Proveedor p:listaPro){
+			ProveedoresTabla provTabla=new ProveedoresTabla();
+			provTabla.setIdProveedor(p.getIdProveedor());
+			provTabla.setProveedor(p.getProveedor());
+			provTabla.setCategoria("proveedor");
+			if(p.isCredito()){
+				provTabla.setCredito("Si");
+			}else{
+				provTabla.setCredito("No");	
+			}
+			String mailAux="";
+			String fonoAux="";
+			for(Fono fo:fonoDao.listaFonosByProveedor(p.getIdProveedor())){
+				fonoAux+=fo.getFono();
+				fonoAux+="  ";
+			}
+			for(Mail m:mailDao.listaMailByProveedor(p.getIdProveedor())){
+				mailAux+=m.getMail();
+				mailAux+="  ";
+			}
+			provTabla.setMail(mailAux);
+			provTabla.setFono(fonoAux);
+			
+			provTabla.setCantidadArticulos(ingresoDao.ingresosByProveedor(p.getIdProveedor()));
+			listaAux.add(provTabla);
+		}
+		
+		return listaAux;
+	}
+}

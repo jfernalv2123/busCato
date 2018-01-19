@@ -1,0 +1,295 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.RowEditEvent;
+
+import municipalidad.pto.model.Articulos;
+import municipalidad.pto.model.FotoArticulo;
+import municipalidad.pto.model.InformeInventario;
+import municipalidad.pto.model.RelSalidaArticulo;
+import municipalidad.pto.objetos.ProveedoresTabla;
+import municipalidad.pto.service.AreaService;
+import municipalidad.pto.service.ArticulosService;
+import municipalidad.pto.service.DevolucionService;
+import municipalidad.pto.service.EstadoService;
+import municipalidad.pto.service.FotoArticuloService;
+import municipalidad.pto.service.RelIngresoArticuloService;
+import municipalidad.pto.service.RelSalidaArticuloService;
+import municipalidad.pto.service.TipoService;
+import municipalidad.pto.service.UbicacionService;
+import municipalidad.pto.service.UnidadMedidaService;
+
+@ManagedBean
+@SessionScoped
+public class ArticuloBean implements Serializable {
+
+	@ManagedProperty(value = "#{articulosService}")
+	ArticulosService articulosService;
+
+	@ManagedProperty(value = "#{areaService}")
+	AreaService areaService;
+
+	@ManagedProperty(value = "#{estadoService}")
+	EstadoService estadoService;
+
+	@ManagedProperty(value = "#{tipoService}")
+	TipoService tipoService;
+
+	@ManagedProperty(value = "#{unidadMedidaService}")
+	UnidadMedidaService unidadMedidaService;
+
+	@ManagedProperty(value = "#{ubicacionService}")
+	UbicacionService ubicacionService;
+
+	@ManagedProperty(value = "#{fotoArticuloService}")
+	FotoArticuloService fotoArticuloService;
+
+	@ManagedProperty(value = "#{relSalidaArticuloService}")
+	RelSalidaArticuloService relSalidaArticuloService;
+
+	@ManagedProperty(value = "#{relIngresoArticuloService}")
+	RelIngresoArticuloService relIngresoArticuloService;
+	@ManagedProperty(value = "#{devolucionService}")
+	DevolucionService devolucionService;
+	private String codigoAntiguo;
+	private String articulo;
+	private Integer estado;
+	private Integer area;
+	private Integer tipo;
+	private Integer unidadMedida;
+	private String marca;
+	private Integer ubicacion;
+	private List<Articulos> listaArticuloBuscar;
+	private Articulos articuloUpdate;
+
+	public void setEstadoService(EstadoService estadoService) {
+		this.estadoService = estadoService;
+	}
+
+	public void setTipoService(TipoService tipoService) {
+		this.tipoService = tipoService;
+	}
+
+	public void setUnidadMedidaService(UnidadMedidaService unidadMedidaService) {
+		this.unidadMedidaService = unidadMedidaService;
+	}
+
+	public void setUbicacionService(UbicacionService ubicacionService) {
+		this.ubicacionService = ubicacionService;
+	}
+
+	public void setArticulosService(ArticulosService articulosService) {
+		this.articulosService = articulosService;
+	}
+
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+
+	public void setFotoArticuloService(FotoArticuloService fotoArticuloService) {
+		this.fotoArticuloService = fotoArticuloService;
+	}
+
+	public void setRelSalidaArticuloService(RelSalidaArticuloService relSalidaArticuloService) {
+		this.relSalidaArticuloService = relSalidaArticuloService;
+	}
+
+	public void setRelIngresoArticuloService(RelIngresoArticuloService relIngresoArticuloService) {
+		this.relIngresoArticuloService = relIngresoArticuloService;
+	}
+
+	public void setDevolucionService(DevolucionService devolucionService) {
+		this.devolucionService = devolucionService;
+	}
+
+	public String getCodigoAntiguo() {
+		return codigoAntiguo;
+	}
+
+	public void setCodigoAntiguo(String codigoAntiguo) {
+		this.codigoAntiguo = codigoAntiguo;
+	}
+
+	public String getArticulo() {
+		return articulo;
+	}
+
+	public void setArticulo(String articulo) {
+		this.articulo = articulo;
+	}
+
+	public Integer getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Integer estado) {
+		this.estado = estado;
+	}
+
+	public Integer getArea() {
+		return area;
+	}
+
+	public void setArea(Integer area) {
+		this.area = area;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
+	public Integer getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(Integer unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public Integer getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(Integer ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+
+	public List<Articulos> listaArticulos() {
+		return articulosService.listaArticulos();
+	}
+
+	public Articulos getArticuloUpdate() {
+		return articuloUpdate;
+	}
+
+	public void setArticuloUpdate(Articulos articuloUpdate) {
+		this.articuloUpdate = articuloUpdate;
+	}
+
+	public void deleteArticulo(int id) {
+		for (FotoArticulo fa : fotoArticuloService.listaFotosByArticulo(id)) {
+			fotoArticuloService.deleteFotoArticulo(fa);
+		}
+		Articulos articulo = articulosService.findArticuloById(id);
+		articulosService.deleteArticulos(articulo);
+		mensaje("Borrado", articulo.getArticulo() + " se ha borrado con exito");
+	}
+
+	public List<Articulos> getListaArticuloBuscar() {
+		return listaArticuloBuscar;
+	}
+
+	public void setListaArticuloBuscar(List<Articulos> listaArticuloBuscar) {
+		this.listaArticuloBuscar = listaArticuloBuscar;
+	}
+
+	public void mensaje(String titulo, String mensaje) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(titulo, mensaje));
+	}
+
+	public void guardar() {
+
+		if (getArticulo().equals("") || getMarca().equals("") || getArea() == 0 || getEstado() == 0 || getTipo() == 0
+				|| getUnidadMedida() == 0 || getUbicacion() == 0) {
+
+			mensaje("Guardado", "debe ingresar los campos obligatorios");
+
+		} else {
+			Articulos articulo = new Articulos();
+			articulo.setArticulo(getArticulo());
+			articulo.setCodigoAntiguo(getCodigoAntiguo());
+			articulo.setMarca(getMarca());
+			articulo.setArea(areaService.findAreaById(getArea()));
+			articulo.setEstado(estadoService.findEstadoById(getEstado()));
+			articulo.setTipo(tipoService.findTipoById(getTipo()));
+			articulo.setUnidadMedida(unidadMedidaService.findUnidadMedidaById(getUnidadMedida()));
+			articulo.setUbicacion(ubicacionService.findUbicacionById(getUbicacion()));
+			articulosService.persistArticulos(articulo);
+
+			mensaje("Guardado", getArticulo() + " se ha guardado con exito");
+
+		}
+	}
+
+	public void onRowEdit(RowEditEvent event) {
+
+		Articulos articulos = (Articulos) event.getObject();
+		if (!getCodigoAntiguo().equals("")) {
+			articulos.setCodigoAntiguo(getCodigoAntiguo());
+		}
+		if (!getArticulo().equals("")) {
+			articulos.setArticulo(getArticulo());
+		}
+		if (getEstado() != 0) {
+			articulos.setEstado(estadoService.findEstadoById(getEstado()));
+		}
+		if (getArea() != 0) {
+			articulos.setArea(areaService.findAreaById(getArea()));
+		}
+		if (getTipo() != 0) {
+			articulos.setTipo(tipoService.findTipoById(getTipo()));
+		}
+		if (getUnidadMedida() != 0) {
+			articulos.setUnidadMedida(unidadMedidaService.findUnidadMedidaById(getUnidadMedida()));
+		}
+		if (getUbicacion() != 0) {
+			articulos.setUbicacion(ubicacionService.findUbicacionById(getUbicacion()));
+		}
+		if (!getMarca().equals("")) {
+			articulos.setMarca(getMarca());
+		}
+
+		articulosService.updateArticulos(articulos);
+		mensaje("Editado", ((Articulos) event.getObject()).getArticulo() + " a " + getArticulo());
+
+	}
+
+	public void modificar(Articulos art) {
+		articuloUpdate = art;
+		articulosService.updateArticulos(art);
+	}
+
+	public void guardarUpdate() {
+
+		articulosService.updateArticulos(articuloUpdate);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		mensaje("Cancelada", ((Articulos) event.getObject()).getArticulo());
+	}
+
+	public Long stock(int id, boolean inventariable) {
+		return articulosService.stock(id, inventariable);
+
+	}
+	public Long perdidas(int id){
+		if(devolucionService.salidaDevolucion(id, true)!=null){
+			return devolucionService.salidaDevolucion(id, true);
+		}else{
+			return 0L;
+		}
+		
+	}
+	
+}

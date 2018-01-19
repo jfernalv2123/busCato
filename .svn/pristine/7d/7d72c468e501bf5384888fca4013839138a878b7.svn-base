@@ -1,0 +1,71 @@
+package com.ugurcanlacin.simple.model;
+
+// default package
+// Generated 14.�ub.2015 03:57:06 by Hibernate Tools 4.3.1
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.List;
+
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CascadeType;
+
+
+@Entity
+@Table(name = "persona", catalog = "canotaje")
+public class User implements java.io.Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7726957428492932227L;
+	private Integer id;
+	private String name;
+	private String surname;
+
+	public User() {
+	}
+
+	public User(String name, String surname) {
+		this.name = name;
+		this.surname = surname;
+	}
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_persona", unique = true, nullable = false)
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Column(name = "nombre", length = 50)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = "apellidos", length = 50)
+	public String getSurname() {
+		return this.surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	
+
+}

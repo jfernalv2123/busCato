@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<title>Proveedores</title>
+	<style type="text/css">
+.ui-widget-content {
+	border: none;
+}
+
+</style>
+</h:head>
+<body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="35" resizable="true"
+			closable="true" collapsible="true">
+
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+			<h:form id="formTabla">
+				<p:growl id="msgPrTabla" showDetail="true" />
+
+				<p:dataTable id="proveedores" var="pro" style="font-size: 13px;"
+					resizableColumns="true" value="#{proveedorBean.listaProveedor()}"
+					editable="true" rows="10" paginator="true"
+					filteredValue="#{proveedorBean.proveedorTabla}"
+					emptyMessage="No encontrado"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:ajax event="rowEdit" listener="#{proveedorBean.onRowEdit}"
+						update=":formTabla:msgPrTabla :formTabla:proveedores" />
+					<p:ajax event="rowEditCancel"
+						listener="#{proveedorBean.onRowCancel}"
+						update=":formTabla:msgPrTabla :formTabla:proveedores" />
+
+					<p:column headerText="Id" filterMatchMode="exact"
+						filterBy="#{pro.idProveedor}" style="width:32px">
+						<h:outputText value="#{pro.idProveedor}" />
+					</p:column>
+					<p:column headerText="Proveedor" filterBy="#{pro.proveedor}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pro.proveedor}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pro.proveedor}" id="modelInput"
+									style="width:100%" label="Proveedor" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Categoria" filterBy="#{pro.categoria}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pro.categoria}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectOneMenu value="#{proveedorBean.categoria}"
+									required="true" label="Categoria">
+									<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+									<f:selectItems value="#{categoriaBean.comboCategoria()}"
+										var="user" />
+
+								</p:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Credito" filterMatchMode="exact"
+						filterBy="#{pro.credito}">
+
+						<p:cellEditor>
+
+							<f:facet name="output">
+								<h:outputText value="#{pro.credito}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:selectBooleanButton value="#{proveedorBean.credito}"
+									onLabel="Yes" offLabel="No" style="width:60px" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Fono" filterBy="#{pro.fono}"
+						filterMatchMode="contains">
+
+						<p:dataList value="#{pro.fonoList}" var="fl"
+							style="display: inline-block;width:100%;border: hidden !important;border-style: none !important;background:none">
+
+							<h:outputText value="#{fl.fono}" />
+
+						</p:dataList>
+
+					</p:column>
+					<p:column headerText="Mail" filterBy="#{pro.mail}"
+						filterMatchMode="contains">
+
+						<p:dataList value="#{pro.mailList}" var="ml"
+							style="display: inline-block;width:100%;border: hidden !important;border-style: none !important;">
+
+							<h:outputText value="#{ml.mail}" />
+
+						</p:dataList>
+					</p:column>
+					<p:column headerText="Dirección" filterBy="#{pro.direccion}"
+						filterMatchMode="contains">
+
+						<p:dataList value="#{pro.direccionProveedor}" var="dirPro" 
+							style="display: inline-block;width:100%;border: hidden !important;border-style: none !important;">
+
+							<h:outputText value="#{dirPro.direccion}, " />
+
+							<h:outputText value="#{dirPro.ciudad}, " />
+
+							<h:outputText value="#{dirPro.region}" />
+
+						</p:dataList>
+
+					</p:column>
+
+					<p:column headerText="Cantidad">
+						<h:outputText value="#{pro.cantidadArticulos}" />
+					</p:column>
+					<p:column style="width:32px">
+						<p:commandButton icon="ui-icon-close"
+							action="#{proveedorBean.borrar(pro.idProveedor)}"
+							update=":formTabla:msgPrTabla :formTabla:proveedores" />
+					</p:column>
+					<p:column style="width:32px">
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+
+
+			<p:commandButton value="Nuevo Proveedor" type="button"
+				onclick="dlg2.show()" style="font-size: 13px;" />
+			<p:dialog widgetVar="dlg2" header="Nuevo Proveedor" modal="false"
+				resizable="false" style="font-size: 13px;">
+				<h:form id="nuevo">
+					<p:growl id="msgPr" showDetail="true" />
+					<h:panelGrid columns="6" cellpadding="5">
+
+						<h:outputText for="nombreProveedor" value="Proveedor:" />
+						<p:inputText id="nombreProveedor"
+							value="#{proveedorBean.proveedor}" />
+
+						<h:outputText for="categoria" value="Categoria: " />
+						<p:selectOneMenu id="categoria" value="#{proveedorBean.categoria}"
+							required="true" label="Categoria">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{categoriaBean.comboCategoria()}"
+								var="user" />
+
+						</p:selectOneMenu>
+
+						<h:outputLabel value="Credito: *" />
+						<p:selectBooleanButton id="gasto" value="#{proveedorBean.credito}"
+							onLabel="Yes" offLabel="No" style="width:60px" />
+
+					</h:panelGrid>
+					<h:panelGrid columns="6" cellpadding="5">
+						<h:outputText for="idFono" value="Fono: " />
+						<p:inputText id="idFono" value="#{proveedorBean.fono}" />
+						<p:commandButton id="btn_addFono" value="Add"
+							update="listFono msgPr" action="#{proveedorBean.addFono()}" />
+						<h:outputText for="idMail" value="Mail: " />
+						<p:inputText id="idMail" value="#{proveedorBean.mail}" />
+						<p:commandButton id="btn_addMail" value="Add"
+							update="listMail msgPr" action="#{proveedorBean.addMail()}" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="width:100%">
+						<p:dataList id="listFono" value="#{proveedorBean.listFono}"
+							var="fon" type="ordered"
+							style="display: inline-block;width:100px">
+					#{fon}
+					 <p:commandLink value=" elimininar " update=":nuevo:listFono"
+								process=":nuevo:listFono">
+								<p:collector value="#{fon}"
+									removeFrom="#{proveedorBean.listFono}" unique="true" />
+							</p:commandLink>
+						</p:dataList>
+						<p:dataList id="listMail" value="#{proveedorBean.lisMail}"
+							var="mai" type="ordered"
+							style="display: inline-block;width:100px">
+					#{mai}
+					<p:commandLink value=" elimininar " update=":nuevo:listMail"
+								process=":nuevo:listMail">
+								<p:collector value="#{mai}"
+									removeFrom="#{proveedorBean.lisMail}" unique="true" />
+							</p:commandLink>
+						</p:dataList>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="4" cellpadding="5">
+						<h:outputText for="idDireccionInput" value="Direccion: " />
+						<p:inputText id="idDireccionInput"
+							value="#{proveedorBean.direccion}" />
+						<h:outputText for="idCiudad" value="Ciudad: " />
+						<p:inputText id="idCiudad" value="#{proveedorBean.ciudad}" />
+						<h:outputText for="idRegion" value="Region: " />
+						<p:inputText id="idRegion" value="#{proveedorBean.region}" />
+						<h:outputText for="idPais" value="Pais: " />
+						<p:inputText id="idPais" value="#{proveedorBean.pais}" />
+					</h:panelGrid>
+					<p:commandButton id="btn_addDireccion" value="Add"
+						update=":nuevo:listDireccion :nuevo:msgPr"
+						action="#{proveedorBean.addDireccion()}" />
+
+					<p:dataTable id="listDireccion"
+						value="#{proveedorBean.listDireccion}" var="direc" type="ordered"
+						style="display: inline-block;width:100%">
+						<p:column headerText="direccion">
+							<h:outputText value="#{direc.direccion}" />
+						</p:column>
+						<p:column headerText="ciudad">
+							<h:outputText value="#{direc.ciudad}" />
+						</p:column>
+						<p:column headerText="region">
+							<h:outputText value="#{direc.region}" />
+						</p:column>
+						<p:column headerText="pais">
+							<h:outputText value="#{direc.pais}" />
+						</p:column>
+						<p:column>
+							<p:commandLink value=" X " update=":nuevo:listDireccion"
+								process=":nuevo:listDireccion">
+								<p:collector value="#{direc}"
+									removeFrom="#{proveedorBean.listDireccion}" unique="true" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+
+					<br />
+					<p:commandButton value="Guardar"
+						action="#{proveedorBean.guardar()}"
+						update=":formTabla:proveedores msgPr @all" />
+
+				</h:form>
+			</p:dialog>
+
+
+		</p:layoutUnit>
+	</p:layout>
+</body>
+</html>

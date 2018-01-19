@@ -1,0 +1,100 @@
+package com.ugurcanlacin.simple.dao.impl;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import javax.faces.bean.ManagedProperty;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ugurcanlacin.simple.dao.ImagenDao;
+import com.ugurcanlacin.simple.dao.IngresosDao;
+import com.ugurcanlacin.simple.model.Imagen;
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.User;
+import com.ugurcanlacin.simple.model.VisataIngresos;
+import com.ugurcanlacin.simple.objetos.Gastos;
+import com.ugurcanlacin.simple.service.ImagenService;
+
+
+@Repository("ingresosDao")
+public class IngresosDaoImpl implements IngresosDao{
+
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	@Autowired
+	ImagenDao imagenDao;
+	
+	public void persistIngresos(Ingresos ingresos) {
+		sessionFactory.getCurrentSession().persist(ingresos);
+	}
+
+	public Ingresos findIngresosById(int id) {
+		return (Ingresos) sessionFactory.getCurrentSession().get(Ingresos.class, id);
+	}
+
+	public void updateIngresos(Ingresos ingresos) {
+		sessionFactory.getCurrentSession().update(ingresos);
+		
+	}
+
+	public void deleteIngresos(Ingresos ingresos) {
+		sessionFactory.getCurrentSession().delete(ingresos);
+		
+	}
+	
+	public List<VisataIngresos> listaIngresos() {
+		String query="from VisataIngresos";
+	
+		List<VisataIngresos> listaAux =sessionFactory.getCurrentSession().createQuery(query).list();
+		
+		
+		return listaAux;
+	}
+	public String totalGastos(){
+		String query="SELECT sum(ing.monto) FROM Ingresos as ing where ing.gasto=1";
+		List<Long> iter = sessionFactory.getCurrentSession().createQuery(query).list();
+		String num="";
+		for(Long suma:iter){
+			num=String.valueOf(suma);
+		}
+		return num;
+	}
+	public List<Gastos> listaGastos(){
+		String query="select ing.nombre,ing.monto,ing.idPersona,ing.idItem,ing.gasto,ing.fecha,img.idImagen "
+				+ "from Ingresos ing, Imagen img where img.idImagen=ing.idImagen.idImagen";
+		List<Gastos> lGasto=new ArrayList<Gastos>();
+		Iterator iter =sessionFactory.getCurrentSession().createQuery(query).iterate();
+		while (iter.hasNext()) {
+			Gastos gasto=new Gastos();
+//			Imagen img=new Imagen();
+			Object[] combo = (Object[]) iter.next();
+			gasto.setNombre(String.valueOf(combo[0]));
+			gasto.setMonto(Integer.parseInt(String.valueOf(combo[1])));
+			gasto.setPersona(String.valueOf(combo[2]));
+			gasto.setItem(String.valueOf(combo[3]));
+			gasto.setFecha((Date) combo[5]);
+			Integer nume = Integer.parseInt(String.valueOf(combo[6]));
+
+			gasto.setIdImagen(nume);
+			gasto.setImagen(imagenDao.imageById(nume));
+
+			lGasto.add(gasto);
+
+			
+		}
+		
+		
+		return lGasto;
+	}
+
+}

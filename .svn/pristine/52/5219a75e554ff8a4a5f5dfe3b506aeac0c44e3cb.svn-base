@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>Proveedor</title>
+	<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head>
+<body>
+<f:metadata>
+    <f:viewParam name="Id" value="#{proveedorBean.id}" />
+    <f:viewParam name="proveedor" value="#{proveedorBean.proveedor}" />
+</f:metadata>
+<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				 <p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				 <p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				 <p:menuitem value="Salida" url="salida.xhtml" />
+				 <p:menuitem value="Administracion select" url="administracion.xhtml" />
+				
+				
+			</p:breadCrumb>
+	<p:panel id="pnl" header="Administración Fono, Mail y Direccion #{proveedorBean.proveedor}"
+		style="width: 95%;display: inline-block;font-size: 13px">
+
+<p:panel id="fonoPanel" header="Fonos" toggleable="true"  toggleSpeed="500"  widgetVar="panelFono" style="margin-bottom:20px">
+		<h:form id="fonos">
+			<p:growl id="msgsFonos" showDetail="true" />
+			<p:dataTable id="fonosT" var="fone" value="#{proveedorBean.listFonoByProveedor(proveedorBean.id)}"
+				editable="true">
+
+				<f:facet name="header">
+				<h:outputText value="Nuevo Fono : " />
+					<h:inputText value="#{proveedorBean.fono}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarFono()}" update=":fonos:fonosT"/>
+				</f:facet>
+				
+				<p:column>
+							<h:outputText value="#{fone.fono}" />
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarFono(fone.idFono)}" update=":fonos:fonosT" />
+				</p:column>
+
+				<p:column style="width:32px">
+						<p:commandLink actionListener="#{proveedorBean.modificarFono(fone)}"
+							oncomplete="modFono.show();"
+							update=":fonoUpdate:updateFono">
+							<h:graphicImage value="../imagenes/edit.png" />
+						</p:commandLink>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+<p:panel id="mailPanel" header="Mail" toggleable="true"  toggleSpeed="500"  widgetVar="panelMail" style="margin-bottom:20px">
+		<h:form id="mailForm">
+			<p:growl id="msgsMail" showDetail="true" />
+			<p:dataTable id="mailTable" var="meil" value="#{proveedorBean.listMailByProveedor(proveedorBean.id)}"
+				editable="true">
+				<f:facet name="header">
+				<h:outputText value="Nuevo Mail : " />
+					<h:inputText value="#{proveedorBean.mail}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarMail()}" update=":mailForm:mailTable"/>
+				</f:facet>
+				
+
+				<p:column>
+					<h:outputText value="#{meil.mail}" />
+							
+					
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarMail(meil.idMail)}" update=":mailForm:mailTable" />
+				</p:column>
+
+				<p:column style="width:32px">
+					
+					<p:commandLink actionListener="#{proveedorBean.modificarMail(meil)}"
+							oncomplete="modMail.show();"
+							update=":mailUpdate:updateMail">
+							<h:graphicImage value="../imagenes/edit.png" />
+						</p:commandLink>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+<p:panel id="DireccionPanel" header="Direccion" toggleable="true"  toggleSpeed="500"  widgetVar="panelDireccion" style="margin-bottom:20px">
+		<h:form id="direccionForm">
+			<p:growl id="msgsDireccion" showDetail="true" />
+			<p:dataTable id="DireccionTable" var="direc"
+				value="#{proveedorBean.listDireccionByProveedor(proveedorBean.id)}" editable="true">
+				<f:facet name="header">
+				<h:outputText value="Nueva Dirección : " />
+					<h:inputText value="#{proveedorBean.direccion}" />
+				
+					<h:inputText value="#{proveedorBean.ciudad}" />
+					
+					<h:inputText value="#{proveedorBean.region}" />
+					
+					<h:inputText value="#{proveedorBean.pais}" />
+					<p:commandButton value="Guardar" action="#{proveedorBean.guardarDireccion()}"
+						update=":direccionForm:DireccionTable" />
+				</f:facet>
+				
+				<p:column>
+					
+							<h:outputText value="#{direc.direccion}" />
+						
+				</p:column>
+				
+				<p:column>
+					
+							<h:outputText value="#{direc.ciudad}" />
+						
+				</p:column>
+				
+				<p:column>
+					
+							<h:outputText value="#{direc.region}" />
+						
+				</p:column>
+				
+				<p:column>
+					
+							<h:outputText value="#{direc.pais}" />
+						
+				</p:column>
+				
+
+				<p:column style="width:32px">
+					<p:commandButton icon="ui-icon-close"
+						action="#{proveedorBean.borrarDireccion(direc.idDireccion)}" update=":direccionForm:DireccionTable" />
+				</p:column>
+
+				<p:column style="width:32px">
+					<p:commandLink actionListener="#{proveedorBean.modificarDireccion(direc)}"
+							oncomplete="modDireccion.show();"
+							update=":direccionUpdate:updateDireccion">
+							<h:graphicImage value="../imagenes/edit.png" />
+						</p:commandLink>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+</p:panel>
+
+	</p:panel>
+	
+	<h:form id="fonoUpdate">
+				<p:dialog widgetVar="modFono" header="Modificar Telefono"
+					id="updateFono" modal="false" resizable="false"
+					style="font-size: 13px;">
+					<h:panelGrid columns="6" cellpadding="5">
+						<p:inputText value="#{proveedorBean.fonoAux.fono}" />
+					</h:panelGrid>
+					<p:commandButton value="Modificar" icon="ui-icon-check"
+						update=":fonos:msgsFonos :fonos:fonosT"
+						actionListener="#{proveedorBean.guardarFonoMod()}"
+						oncomplete="modFono.hide();" />
+				</p:dialog>
+			</h:form>
+			
+			<h:form id="mailUpdate">
+				<p:dialog widgetVar="modMail" header="Modificar Mail"
+					id="updateMail" modal="false" resizable="false"
+					style="font-size: 13px;">
+					<h:panelGrid columns="6" cellpadding="5">
+						<p:inputText value="#{proveedorBean.mailAux.mail}" />
+					</h:panelGrid>
+					<p:commandButton value="Modificar" icon="ui-icon-check"
+						update=":mailForm:mailTable :mailForm:msgsMail"
+						actionListener="#{proveedorBean.guardarMailMod()}"
+						oncomplete="modMail.hide();" />
+				</p:dialog>
+			</h:form>
+			
+			<h:form id="direccionUpdate">
+				<p:dialog widgetVar="modDireccion" header="Modificar Dirección"
+					id="updateDireccion" modal="false" resizable="false"
+					style="font-size: 13px;">
+					<h:panelGrid columns="6" cellpadding="5">
+						<p:inputText value="#{proveedorBean.direccionAux.direccion}" />
+						<p:inputText value="#{proveedorBean.direccionAux.ciudad}" />
+						<p:inputText value="#{proveedorBean.direccionAux.region}" />
+						<p:inputText value="#{proveedorBean.direccionAux.pais}" />
+					</h:panelGrid>
+					<p:commandButton value="Modificar" icon="ui-icon-check"
+						update=":direccionForm:DireccionTable :direccionForm:msgsDireccion"
+						actionListener="#{proveedorBean.guardarDireccionMod()}"
+						oncomplete="modDireccion.hide();" />
+				</p:dialog>
+			</h:form>
+</body>
+</html>
+

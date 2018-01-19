@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head></h:head> 
+<body> 
+<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				<p:menuitem value="Administracion" url="administracion.xhtml" />
+				<p:menuitem value="NBA" url="#" />
+				<p:menuitem value="Teams" url="#" />
+				<p:menuitem value="L.A. Lakers" url="#" />
+				<p:menuitem value="Roster" url="#" />
+				<p:menuitem value="Kobe Bryant" url="#" />
+			</p:breadCrumb>
+			<p:dialog widgetVar="newIngreso" header="Nuevo Ingreso" modal="false"
+				resizable="false" style="font-size: 13px;">
+				</p:dialog>
+</body> 
+</html>

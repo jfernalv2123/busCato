@@ -1,0 +1,65 @@
+package com.ugurcanlacin.simple.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "pendientes", catalog = "canotaje")
+public class Pendientes implements java.io.Serializable {
+
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1416270707413949465L;
+	//	id_pendientes
+//	monto
+//	id_ingresos
+	private Integer idPendientes;
+	private Integer monto;
+	private Ingresos idIngresos;
+	
+	
+	public Pendientes(){
+		
+	}
+	public Pendientes(Integer monto,Ingresos idIngresos){
+		this.monto=monto;
+		this.idIngresos=idIngresos;
+		
+	}
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_pendientes", unique = true, nullable = false)
+	public Integer getIdPendientes() {
+		return idPendientes;
+	}
+	public void setIdPendientes(Integer idPendientes) {
+		this.idPendientes = idPendientes;
+	}
+	@Column(name = "monto", length = 10)
+	public Integer getMonto() {
+		return monto;
+	}
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+	
+	@ManyToOne
+    @JoinColumn(name="fk_ingreso")
+	public Ingresos getIdIngresos() {
+		return idIngresos;
+	}
+	public void setIdIngresos(Ingresos idIngresos) {
+		this.idIngresos = idIngresos;
+	}
+	
+	
+}

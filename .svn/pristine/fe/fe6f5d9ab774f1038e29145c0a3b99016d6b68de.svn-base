@@ -1,0 +1,53 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.SalidaDao;
+import municipalidad.pto.model.AreaArticulo;
+import municipalidad.pto.model.Salida;
+import municipalidad.pto.service.SalidaService;
+@Service("salidaService")
+public class SalidaServiceImpl implements SalidaService{
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	SalidaDao salidaDao;
+	
+	@Transactional
+	public void persistSalida(Salida salida) {
+		genericDao.Guardar(salida);;
+		
+	}
+	@Transactional
+	public Salida findSalidaById(int id) {
+	
+		return salidaDao.findSalidaById(id);
+	}
+	@Transactional
+	public void updateSalida(Salida salida) {
+		genericDao.update(salida);
+		
+	}
+	@Transactional
+	public void deleteSalida(Salida salida) {
+		genericDao.delete(salida);
+		
+	}
+	@Transactional
+	public List<Salida> listaSalidas() {
+		return salidaDao.listaSalidas();
+	}
+	@Transactional
+	public Integer ultimoIngreso(){
+		return salidaDao.ultimoIngreso();
+	}
+	
+}

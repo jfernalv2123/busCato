@@ -1,0 +1,54 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.CategoriaDao;
+import municipalidad.pto.model.Categoria;
+
+
+@Repository("categoriaDao")
+public class CategoriaDaoImpl implements CategoriaDao{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	
+
+	public Categoria findCategoriaById(int id) {
+		return (Categoria) sessionFactory.getCurrentSession().get(Categoria.class, id);
+	}
+
+
+	public List<Categoria> listaCategorias() {
+
+		String query="FROM Categoria as c";
+		List<Categoria> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+	
+	public List<SelectItem> comboCategoria(){
+		List<SelectItem> aux=new ArrayList<SelectItem>();
+		
+		String query="SELECT c.idCategoria,c.categoria FROM Categoria as c";
+		Iterator iter = sessionFactory.getCurrentSession().createQuery(query).iterate();
+		while (iter.hasNext()) {
+			SelectItem item=new SelectItem();
+			Object[] combo = (Object[]) iter.next();
+			item.setLabel(String.valueOf(combo[0]));
+			item.setValue(String.valueOf(combo[1]));
+			
+			aux.add(item);
+		}
+		return aux;
+	}
+	
+}

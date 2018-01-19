@@ -1,0 +1,484 @@
+package municipalidad.pto.beans;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.event.RowEditEvent;
+
+import municipalidad.pto.model.Categoria;
+import municipalidad.pto.model.DireccionProveedor;
+import municipalidad.pto.model.Fono;
+import municipalidad.pto.model.Mail;
+import municipalidad.pto.model.Proveedor;
+import municipalidad.pto.objetos.ProveedoresTabla;
+import municipalidad.pto.service.ArticulosService;
+import municipalidad.pto.service.CategoriaService;
+import municipalidad.pto.service.DireccionProveedorService;
+import municipalidad.pto.service.FonoService;
+import municipalidad.pto.service.IngresoService;
+import municipalidad.pto.service.MailService;
+import municipalidad.pto.service.ProveedorService;
+import municipalidad.pto.service.RazonSocialService;
+
+@ManagedBean
+@SessionScoped
+public class ProveedorBean {
+	
+	@ManagedProperty(value = "#{proveedorService}")
+	ProveedorService proveedorService;
+	
+	@ManagedProperty(value = "#{categoriaService}")
+	CategoriaService categoriaService;
+	
+	@ManagedProperty(value = "#{fonoService}")
+	FonoService fonoService;
+	
+	@ManagedProperty(value = "#{mailService}")
+	MailService mailService;
+	
+	@ManagedProperty(value = "#{ingresoService}")
+	IngresoService ingresoService;
+	
+	@ManagedProperty(value = "#{articulosService}")
+	ArticulosService articulosService;
+	
+	@ManagedProperty(value = "#{direccionProveedorService}")
+	DireccionProveedorService direccionProveedorService;
+	
+	@ManagedProperty(value = "#{razonSocialService}")
+	RazonSocialService razonSocialService;
+	
+	private Integer id;
+	private String proveedor;
+	private Integer categoria;
+	private String articulo;
+	private boolean credito;
+	private String fono;
+	private String mail;
+	private Integer idProveedor;
+	private String direccion;
+	private String ciudad;
+	private String region;
+	private String pais;
+	private Integer razonSocial;
+	private List<String> vacio = new ArrayList<String>();
+	private List<String> listFono = new ArrayList<String>();
+	private List<String> lisMail = new ArrayList<String>();
+	private List<DireccionProveedor> listDireccion = new ArrayList<DireccionProveedor>();
+	private List<ProveedoresTabla> proveedorTabla = new ArrayList<ProveedoresTabla>();
+	
+	public void setProveedorService(ProveedorService proveedorService) {
+		this.proveedorService = proveedorService;
+	}
+	
+	public void setCategoriaService(CategoriaService categoriaService) {
+		this.categoriaService = categoriaService;
+	}
+
+	public void setFonoService(FonoService fonoService) {
+		this.fonoService = fonoService;
+	}
+
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
+	}
+
+	public void setIngresoService(IngresoService ingresoService) {
+		this.ingresoService = ingresoService;
+	}
+
+	public void setArticulosService(ArticulosService articulosService) {
+		this.articulosService = articulosService;
+	}
+	
+	public void setDireccionProveedorService(DireccionProveedorService direccionProveedorService) {
+		this.direccionProveedorService = direccionProveedorService;
+	}
+
+	public void setRazonSocialService(RazonSocialService razonSocialService) {
+		this.razonSocialService = razonSocialService;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	public Integer getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(Integer categoria) {
+		this.categoria = categoria;
+	}
+	
+	public boolean isCredito() {
+		return credito;
+	}
+	public void setCredito(boolean credito) {
+		this.credito = credito;
+	}
+	
+	public List<String> getListFono() {
+		return listFono;
+	}
+
+	public void setListFono(List<String> listFono) {
+		this.listFono = listFono;
+	}
+
+	public List<String> getLisMail() {
+		return lisMail;
+	}
+
+	public void setLisMail(List<String> lisMail) {
+		this.lisMail = lisMail;
+	}
+
+	public String getFono() {
+		return fono;
+	}
+
+	public void setFono(String fono) {
+		this.fono = fono;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public List<String> getVacio() {
+		return vacio;
+	}
+
+	public void setVacio(List<String> vacio) {
+		this.vacio = vacio;
+	}
+
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+
+	public String getArticulo() {
+		return articulo;
+	}
+
+	public void setArticulo(String articulo) {
+		this.articulo = articulo;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public List<DireccionProveedor> getListDireccion() {
+		return listDireccion;
+	}
+
+	public void setListDireccion(List<DireccionProveedor> listDireccion) {
+		this.listDireccion = listDireccion;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	public Integer getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(Integer razonSocial) {
+		this.razonSocial = razonSocial;
+	}
+
+	public List<ProveedoresTabla> getProveedorTabla() {
+		return proveedorTabla;
+	}
+
+	public void setProveedorTabla(List<ProveedoresTabla> proveedorTabla) {
+		this.proveedorTabla = proveedorTabla;
+	}
+
+	public void guardar(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(getCategoria().equals(0)&& getProveedor().equals("") && getRazonSocial().equals(0)){
+			context.addMessage(null, new FacesMessage("Error",  "debe ingresar un los campos obligatorios") );
+			
+		}else{
+		Categoria categoria =categoriaService.findCategoriaById(getCategoria());
+		Proveedor proveedorAux = new Proveedor();
+		proveedorAux.setCategoria(categoria);
+		proveedorAux.setProveedor(getProveedor());
+		proveedorAux.setRazonSocial(razonSocialService.findRazonSocialById(getRazonSocial()));
+		proveedorService.persistProveedor(proveedorAux);
+		proveedorAux =proveedorService.proveedorBynombre(getProveedor());
+		for(String phone:getListFono()){
+			Fono f=new Fono(phone,proveedorAux);
+			fonoService.persistFono(f);
+		}
+		for(String m:getLisMail()){
+			Mail mail= new Mail(m, proveedorAux);
+			mailService.persistMail(mail);
+		}
+		for(DireccionProveedor dire:getListDireccion()){
+			DireccionProveedor direccionP = new DireccionProveedor();
+			direccionP.setDireccion(dire.getDireccion());
+			direccionP.setProveedor(proveedorAux);
+			direccionP.setCiudad(dire.getCiudad());
+			direccionP.setRegion(dire.getRegion());
+			direccionP.setPais(dire.getPais());
+			direccionProveedorService.persistDireccionProveedor(direccionP);
+		}
+		context.addMessage(null, new FacesMessage("Guardado",  proveedorAux.getProveedor()) );
+		reset();
+		}
+	}
+
+	public void borrar(int id){
+		Proveedor proveedorAux = proveedorService.findProveedorById(id);
+		for(Fono f:fonoService.listaFonosByProveedor(proveedorAux.getIdProveedor())){
+			fonoService.deleteFono(f);
+		}
+		for(Mail m:mailService.listaMailByProveedor(proveedorAux.getIdProveedor())){
+			mailService.deleteMail(m);
+		}
+		for(DireccionProveedor dirPro:direccionProveedorService.listaDireccionProveedorByProveedor(proveedorAux.getIdProveedor())){
+			direccionProveedorService.deleteDireccionProveedor(dirPro);
+		}
+		proveedorService.deleteProveedor(proveedorAux);
+		FacesMessage msg = new FacesMessage("Borrado", proveedorAux.getProveedor());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public List<ProveedoresTabla> listaProveedor(){
+		return proveedorService.listaProveedores();
+	}
+
+	public void addFono(){
+		if(listFono.contains(fono)){
+			FacesMessage msg = new FacesMessage("ya ingresado", "este numero ya esta en lista");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else{
+			listFono.add(fono);
+			setFono(null);
+		}
+	}
+	public void addMail(){
+		if(lisMail.contains(mail)){
+			FacesMessage msg = new FacesMessage("ya ingresado", "este mail ya esta en lista");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else{
+			lisMail.add(mail);
+			setMail(null);
+		}
+	}
+	public void addDireccion(){
+		boolean repit=false;
+		DireccionProveedor direccionProveedor = new DireccionProveedor();
+		direccionProveedor.setDireccion(getDireccion());
+		direccionProveedor.setCiudad(getCiudad());
+		direccionProveedor.setRegion(getRegion());
+		direccionProveedor.setPais(getPais());
+		for(DireccionProveedor dp:listDireccion){
+			if(dp.getDireccion().equals(direccionProveedor.getDireccion()) && dp.getCiudad().equals(direccionProveedor.getCiudad()) && dp.getRegion().equals(direccionProveedor.getRegion())){
+				repit=true;
+			}
+			
+		}
+		if(repit){
+			FacesMessage msg = new FacesMessage("ya ingresado", "esta Direccion ya esta en lista");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}else{
+			listDireccion.add(direccionProveedor);
+			setDireccion(null);
+		}
+	}
+	public void reset(){
+		
+		setProveedor(null);
+		setFono(null);
+		setMail(null);
+	}
+	public List<String> autoCompleteProveedor(String proveedor){
+		return proveedorService.nombreProveedorByName(proveedor);
+	}
+
+	public List<String> autoCompFono(String fono) {
+		return fonoService.nombreFonoByName(fono);
+	}
+
+	public List<String> autoCompleteMail(String mail) {
+		return mailService.listMailByMail(mail);
+	}
+	public List<String> autoCompleteArticulo(String articulo){
+		return articulosService.nombreaArticuloBynombre(articulo);
+	}
+	public void onRowEdit(RowEditEvent event) {
+		
+		ProveedoresTabla proTa = (ProveedoresTabla) event.getObject();
+		Proveedor proveedor = new Proveedor();
+		if(getProveedor().equals("")|| getProveedor()==null){
+			proveedor.setProveedor(proTa.getProveedor());
+		}else{
+			proveedor.setProveedor(getProveedor());
+		}
+		if(getCategoria().equals(0)){
+			proveedor.setCategoria(proTa.getCategoria());
+		}else{
+			proveedor.setCategoria(categoriaService.findCategoriaById(getCategoria()));
+		}
+		if(getRazonSocial().equals(0)){
+			proveedor.setRazonSocial(proTa.getRazonSocial());
+		}else{
+			proveedor.setRazonSocial(razonSocialService.findRazonSocialById(getRazonSocial()));
+		}
+		proveedor.setIdProveedor(proTa.getIdProveedor());
+		proveedorService.updateProveedor(proveedor);
+		FacesMessage msg = new FacesMessage("Editado", ((ProveedoresTabla) event.getObject()).getProveedor() + " a " + proveedor.getProveedor());
+		event.getComponent().getNamingContainer();
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		setProveedor(null);
+		
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Cancelada", ((ProveedoresTabla) event.getObject()).getProveedor());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	public List<Proveedor> buscadorTablaProveedor(){
+		return proveedorService.buscadorTablaProveedores(idProveedor, getProveedor(), isCredito(), getArticulo(),
+				getCategoria(), getFono(), getMail(), getDireccion(), getCiudad(), getRegion());
+	}
+	public List<Fono> listFonoByProveedor(int id){
+		return fonoService.listaFonosByProveedor(id);
+	}
+	public List<Mail> listMailByProveedor(int id){
+		return mailService.listaMailByProveedor(id);
+	}
+	public List<DireccionProveedor> listDireccionByProveedor(int id){
+		return direccionProveedorService.listaDireccionProveedorByProveedor(id);
+	}
+	public void guardarFono(){
+		Fono fono = new Fono();
+		fono.setProveedor(proveedorService.findProveedorById(getId()));
+		if(!getFono().equals("") || getFono()!=null){
+			fono.setFono(getFono());
+		}
+		
+		fonoService.persistFono(fono);
+	}
+	public void guardarMail(){
+		Mail mail = new Mail();
+		mail.setProveedor(proveedorService.findProveedorById(getId()));
+		if(!getMail().equals("") || getMail()!=null){
+		mail.setMail(getMail());
+		}
+		mailService.persistMail(mail);
+	}
+	public void guardarDireccion(){
+		DireccionProveedor direccion = new DireccionProveedor();
+		if(!getCiudad().equals("") && !getDireccion().equals("") && !getRegion().equals("") && !getPais().equals("")){
+		direccion.setCiudad(getCiudad());
+		direccion.setDireccion(getDireccion());
+		direccion.setPais(getPais());
+		direccion.setRegion(getRegion());
+		direccion.setProveedor(proveedorService.findProveedorById(getId()));
+		direccionProveedorService.persistDireccionProveedor(direccion);
+		}
+	}
+	public void borrarFono(int id){
+		fonoService.deleteFono(fonoService.findFonoById(id));
+	}
+	public void borrarMail(int id){
+		mailService.deleteMail(mailService.findMailById(id));
+	}
+	public void borrarDireccion(int id){
+		direccionProveedorService.deleteDireccionProveedor(direccionProveedorService.findDireccionProveedorById(id));
+	}
+	public void onRowEditFono(RowEditEvent event) {
+		Fono fono = (Fono) event.getObject();
+		if(!getFono().equals("") || getFono()!=null){
+		fono.setFono(getFono());
+		}
+		fonoService.updateFono(fono);
+		setFono(null);
+	}
+	public void onRowEditMail(RowEditEvent event){
+		Mail mail =(Mail) event.getObject();
+		if(!getMail().equals("") || getMail()!=null){
+			mail.setMail(getMail());
+			}
+		mailService.updateMail(mail);
+		setMail(null);
+	}
+	public void onRowEditDireccion(RowEditEvent event){
+		DireccionProveedor direccion = (DireccionProveedor)event.getObject();
+		if(!getDireccion().equals("") || getDireccion()!=null){
+			direccion.setDireccion(getDireccion());
+		}
+		if(!getRegion().equals("") || getRegion()!=null){
+			direccion.setRegion(getRegion());
+		}
+		if(getCiudad().equals("") || getCiudad()!=null){
+			direccion.setCiudad(getCiudad());
+		}
+		if(getPais().equals("") || getPais()!=null){
+			direccion.setPais(getPais());
+		}
+		
+		direccionProveedorService.updateDireccionProveedor(direccion);
+		setDireccion(null);
+		setCiudad(null);
+		setRegion(null);
+		setPais(null);
+	}
+	public void onRowCancelProveedor(RowEditEvent event) {
+		
+	}
+}

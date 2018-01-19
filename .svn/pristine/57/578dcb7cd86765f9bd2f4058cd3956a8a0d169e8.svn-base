@@ -1,0 +1,29 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.IngresoDao;
+import municipalidad.pto.model.Ingreso;
+
+@Repository("ingresoDao")
+public class IngresoDaoImpl implements IngresoDao{
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public Ingreso findIngresoById(int id) {
+		return (Ingreso) sessionFactory.getCurrentSession().get(Ingreso.class, id);
+	}
+
+	public List<Ingreso> listaIngresos() {
+
+		String query="FROM Ingreso as a";
+		List<Ingreso> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+}

@@ -1,0 +1,73 @@
+package municipalidad.pto.beans;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.Categoria;
+import municipalidad.pto.model.Proveedor;
+import municipalidad.pto.service.CategoriaService;
+import municipalidad.pto.service.ProveedorService;
+
+@ManagedBean
+@SessionScoped
+public class ProveedorBean {
+	
+	@ManagedProperty(value = "#{proveedorService}")
+	ProveedorService proveedorService;
+	
+	@ManagedProperty(value = "#{categoriaService}")
+	CategoriaService categoriaService;
+	
+	private String proveedor;
+	private Integer categoria;
+	private boolean credito;
+	
+	public void setProveedorService(ProveedorService proveedorService) {
+		this.proveedorService = proveedorService;
+	}
+	
+	public void setCategoriaService(CategoriaService categoriaService) {
+		this.categoriaService = categoriaService;
+	}
+
+	public String getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	public Integer getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(Integer categoria) {
+		this.categoria = categoria;
+	}
+	
+	public boolean isCredito() {
+		return credito;
+	}
+	public void setCredito(boolean credito) {
+		this.credito = credito;
+	}
+	public void guardar(){
+		Categoria categoria =categoriaService.findCategoriaById(getCategoria());
+		Proveedor proveedorAux = new Proveedor(getProveedor(),categoria,isCredito());
+		proveedorService.persistProveedor(proveedorAux);
+		setCategoriaService(null);
+	}
+	public void actualizar(int id){
+		Proveedor proveedorAux = proveedorService.findProveedorById(id);
+		proveedorAux.setProveedor(getProveedor());
+		proveedorAux.setCredito(isCredito());
+		Categoria categoria =categoriaService.findCategoriaById(getCategoria());
+		proveedorAux.setCategoria(categoria);
+		proveedorService.updateProveedor(proveedorAux);
+		setCategoriaService(null);
+		
+	}
+	public void borrar(int id){
+		Proveedor proveedorAux = proveedorService.findProveedorById(id);
+		proveedorService.deleteProveedor(proveedorAux);
+	}
+}

@@ -1,0 +1,13 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import municipalidad.pto.model.Ingreso;
+
+public interface IngresoDao {
+	Ingreso findIngresoById(int id);
+	List<Ingreso> listaIngresos();
+	Integer ingresosByProveedor(int proveedor);
+	Integer ultimoIngreso();
+	
+}

@@ -1,0 +1,17 @@
+package com.ugurcanlacin.simple.dao;
+
+import java.util.List;
+
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.VisataIngresos;
+import com.ugurcanlacin.simple.objetos.Gastos;
+
+public interface IngresosDao {
+	void persistIngresos(Ingresos ingresos);
+	Ingresos findIngresosById(int id);
+	void updateIngresos(Ingresos ingresos);
+	void deleteIngresos(Ingresos ingresos);
+	List<VisataIngresos> listaIngresos();
+	String totalGastos();
+	List<Gastos> listaGastos();
+}

@@ -1,0 +1,119 @@
+package municipalidad.pto.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ingreso", catalog = "pto")
+public class Ingreso implements Serializable{
+	
+	private Integer idIngreso;
+	private String Observacion;
+	private Date fecha;
+	private Proveedor proveedor;
+	private String ordenDeCompra;
+	private String guiaDeDespacho;
+	private String destino;
+	private boolean inventariable;
+	private boolean conforme;
+	private boolean prestamo;
+	private Ubicacion ubicacion;
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_ingreso", unique = true, nullable = false)
+	public Integer getIdIngreso() {
+		return idIngreso;
+	}
+	public void setIdIngreso(Integer idIngreso) {
+		this.idIngreso = idIngreso;
+	}
+	@Column(name = "observacion", length = 255)
+	public String getObservacion() {
+		return Observacion;
+	}
+	public void setObservacion(String observacion) {
+		Observacion = observacion;
+	}
+	@Column(name = "fecha")
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	@ManyToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name = "fk_proveedor")
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+	@Column(name = "orden_compra", length = 45)
+	public String getOrdenDeCompra() {
+		return ordenDeCompra;
+	}
+	public void setOrdenDeCompra(String ordenDeCompra) {
+		this.ordenDeCompra = ordenDeCompra;
+	}
+	@Column(name = "guia_despacho", length = 45)
+	public String getGuiaDeDespacho() {
+		return guiaDeDespacho;
+	}
+	public void setGuiaDeDespacho(String guiaDeDespacho) {
+		this.guiaDeDespacho = guiaDeDespacho;
+	}
+	@Column(name = "destino", length = 45)
+	public String getDestino() {
+		return destino;
+	}
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+	@Column(name = "inventariable")
+	public boolean isInventariable() {
+		return inventariable;
+	}
+	public void setInventariable(boolean inventariable) {
+		this.inventariable = inventariable;
+	}
+	@Column(name = "recibe_conforme")
+	public boolean isConforme() {
+		return conforme;
+	}
+	public void setConforme(boolean conforme) {
+		this.conforme = conforme;
+	}
+	@Column(name = "prestamo")
+	public boolean isPrestamo() {
+		return prestamo;
+	}
+	public void setPrestamo(boolean prestamo) {
+		this.prestamo = prestamo;
+	}
+	@ManyToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(name = "fk_ubicacion")
+	public Ubicacion getUbicacion() {
+		return ubicacion;
+	}
+	public void setUbicacion(Ubicacion ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+	
+	
+	
+
+}

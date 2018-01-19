@@ -1,0 +1,8 @@
+package com.ugurcanlacin.simple.dao;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+public interface GenericDao {
+	byte[] convertirTobyteArray(InputStream is) throws IOException;
+}

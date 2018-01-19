@@ -1,0 +1,116 @@
+package com.ugurcanlacin.simple.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
+
+
+@Entity
+@Table(name = "ingresos", catalog = "canotaje")
+public class Ingresos implements java.io.Serializable  {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5627543840539187650L;
+	private Integer idIngresos;
+	private String nombre;
+	private Integer monto;
+	private String idPersona;
+	private String idItem;
+	private boolean gasto;
+	private Date fecha;
+	private Imagen idImagen;
+	
+	public Ingresos(){
+		
+		
+	}
+	public Ingresos(String nombre,Imagen idImagen,Integer monto,String idPersona,String idItem,boolean gasto,Date fecha){
+		this.nombre=nombre;
+		this.monto=monto;
+		this.idPersona=idPersona;
+		this.idItem=idItem;
+		this.gasto=gasto;
+		this.fecha=fecha;
+		this.idImagen=idImagen;
+	}
+	
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_ingresos", unique = true, nullable = false)
+	public Integer getIdIngresos() {
+		return idIngresos;
+	}
+	public void setIdIngresos(Integer idIngresos) {
+		this.idIngresos = idIngresos;
+	}
+	@Column(name = "nombre", length = 50)
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	@Column(name = "monto", length = 10)
+	public Integer getMonto() {
+		return monto;
+	}
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+	@Column(name = "id_persona", length = 50)
+	public String getIdPersona() {
+		return idPersona;
+	}
+	public void setIdPersona(String idPersona) {
+		this.idPersona = idPersona;
+	}
+	@Column(name = "id_item", length = 50)
+	public String getIdItem() {
+		return idItem;
+	}
+	public void setIdItem(String idItem) {
+		this.idItem = idItem;
+	}
+	@Column(name = "gasto", length = 10)
+	public boolean isGasto() {
+		return gasto;
+	}
+	public void setGasto(boolean gasto) {
+		this.gasto = gasto;
+	}
+	@Column(name = "fecha", length = 50)
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	
+	
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "fk_imagen")
+	public Imagen getIdImagen() {
+		return idImagen;
+	}
+	public void setIdImagen(Imagen idImagen) {
+		this.idImagen = idImagen;
+	}
+	
+	
+}

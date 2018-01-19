@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head> 
+<body>
+<f:metadata>
+    <f:viewParam name="articuloId" value="#{fotoArticuloBean.id}" />
+</f:metadata>
+
+
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Articulos" url="vista.xhtml" />
+<!-- 				<p:menuitem value="Proveedores" url="proveedores.xhtml" /> -->
+<!-- 				<p:menuitem value="Ingreso" url="barcode.xhtml" /> -->
+<!-- 				<p:menuitem value="Salida" url="salida.xhtml" /> -->
+				
+
+
+			</p:breadCrumb>
+		
+	<h:form id="formTablaFoto" enctype="multipart/form-data" >
+<p:growl id="msgPrFoto" showDetail="true" />
+
+<h:panelGrid columns="2" style="width:100%">
+	<p:dataTable id="fotosArticulo" var="img" value="#{fotoArticuloBean.listaFotosByArticulo(fotoArticuloBean.id)}" style="font-size: 14px;width:100%;display: inline-block">
+	
+	<p:column style="width:32px" headerText="Id">
+       <h:outputText value="#{img.idFotoArticulo}" />
+    </p:column>
+    <p:column headerText="Articulo">
+       <h:outputText value="#{img.articulo.articulo}" />
+    </p:column>
+    <p:column style="width:32px" headerText="Borrar">
+       <p:commandButton icon="ui-icon-close"
+							action="#{fotoArticuloBean.borrar(img.idFotoArticulo)}"
+							update=":formTablaFoto:fotosArticulo :formTablaFoto:msgPrFoto" />
+    </p:column>
+     <p:column style="width:32px" headerText="Ver">
+       <p:commandButton icon="ui-icon-search"
+							action="#{fotoArticuloBean.asignarId(img.idFotoArticulo)}" onclick="ver.show()"
+							update=":formTablaFoto:fotosArticulo :formTablaFoto:msgPrFoto :formTablaFoto:foto" />
+    </p:column>
+    
+	</p:dataTable>
+ <p:dialog widgetVar="ver" header="ver"
+				modal="false" resizable="false" style="font-size: 13px;">
+     <p:graphicImage id="foto"  value="#{fotoArticuloBean.imageMostrar()}" width="350px" height="340px"/>
+     </p:dialog>
+     </h:panelGrid>
+		
+	</h:form>
+
+</body> 
+</html>

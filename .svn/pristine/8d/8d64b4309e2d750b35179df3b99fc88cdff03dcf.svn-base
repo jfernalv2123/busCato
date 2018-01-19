@@ -1,0 +1,22 @@
+package municipalidad.pto.service.impl;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.service.GenericService;
+
+@Service("genericService")
+public class GenericServiceImpl implements GenericService {
+	@Autowired
+	GenericDao genericDao;
+	
+	@Transactional
+	public byte[] convertirTobyteArray(InputStream is) throws IOException{
+		return genericDao.convertirTobyteArray(is);
+	}
+}

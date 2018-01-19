@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head> 
+<body>
+<f:metadata>
+    <f:viewParam name="articuloId" value="#{fotoArticuloBean.id}" />
+</f:metadata>
+
+	<p:graphicImage style="display: inline-block;" value="#{fotoArticuloBean.imageById(fotoArticuloBean.id)}" width="600px" height="600px"/> 
+
+
+
+</body> 
+</html>

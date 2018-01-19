@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body >
+	<h:form>
+
+
+		<p:dataTable id="ingresos" var="ingr"
+			value="#{ingresosBean.listaGastos()}"
+			rows="20"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    style="width: 95%;display: inline-block;"
+			>
+
+			<p:column headerText="Boleta" style="width:30%" resizable="true">
+<!-- 				<p:accordionPanel onTabShow="false" activeIndex="null"> -->
+<!-- 				<p:ajax event="tabChange" listener="#{ingresosBean.image(ingr.idImagen)}" update="a" /> -->
+<!--         <p:tab title="#{ingr.nombre}" close="true"> -->
+<!--             <h:panelGrid columns="1" cellpadding="1"> -->
+<!--                 <p:graphicImage id="a" style="display: inline-block;" -->
+<!-- 						 rendered="#{imagenBean.imagePorId(ingr.idImagen) ne null}" -->
+<!-- 						width="300px" height="200px" />     -->
+<!--             </h:panelGrid> -->
+<!--         </p:tab> -->
+<!--         </p:accordionPanel> -->
+
+    <p:commandButton  value="#{ingr.nombre}"  actionListener="#{ingresosBean.image(ingr.idImagen)}" update="imagen" oncomplete="dlg.show()">
+
+    </p:commandButton>
+			</p:column>
+			<p:column headerText="Monto">
+				<h:outputText value="$ #{ingr.monto}" />
+			</p:column>
+			<p:column headerText="Fecha">
+				<h:outputText value="#{ingr.fecha}" />
+			</p:column>
+			<p:column headerText="Item">
+				<h:outputText value="#{ingr.item}" />
+			</p:column>
+			<p:column headerText="Persona">
+				<h:outputText value="#{ingr.persona}" />
+			</p:column>
+<f:facet name="footer" >
+<div style="text-align: right;">
+ <h:outputText value="Total Gastos : $ #{ingresosBean.totalGastos()}" />
+<BR />
+          <h:outputText value=" Total en Caja : $ #{ingresosBean.enCaja()}" />
+</div>
+         <p:dialog id="dia" header="Boleta" widgetVar="dlg" >
+			<p:graphicImage id="imagen" 
+				value="#{ingresosBean.imageById()}" width="600px" height="600px" />
+		</p:dialog>
+        </f:facet>
+        		
+		</p:dataTable>
+
+
+
+
+
+	</h:form>
+	
+
+
+</body>
+</html>

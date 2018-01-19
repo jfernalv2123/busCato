@@ -1,0 +1,40 @@
+package com.ugurcanlacin.simple.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ugurcanlacin.simple.dao.PendientesDao;
+import com.ugurcanlacin.simple.model.Pendientes;
+import com.ugurcanlacin.simple.service.PendientesService;
+
+@Service("pendientesService")
+public class PendientesServiceImpl implements PendientesService{
+
+	@Autowired
+	PendientesDao pendientesDao;
+	
+	@Transactional
+	public void persistPendientes(Pendientes pendientes) {
+		pendientesDao.persistPendientes(pendientes);
+		
+	}
+	@Transactional
+	public Pendientes findPendientesById(int id) {
+	
+		return pendientesDao.findPendientesById(id);
+	}
+	@Transactional
+	public void updatePendientes(Pendientes pendientes) {
+		pendientesDao.updatePendientes(pendientes);
+		
+	}
+	@Transactional
+	public void deletePendientes(Pendientes pendientes) {
+		pendientesDao.deletePendientes(pendientes);
+		
+	}
+	
+}

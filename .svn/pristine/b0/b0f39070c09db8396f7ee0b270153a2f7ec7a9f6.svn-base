@@ -1,0 +1,85 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+
+import org.primefaces.event.RowEditEvent;
+
+import municipalidad.pto.model.AreaArticulo;
+import municipalidad.pto.model.UnidadMedida;
+import municipalidad.pto.service.UnidadMedidaService;
+
+@ManagedBean
+@SessionScoped
+public class UnidadMedidaBean implements Serializable{
+
+	@ManagedProperty(value="#{unidadMedidaService}")
+	UnidadMedidaService unidadMedidaService;
+	
+	private String unidadMedida;
+
+	
+
+	public void setUnidadMedidaService(UnidadMedidaService unidadMedidaService) {
+		this.unidadMedidaService = unidadMedidaService;
+	}
+
+	public String getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(String unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+	public void guardar(){
+		UnidadMedida unidadM = new UnidadMedida();
+		unidadM.setUnidadMedida(getUnidadMedida());
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(getUnidadMedida().equals("")){
+			context.addMessage(null, new FacesMessage("Error",  "debe ingresar un Unidad") );
+		}else{
+			unidadMedidaService.persistUnidadMedida(unidadM);
+			context.addMessage(null, new FacesMessage("Guardado",  getUnidadMedida()) );
+		}
+		setUnidadMedida(null);
+		
+	}
+	public void borrar(int id){
+		UnidadMedida unidadM = unidadMedidaService.findUnidadMedidaById(id);
+		unidadMedidaService.deleteUnidadMedida(unidadM);
+	}
+	public List<UnidadMedida> lista(){
+		return unidadMedidaService.listaUnidadMedida();
+	}
+	public void onRowEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Editado", ((UnidadMedida) event.getObject()).getUnidadMedida() + " a " + getUnidadMedida());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		UnidadMedida uni = (UnidadMedida) event.getObject();
+		uni.setUnidadMedida(getUnidadMedida());
+		unidadMedidaService.updateUnidadMedida(uni);
+		setUnidadMedida(null);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Cancelada", ((UnidadMedida) event.getObject()).getUnidadMedida());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	public List<SelectItem> comboUnidad(){
+		return unidadMedidaService.comboUnidadMedida();
+	}
+	public List<SelectItem> filtroUnidad(){
+		List<SelectItem> aux=unidadMedidaService.comboUnidadMedida();
+		SelectItem s= new SelectItem();
+		s.setLabel("Seleccione");
+		s.setValue("");
+		aux.add(s);
+		return aux;
+	}
+}

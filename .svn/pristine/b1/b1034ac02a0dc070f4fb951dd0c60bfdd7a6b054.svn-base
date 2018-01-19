@@ -1,0 +1,75 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+
+import municipalidad.pto.model.User;
+import municipalidad.pto.service.UserService;
+
+@ManagedBean
+@SessionScoped
+public class UserBean implements Serializable {
+	
+	@ManagedProperty(value="#{userService}")
+	UserService userService;
+	
+	private String name;
+	private String surname;
+	private Integer nivel;
+	private String pass;
+	
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	
+	public void persistUser(){
+		User user = new User();
+		user.setName(getName());
+		user.setSurname(getSurname());
+		user.setNivel(getNivel());
+		user.setPass(getPass());
+		userService.persistUser(user);
+	}
+	public List<User> listaUsuarios(){
+		return userService.listaUsuarios();
+		
+	}
+	public List<SelectItem> comboUser(){
+		return userService.comboUser();
+	}
+
+	public Integer getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Integer nivel) {
+		this.nivel = nivel;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	
+}

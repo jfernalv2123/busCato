@@ -1,0 +1,56 @@
+package com.ugurcanlacin.simple.dao.impl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ugurcanlacin.simple.dao.ItemDao;
+import com.ugurcanlacin.simple.model.Item;
+import com.ugurcanlacin.simple.model.User;
+
+@Repository("ItemDao")
+public class ItemDaoImpl implements ItemDao{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public void persistItem(Item user) {
+		sessionFactory.getCurrentSession().persist(user);
+	}
+
+	public Item findItemById(int id) {
+		return (Item) sessionFactory.getCurrentSession().get(Item.class, id);
+	}
+
+	public void updateItem(Item user) {
+		sessionFactory.getCurrentSession().update(user);
+		
+	}
+
+	public void deleteItem(Item user) {
+		sessionFactory.getCurrentSession().delete(user);
+		
+	}
+	public List<SelectItem> comboItem(){
+		List<SelectItem> aux=new ArrayList<SelectItem>();
+		
+		String query="SELECT i.id_item,i.nombre FROM Item as i";
+		Iterator iter = sessionFactory.getCurrentSession().createQuery(query).iterate();
+		while (iter.hasNext()) {
+			SelectItem item=new SelectItem();
+			Object[] combo = (Object[]) iter.next();
+			item.setLabel(String.valueOf(combo[1]));
+			item.setValue(String.valueOf(combo[1]));
+			
+			aux.add(item);
+		}
+		return aux;
+	}
+	
+}

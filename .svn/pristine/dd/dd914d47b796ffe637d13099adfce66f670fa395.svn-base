@@ -1,0 +1,105 @@
+package municipalidad.pto.beans;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+
+import javax.faces.context.FacesContext;
+
+import javax.faces.model.SelectItem;
+
+import org.primefaces.event.FileUploadEvent;
+
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+
+import municipalidad.pto.model.Imagen;
+import municipalidad.pto.service.ImagenService;
+
+@ManagedBean(name="imagenBean")
+@RequestScoped
+public class ImagenBean implements Serializable {
+
+	@ManagedProperty(value = "#{imagenService}")
+	ImagenService imagenService;
+
+	
+
+	private UploadedFile file;
+	private Integer id;
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	public void setImagenService(ImagenService imagenService) {
+		this.imagenService = imagenService;
+	}
+
+	public List<SelectItem> comboImagen(){
+		return this.imagenService.comboImagen();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void persistImagen(FileUploadEvent event)
+	{
+		Imagen img = new Imagen();
+		UploadedFile fil=event.getFile();
+		if (fil != null) {
+			FacesMessage message = new FacesMessage("Succesful", fil.getFileName() + " is uploaded.");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
+			int fotoSize=(int)fil.getSize();
+			 byte[] imag=new byte[fotoSize];
+			 try {
+				imag=convertirTobyteArray(fil.getInputstream());
+				img.setImagen(imag);
+				imagenService.persistImagen(img);
+			} catch (IOException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+		}else{
+			
+			FacesMessage message = new FacesMessage("ERROR");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		
+		
+		
+	}
+
+	private byte[] convertirTobyteArray(InputStream is) throws IOException {
+		byte[] bytes = null;
+		if (is != null) {
+			bytes = new byte[is.available()];
+			is.read(bytes);
+		}
+		return bytes;
+	}
+	//funcion para mostrar imagen 
+	public StreamedContent imageById(){
+		return imagenService.imageById(this.getId());
+	}
+	public StreamedContent imagePorId(Integer id){
+		return imagenService.imageById(id);
+	}
+}

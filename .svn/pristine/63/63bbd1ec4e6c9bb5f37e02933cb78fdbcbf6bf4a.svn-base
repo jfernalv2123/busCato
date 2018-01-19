@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<title>Ingreso</title>
+</h:head>
+<body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="46" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				<p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				<p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				<p:menuitem value="Salida" url="salida.xhtml" />
+				<p:menuitem value="Administracion select" url="administracion.xhtml" />
+
+
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+			<h:form id="formTablaIngreso">
+				<p:growl id="msgPrTablaIngreso" showDetail="true" />
+
+				<p:dataTable id="salidaTabla" var="ingreso" style="font-size: 11px;"
+					resizableColumns="true" value="#{ingresoBean.listaDeIngresos()}"
+					editable="true" rows="11" paginator="true"
+					filteredValue="#{ingresoBean.listaIngreso}"
+					emptyMessage="No encontrado" widgetVar="ingresoWidget"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:ajax event="rowEdit" listener="#{ingresoBean.onRowEdit}"
+						update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla" />
+					<p:ajax event="rowEditCancel"
+						listener="#{articuloBean.onRowCancel}"
+						update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla" />
+
+					<p:column headerText="Id Ingreso" filterMatchMode="exact"
+						filterBy="#{ingreso.idIngreso}" style="width:32px">
+						<h:outputText value="#{ingreso.idIngreso}" />
+					</p:column>
+					<p:column style="width:32px">
+					
+						<h:link outcome="printIngreso" value="Imprimir" >
+								<f:param name="Id" value="#{ingreso.idIngreso}" />
+							</h:link>
+					</p:column>
+
+
+					<p:column headerText="Proveedor" filterMatchMode="contains"
+						filterBy="#{ingreso.proveedor.proveedor}" style="width:32px">
+						<h:outputText value="#{ingreso.proveedor.proveedor}" />
+					</p:column>
+					<p:column headerText="Factura" filterMatchMode="contains"
+						filterBy="#{ingreso.factura}" style="width:32px">
+						<h:outputText value="#{ingreso.factura}" />
+					</p:column>
+					<p:column headerText="fecha" filterMatchMode="contains"
+						filterBy="#{ingreso.fecha}" style="width:32px">
+					
+
+						<h:outputText value="#{ingreso.fecha}" />
+					</p:column>
+					<p:column headerText="Conforme" filterMatchMode="contains"
+						filterBy="#{ingreso.conforme}" style="width:32px">
+						<h:outputText value="#{ingreso.conforme}" />
+					</p:column>
+					<p:column headerText="Destino" filterMatchMode="contains"
+						filterBy="#{ingreso.destino}" style="width:32px">
+						<h:outputText value="#{ingreso.destino}" />
+					</p:column>
+					<p:column headerText="Orden de Compra" filterMatchMode="contains"
+						filterBy="#{ingreso.ordenDeCompra}" style="width:32px">
+						<h:outputText value="#{ingreso.ordenDeCompra}" />
+					</p:column>
+					<p:column headerText="Guia Despacho" filterMatchMode="contains"
+						filterBy="#{ingreso.guiaDeDespacho}" style="width:32px">
+						<h:outputText value="#{ingreso.guiaDeDespacho}" />
+					</p:column>
+					<p:column headerText="Inventariable" filterMatchMode="contains"
+						filterBy="#{ingreso.inventariable}" style="width:32px">
+						<h:outputText value="#{ingreso.inventariable}" />
+					</p:column>
+					<p:column headerText="Prestamo" filterMatchMode="contains"
+						filterBy="#{ingreso.prestamo}" style="width:32px">
+						<h:outputText value="#{ingreso.prestamo}" />
+					</p:column>
+					<p:column headerText="Ubicación" filterMatchMode="contains"
+						filterBy="#{ingreso.ubicacion.ubicacion}" style="width:32px">
+						
+						<h:outputText value="#{ingreso.ubicacion.ubicacion}" />
+					</p:column>
+					<p:column headerText="Lugar Almacenaje" filterMatchMode="contains"
+						filterBy="#{ingreso.lugarAlmacenaje}" style="width:32px">
+						<h:outputText value="#{ingreso.lugarAlmacenaje}" />
+					</p:column>
+					<p:column headerText="Observación" filterMatchMode="contains"
+						filterBy="#{ingreso.observacion}" style="width:32px">
+						<h:outputText value="#{ingreso.observacion}" />
+					</p:column>
+
+					<p:column style="width:32px">
+						<p:commandButton icon="ui-icon-close"
+							action="#{ingresoBean.borrarIngreso(ingreso.idIngreso)}"
+							update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla">
+							<p:collector value="#{ingreso}"
+								removeFrom="#{ingresoBean.listaIngreso}" unique="true" />
+						</p:commandButton>
+					</p:column>
+
+
+
+				</p:dataTable>
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+
+			<p:commandButton value="Nuevo Ingreso" type="button"
+				onclick="newIngreso.show()" style="font-size: 13px;" />
+
+
+			<p:dialog widgetVar="newIngreso" header="Nuevo Ingreso" modal="false"
+				resizable="false" style="font-size: 13px;" showEffect="pop">
+				<h:form id="ingresoForm">
+					<h:panelGrid columns="6" cellpadding="5">
+						<h:outputText for="orden" value="Orden de Compra: " />
+						<p:inputText id="orden" value="#{ingresoBean.ordenDeCompra}" />
+
+						<h:outputText for="factura" value="Factura: " />
+						<p:inputText id="factura" value="#{ingresoBean.factura}" />
+
+						<h:outputText for="guia" value="Guia Despacho: " />
+						<p:inputText id="guia" value="#{ingresoBean.guiaDeDespacho}" />
+
+						<h:outputText for="destino" value="Destino: " />
+						<p:inputText id="destino" value="#{ingresoBean.destino}" />
+
+						<h:outputText for="fecha" value="Fecha: " />
+						<p:calendar id="fecha" value="#{ingresoBean.fecha}" />
+
+						<h:outputText value="Ubicacion:" />
+						<p:selectOneMenu value="#{ingresoBean.ubicacion}" required="true"
+							label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="ubic" />
+
+						</p:selectOneMenu>
+
+						<h:outputText for="lugarAlmacenaje" value="Lugar de Almacenaje: " />
+						<p:inputText id="lugarAlmacenaje"
+							value="#{ingresoBean.lugarAlmacenaje}" />
+						<h:outputText for="proveedor" value="Proveedor: " />
+						<pe:inputNumber id="proveedor" value="#{ingresoBean.proveedor}" />
+
+
+
+						<h:outputText for="inventariable" value="Inventariable: " />
+						<p:selectBooleanButton id="inventariable"
+							value="#{ingresoBean.inventariable}" onLabel="Yes" offLabel="No"
+							style="width:60px" />
+
+						<h:outputText for="conforme" value="Conforme: " />
+						<p:selectBooleanButton id="conforme"
+							value="#{ingresoBean.conforme}" onLabel="Yes" offLabel="No"
+							style="width:60px" />
+
+						<h:outputText for="prestamo" value="Prestamo: " />
+						<p:selectBooleanButton id="prestamo"
+							value="#{ingresoBean.prestamo}" onLabel="Yes" offLabel="No"
+							style="width:60px" />
+
+					</h:panelGrid>
+					<h:outputText for="observacion" value="Observacion: " />
+					<p:inputTextarea id="observacion" rows="2" cols="100"
+						value="#{ingresoBean.observacion}" maxlength="250"
+						autoResize="false" />
+					<h:panelGrid columns="4" cellpadding="5">
+						<h:outputText for="articulo" value="articulo: " />
+						<pe:inputNumber id="articulo" value="#{ingresoBean.idArticulo}" />
+						<h:outputText for="cantidad" value="Cantidad: " />
+						<pe:inputNumber id="cantidad" value="#{ingresoBean.cantidad}" />
+
+					</h:panelGrid>
+					<p:commandButton id="btn_addArticulo" value="Add"
+						update=":ingresoForm:listArticulos"
+						action="#{ingresoBean.addArticuloCantidad()}" />
+
+					<p:dataTable id="listArticulos"
+						value="#{ingresoBean.listaCantidadArticulos}" var="artCant"
+						type="ordered" style="display: inline-block;width:100%">
+						<p:column headerText="id">
+							<h:outputText value="#{artCant.articulo.idArticulos}" />
+						</p:column>
+						<p:column headerText="cod">
+							<h:outputText value="#{artCant.articulo.codigoAntiguo}" />
+						</p:column>
+						<p:column headerText="Articulo">
+							<h:outputText value="#{artCant.articulo.articulo}" />
+						</p:column>
+						<p:column headerText="Ubicacion">
+							<h:outputText value="#{artCant.articulo.ubicacion.ubicacion}" />
+						</p:column>
+						<p:column headerText="Marca">
+							<h:outputText value="#{artCant.articulo.marca}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText
+								value="#{artCant.cantidad} #{artCant.articulo.unidadMedida.unidadMedida}" />
+						</p:column>
+						<p:column>
+							<p:commandLink value=" X " update=":ingresoForm:listArticulos"
+								process=":ingresoForm:listArticulos">
+								<p:collector value="#{artCant}"
+									removeFrom="#{ingresoBean.listaCantidadArticulos}"
+									unique="true" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					<p:commandButton value="Guardar" action="#{ingresoBean.Guardar()}"
+						onclick="newIngreso.hiden()"
+						update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla" />
+				</h:form>
+			</p:dialog>
+
+
+		</p:layoutUnit>
+
+
+	</p:layout>
+
+
+</body>
+</html>

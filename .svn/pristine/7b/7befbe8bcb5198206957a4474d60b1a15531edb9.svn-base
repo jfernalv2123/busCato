@@ -1,0 +1,63 @@
+package municipalidad.pto.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rel_ingreso_articulo", catalog = "pto")
+public class RelIngresoArticulo implements Serializable{
+
+	private Integer idRelIngresoArticulo;
+	private Articulos articulo;
+	private Ingreso ingreso;
+	private Integer catidad;
+	public RelIngresoArticulo(Articulos articulo, Ingreso ingreso, Integer catidad) {
+		this.articulo = articulo;
+		this.ingreso = ingreso;
+		this.catidad = catidad;
+	}
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id_rel_ingreso_articulo", unique = true, nullable = false)
+	public Integer getIdRelIngresoArticulo() {
+		return idRelIngresoArticulo;
+	}
+	public void setIdRelIngresoArticulo(Integer idRelIngresoArticulo) {
+		this.idRelIngresoArticulo = idRelIngresoArticulo;
+	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_articulo")
+	public Articulos getArticulo() {
+		return articulo;
+	}
+	public void setArticulo(Articulos articulo) {
+		this.articulo = articulo;
+	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_ingreso")
+	public Ingreso getIngreso() {
+		return ingreso;
+	}
+	public void setIngreso(Ingreso ingreso) {
+		this.ingreso = ingreso;
+	}
+	@Column(name = "cantidad", length = 10)
+	public Integer getCatidad() {
+		return catidad;
+	}
+	public void setCatidad(Integer catidad) {
+		this.catidad = catidad;
+	}
+	
+	
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+<h:head>
+	<title>Imprimir ingreso</title>
+<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+</h:head>
+<body>
+
+	<f:metadata>
+		<f:viewParam name="Id" value="#{salidaBean.id}" />
+	</f:metadata>
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="46" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="Articulo.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				<p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				<p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				<p:menuitem value="Salida" url="salida.xhtml" />
+				<p:menuitem value="Administracion select" url="administracion.xhtml" />
+
+
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			id="prueba" closable="true" collapsible="true">
+
+			<p:panel id="print" style="width:700px;font-size: 13px;">
+				<p:dataTable id="salidaPrint" var="salida"
+					style="width:100%;font-size: 13px;"
+					value="#{salidaBean.listaSalidaArticuloBySalida(salidaBean.id)}">
+					<f:facet name="header">
+
+
+
+
+						<h:panelGrid columns="2">
+
+<img src="../imagenes/logo.png"/>
+							<h:outputText value="" />
+							<h:outputText
+									value="MUNICIPALIDAD DE SAAVEDRA"
+									style="font-size: 8px;" />
+									<h:outputText value="" />
+								<h:outputText
+									value="ADMINISTRACIÓN Y FINANZAS BODEGA MUNICIPAL"
+									style="font-size: 8px;" />
+							<h:panelGrid columns="1" style="text-align: center;width:100%">
+								<h:outputText
+									value=""
+									style="font-size: 8px;" />
+								<h:outputText value=""
+									style="font-size: 8px;" />
+							</h:panelGrid>
+							<h:outputText
+								value="Salida Bodega N° #{salidaBean.salida.idSalida}" />
+							<h:outputText value="Fecha : #{salidaBean.salida.fecha}" />
+							<h:outputText
+								value="Solicitud : #{salidaBean.salida.nSolicitud}" />
+						</h:panelGrid>
+					</f:facet>
+					<p:column headerText="Cod">
+						<h:outputText value="#{salida.articulo.idArticulos}" />
+					</p:column>
+					<p:column headerText="Catidad">
+						<h:outputText
+							value="#{salida.cantidad} #{salida.articulo.unidadMedida.unidadMedida}" />
+					</p:column>
+					<p:column headerText="Detalle">
+						<h:outputText value="#{salida.articulo.articulo}" />
+					</p:column>
+					<f:facet name="footer">
+
+					</f:facet>
+
+				</p:dataTable>
+				<br /><br />
+				<br /><br /><br />
+				
+				<h:panelGrid columns="2" style="text-align: left;width:100%"
+					cellpadding="5">
+					<h:outputText value="Observacion:" />
+					<h:outputText value="#{salidaBean.salida.observaciones}" />
+
+				</h:panelGrid>
+				<br /><br />
+				
+				<h:panelGrid columns="2" style="text-align: left;width:100%"
+					cellpadding="5">
+					
+					<h:outputText
+						value="Solicitante : #{salidaBean.salida.solicitante}" />
+
+					<h:outputText
+						value="Prestamo : #{salidaBean.salida.prestamo}" />
+
+					
+				</h:panelGrid>
+				<br />
+				<br /><br />
+				<br /><br />
+				<br />
+				<h:panelGrid columns="2" style="text-align: left;width:100%"
+					cellpadding="5">
+					<h:outputText value="_______________________" />
+					<h:outputText value="Conforme : Si" />
+					<h:outputText value="Firma y Timbre Bodega Municipal" />
+
+				</h:panelGrid>
+			</p:panel>
+		</p:layoutUnit>
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+				style="font-size: 13px;">
+				<p:printer target="print" />
+			</p:commandButton>
+
+
+
+		</p:layoutUnit>
+
+	</p:layout>
+</body>
+</html>

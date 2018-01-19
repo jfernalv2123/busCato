@@ -1,0 +1,162 @@
+package com.ugurcanlacin.simple.beans;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import org.primefaces.model.StreamedContent;
+import com.ugurcanlacin.simple.model.Imagen;
+import com.ugurcanlacin.simple.model.Ingresos;
+import com.ugurcanlacin.simple.model.VisataIngresos;
+import com.ugurcanlacin.simple.objetos.Gastos;
+import com.ugurcanlacin.simple.service.CajaService;
+import com.ugurcanlacin.simple.service.ImagenService;
+import com.ugurcanlacin.simple.service.IngresosService;
+
+
+@ManagedBean(name="ingresosBean")
+@SessionScoped
+public class IngresosBean implements Serializable {
+
+	@ManagedProperty(value="#{ingresosService}")
+	IngresosService ingresosService;
+	
+	@ManagedProperty(value="#{imagenService}")
+	ImagenService imagenService;
+	
+	@ManagedProperty(value="#{cajaService}")
+	CajaService cajaService;
+	
+	private String nombre;
+	private Integer monto;
+	private Integer idImagen;
+	private String idPersona;
+	private String idItem;
+	private boolean gasto;
+	private Date fecha;
+	private Imagen imagen;
+	
+	
+	
+	public void setIngresosService(IngresosService ingresosService) {
+		this.ingresosService = ingresosService;
+	}
+	
+	public void setImagenService(ImagenService imagenService) {
+		this.imagenService = imagenService;
+	}
+	public void setCajaService(CajaService cajaService) {
+		this.cajaService = cajaService;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Integer getMonto() {
+		return monto;
+	}
+
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+
+	public String getIdPersona() {
+		return idPersona;
+	}
+
+	public void setIdPersona(String idPersona) {
+		this.idPersona = idPersona;
+	}
+
+	public String getIdItem() {
+		return idItem;
+	}
+
+	public void setIdItem(String idItem) {
+		this.idItem = idItem;
+	}
+
+	public boolean isGasto() {
+		return gasto;
+	}
+
+	public void setGasto(boolean gasto) {
+		this.gasto = gasto;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	
+	public Imagen getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Imagen imagen) {
+		this.imagen = imagen;
+	}
+	
+
+	public Integer getIdImagen() {
+		return idImagen;
+	}
+
+	public void setIdImagen(Integer idImagen) {
+		this.idImagen = idImagen;
+	}
+
+	public void persistIngresos(){
+		Ingresos ingresos = new Ingresos();
+		ingresos.setNombre(getNombre());
+		ingresos.setMonto(getMonto());
+		ingresos.setIdPersona(getIdPersona());
+		ingresos.setIdItem(getIdItem());
+		ingresos.setGasto(isGasto());
+		Integer numero=getIdImagen();
+		ingresos.setIdImagen(imagenService.findImagenById(numero));
+		ingresos.setFecha(getFecha());
+		
+		ingresosService.persistIngresos(ingresos);
+	}
+	public StreamedContent imageById(){
+		return imagenService.imageById(this.getIdImagen());
+	}
+	public void image(Integer num){
+		this.idImagen =num;
+	}
+	public StreamedContent imageById(Integer num){
+		if(this.getIdImagen()==null){
+			return imagenService.imageById(120);
+		}else{
+			
+			return imagenService.imageById(this.getIdImagen());
+		}
+		
+	}
+
+	public String totalGastos(){
+		return ingresosService.totalGastos();
+	}
+	public List<Gastos> listaGastos(){
+		return ingresosService.listaGastos();
+	}
+	public Integer enCaja(){
+		Integer gastos=Integer.parseInt(ingresosService.totalGastos()) ;
+		
+		return cajaService.cajaActual()-gastos;
+	}
+}

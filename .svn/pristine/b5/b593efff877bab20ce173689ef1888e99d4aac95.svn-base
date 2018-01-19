@@ -1,0 +1,62 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.RelSalidaArticuloDao;
+import municipalidad.pto.model.RelIngresoArticulo;
+import municipalidad.pto.model.RelSalidaArticulo;
+import municipalidad.pto.service.RelSalidaArticuloService;
+
+@Service("relSalidaArticuloService")
+public class RelSalidaArticuloServiceImpl implements RelSalidaArticuloService{
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	RelSalidaArticuloDao relSalidaArticuloDao;
+	
+	@Transactional
+	public void persistRelSalidaArticulo(RelSalidaArticulo relIngresoArticulo) {
+		genericDao.Guardar(relIngresoArticulo);
+		
+	}
+	@Transactional
+	public RelSalidaArticulo findRelSalidaArticuloById(int id) {
+	
+		return relSalidaArticuloDao.findRelSalidaArticuloById(id);
+	}
+	@Transactional
+	public void updateRelSalidaArticulo(RelSalidaArticulo relSalidaArticulo) {
+		genericDao.update(relSalidaArticulo);
+		
+	}
+	@Transactional
+	public void deleteRelSalidaArticulo(RelSalidaArticulo relSalidaArticulo) {
+		genericDao.delete(relSalidaArticulo);
+		
+	}
+	@Transactional
+	public List<RelSalidaArticulo> listaRelSalidaArticulo() {
+		return relSalidaArticuloDao.listaRelSalidaArticulo();
+	}
+	@Transactional
+	public List<RelSalidaArticulo> listaRelSalidaArticuloByIngreso(int id){
+		return relSalidaArticuloDao.listaRelSalidaArticuloByIngreso(id);
+	}
+	@Transactional
+	public Long salidaArticulo(int id){
+		return relSalidaArticuloDao.salidaArticulo(id);
+	}
+	@Transactional
+	public Long salidaArticuloBySalida(int id){
+		return relSalidaArticuloDao.salidaArticuloBySalida(id);
+	}
+	@Transactional
+	public Long salidaArticuloBySalidaAndArticulo(int idSalida,int idArticulo){
+		return relSalidaArticuloDao.salidaArticuloBySalidaAndArticulo(idSalida, idArticulo);
+	}
+}

@@ -1,0 +1,63 @@
+package com.ugurcanlacin.simple.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "caja", catalog = "canotaje")
+public class Caja implements java.io.Serializable{
+
+	private Integer idCaja;
+	private Integer valor;
+	private Date fecha;
+	private String detalle;
+	
+	public Caja(){
+		
+	}
+	public Caja(Integer valor,Date fecha,String detalle){
+	this.valor=valor;
+	this.fecha=fecha;
+	this.detalle=detalle;
+	}
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "idcaja", unique = true, nullable = false)
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
+	}
+	@Column(name = "valor", nullable = false)
+	public Integer getValor() {
+		return valor;
+	}
+	public void setValor(Integer valor) {
+		this.valor = valor;
+	}
+	@Column(name = "fecha", nullable = false)
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	@Column(name = "detalle", nullable = false, length = 255)
+	public String getDetalle() {
+		return detalle;
+	}
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
+	
+	
+}

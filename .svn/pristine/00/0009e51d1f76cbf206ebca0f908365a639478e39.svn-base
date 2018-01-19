@@ -1,0 +1,59 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.DevolucionDao;
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.model.Devolucion;
+import municipalidad.pto.service.DevolucionService;
+
+@Service("devolucionService")
+public class DevolucionServiceImpl implements DevolucionService{
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	DevolucionDao devolucionDao;
+	
+	@Transactional
+	public Devolucion findDevolucionById(int id){
+		return devolucionDao.findDevolucionById(id);
+	}
+	@Transactional
+	public List<Devolucion> listaDevolucion(){
+		return devolucionDao.listaDevolucion();
+	}
+	@Transactional
+	public List<Devolucion> listaDevolucionBySalida(int id){
+		return devolucionDao.listaDevolucionBySalida(id);
+	}
+	@Transactional
+	public Long salidaDevolucion(int id,boolean perdida){
+		return devolucionDao.salidaDevolucion(id,perdida);
+	}
+	@Transactional
+	public void persistDevolucion(Devolucion devolucion) {
+		genericDao.Guardar(devolucion);
+	}
+	@Transactional
+	public void updateDevolucion(Devolucion devolucion) {
+		genericDao.update(devolucion);
+		
+	}
+	@Transactional
+	public void deleteDevolucion(Devolucion devolucion) {
+		genericDao.delete(devolucion);	
+	}
+	@Transactional
+	public Long salidaDevolucionBySalida(int id,boolean perdida){
+		return devolucionDao.salidaDevolucionBySalida(id,perdida);
+	}
+	@Transactional
+	public Long salidaDevolucionBySalidaAndArticulo(int idSalida,int idArticulo,boolean perdida){
+		return devolucionDao.salidaDevolucionBySalidaAndArticulo(idSalida, idArticulo,perdida);
+	}
+}

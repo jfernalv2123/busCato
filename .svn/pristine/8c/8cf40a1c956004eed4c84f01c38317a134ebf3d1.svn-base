@@ -1,0 +1,81 @@
+package com.ugurcanlacin.simple.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+
+@Entity
+@Table(name = "tabla_ingreso", catalog = "canotaje")
+public class VisataIngresos implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 803944373435173877L;
+	private Integer idIngresos;
+	private String nombre;
+	private Integer monto;
+	private String idPersona;
+	private String idItem;
+	private boolean gasto;
+	private Imagen idImagen;
+	
+	@Id
+	@Column(name = "id_ingresos", insertable = false, updatable = false)
+	public Integer getIdIngresos() {
+		return idIngresos;
+	}
+	public void setIdIngresos(Integer idIngresos) {
+		this.idIngresos = idIngresos;
+	}
+	@Column(name = "nombre", insertable = false, updatable = false)
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	@Column(name = "monto", insertable = false, updatable = false)
+	public Integer getMonto() {
+		return monto;
+	}
+	public void setMonto(Integer monto) {
+		this.monto = monto;
+	}
+	@Column(name = "id_persona", insertable = false, updatable = false)
+	public String getIdPersona() {
+		return idPersona;
+	}
+	public void setIdPersona(String idPersona) {
+		this.idPersona = idPersona;
+	}
+	@Column(name = "id_item", insertable = false, updatable = false)
+	public String getIdItem() {
+		return idItem;
+	}
+	public void setIdItem(String idItem) {
+		this.idItem = idItem;
+	}
+	@Column(name = "gasto", insertable = false, updatable = false)
+	public boolean isGasto() {
+		return gasto;
+	}
+	public void setGasto(boolean gasto) {
+		this.gasto = gasto;
+	}
+	
+	@Column(name = "fk_imagen", insertable = false, updatable = false)
+	public Imagen getIdImagen() {
+		return idImagen;
+	}
+	public void setIdImagen(Imagen idImagen) {
+		this.idImagen = idImagen;
+	}
+	
+}

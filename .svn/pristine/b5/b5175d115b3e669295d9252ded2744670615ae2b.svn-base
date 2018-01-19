@@ -1,0 +1,76 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+
+
+
+import municipalidad.pto.model.AreaArticulo;
+import municipalidad.pto.service.AreaService;
+
+
+@ManagedBean
+@SessionScoped
+public class AreaBean implements Serializable{
+
+	@ManagedProperty(value="#{areaService}")
+	AreaService areaService;
+	
+	
+	 private String area;
+
+
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+
+
+	public String getArea() {
+		return area;
+	}
+
+	public void persistArea() {
+		AreaArticulo area=new AreaArticulo();
+		area.setArea(getArea());
+		areaService.persistArea(area);
+		setArea(null);
+		
+	}
+
+	public AreaArticulo findAreaById(int id) {
+	
+		return areaService.findAreaById(id);
+	}
+
+	public void updateArea(AreaArticulo area) {
+		AreaArticulo areaAux=new AreaArticulo();
+		area.setArea(getArea());
+		areaService.updateArea(area);
+		
+	}
+
+	public void deleteArea(Integer id) {
+
+		AreaArticulo area = areaService.findAreaById(id);
+		areaService.deleteArea(area);
+
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
+	public List<AreaArticulo> listaAreas() {
+		return areaService.listaAreas();
+	}
+	
+	public List<SelectItem> comboArea(){
+		return areaService.comboArea();
+	}
+	 
+	 
+}

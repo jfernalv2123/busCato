@@ -1,0 +1,19 @@
+package municipalidad.pto.dao;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import municipalidad.pto.model.AreaArticulo;
+
+public interface AreaDao {
+
+	void persistArea(AreaArticulo area);
+	AreaArticulo findAreaById(int id);
+	void updateArea(AreaArticulo area);
+	void deleteArea(AreaArticulo area);
+	List<AreaArticulo> listaAreas();	
+	List<SelectItem> comboArea();
+}

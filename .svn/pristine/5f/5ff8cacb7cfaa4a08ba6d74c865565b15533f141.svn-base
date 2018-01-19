@@ -1,0 +1,72 @@
+package municipalidad.pto.dao.impl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+import javax.management.StringValueExp;
+
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import municipalidad.pto.dao.UserDao;
+import municipalidad.pto.model.User;
+
+@Repository("userDao")
+public class UserDaoImpl implements UserDao{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public void persistUser(User user) {
+		sessionFactory.getCurrentSession().persist(user);
+	}
+
+	public User findUserById(int id) {
+		return (User) sessionFactory.getCurrentSession().get(User.class, id);
+	}
+
+	public void updateUser(User user) {
+		sessionFactory.getCurrentSession().update(user);
+		
+	}
+
+	public void deleteUser(User user) {
+		sessionFactory.getCurrentSession().delete(user);
+		
+	}
+
+	public List<User> listaUsuarios() {
+
+		String query="FROM User as u";
+		List<User> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+
+		return aux;
+	}
+	
+	public List<SelectItem> comboUser(){
+		List<SelectItem> aux=new ArrayList<SelectItem>();
+		
+		String query="SELECT u.name,u.surname FROM User as u";
+		Iterator iter = sessionFactory.getCurrentSession().createQuery(query).iterate();
+		while (iter.hasNext()) {
+			SelectItem item=new SelectItem();
+			Object[] combo = (Object[]) iter.next();
+			item.setLabel(String.valueOf(combo[0]));
+			item.setValue(String.valueOf(combo[0])+" "+String.valueOf(combo[1]));
+			
+			aux.add(item);
+		}
+		return aux;
+	}
+	public User login(User user){
+
+		String query="FROM User as u where u.name="+user.getName()+" u.pass="+user.getPass();
+		List<User> aux= sessionFactory.getCurrentSession().createQuery(query).list();
+		return aux.get(0);
+	
+	}
+}

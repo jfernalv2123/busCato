@@ -1,0 +1,17 @@
+package municipalidad.pto.service;
+
+import java.util.List;
+
+import municipalidad.pto.model.Articulos;
+
+public interface ArticulosService {
+
+	void persistArticulos(Articulos articulo);
+	Articulos findArticuloById(int id);
+	void updateArticulos(Articulos articulo);
+	void deleteArticulos(Articulos articulo);
+	List<Articulos> listaArticulos();
+	List<String> nombreaArticuloBynombre(String articulo);
+	Long stock(int id,boolean inventariable);
+	Articulos findArticuloByCodigo(String cod);
+}

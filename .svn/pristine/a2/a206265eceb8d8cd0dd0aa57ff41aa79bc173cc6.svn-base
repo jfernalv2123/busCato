@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+	<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+	<title>Ingreso</title>
+</h:head>
+<body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="46" resizable="true"
+			closable="true" collapsible="true">
+			<p:breadCrumb style="font-size: 13px;">
+				<p:menuitem value="Categories" url="../index.xhtml" />
+				<p:menuitem value="Articulos" url="Articulo.xhtml" />
+				<p:menuitem value="Proveedores" url="proveedores.xhtml" />
+				<p:menuitem value="Ingreso" url="ingreso.xhtml" />
+				<p:menuitem value="Salida" url="salida.xhtml" />
+				<p:menuitem value="Administracion select" url="administracion.xhtml" />
+
+
+			</p:breadCrumb>
+		</p:layoutUnit>
+		<p:layoutUnit position="center" size="100" resizable="true"
+			closable="true" collapsible="true">
+			<h:form id="formTablaIngreso">
+				<p:growl id="msgPrTablaIngreso" showDetail="true" />
+
+				<p:dataTable id="salidaTabla" var="ingreso" style="font-size: 11px;"
+					resizableColumns="true" value="#{ingresoBean.listaDeIngresos()}"
+					editable="true" rows="11" paginator="true"
+					filteredValue="#{ingresoBean.listaIngreso}"
+					emptyMessage="No encontrado" widgetVar="ingresoWidget"
+					rowsPerPageTemplate="5,10,15,20"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+
+					<p:column headerText="Id Ingreso" filterMatchMode="exact"
+						filterBy="#{ingreso.idIngreso}" style="width:32px">
+						<h:outputText value="#{ingreso.idIngreso}" />
+					</p:column>
+					<p:column style="width:32px" >
+					
+<p:commandLink actionListener="#{ingresoBean.modificar(ingreso)}" 
+							oncomplete="imprimirDialog.show();"
+							update=":imprimirForm:print">
+							<h:graphicImage value="../imagenes/Impresora.png" width="32px"/>
+						</p:commandLink>
+							
+
+				
+					</p:column>
+
+
+					<p:column headerText="Proveedor" filterMatchMode="contains"
+						filterBy="#{ingreso.proveedor.proveedor}" style="width:32px">
+						<h:outputText value="#{ingreso.proveedor.proveedor}" />
+					</p:column>
+
+					<p:column headerText="fecha" filterMatchMode="contains"
+						filterBy="#{ingreso.fecha}" style="width:32px">
+
+
+						<h:outputText value="#{ingreso.fecha}" />
+					</p:column>
+					<p:column headerText="Conforme" filterMatchMode="contains"
+						filterBy="#{ingreso.conforme}" style="width:32px">
+						<h:outputText value="#{ingresoBean.afirmacion(ingreso.conforme)}" />
+					</p:column>
+					<p:column headerText="Destino" filterMatchMode="contains"
+						filterBy="#{ingreso.destino}" style="width:32px">
+						<h:outputText value="#{ingreso.destino}" />
+					</p:column>
+					<p:column headerText="Orden de Compra" filterMatchMode="contains"
+						filterBy="#{ingreso.ordenDeCompra}" style="width:32px">
+						<h:outputText value="#{ingreso.ordenDeCompra}" />
+					</p:column>
+					<p:column headerText="Factura" >
+						<ui:repeat var="fac" style="font-size: 13px;"
+							resizableColumns="true"
+							value="#{ingresoBean.listaFacturasByIngreso(ingreso.idIngreso)}">
+
+							<h:outputText value="#{fac.factura} " />
+
+							<br />
+						</ui:repeat>
+
+					</p:column>
+					<p:column headerText="Guia Despacho" filterMatchMode="contains"
+						filterBy="#{ingreso.guiaDeDespacho}" style="width:32px">
+						<h:outputText value="#{ingreso.guiaDeDespacho}" />
+					</p:column>
+					<p:column headerText="Inventariable" filterMatchMode="contains" filterOptions="#{proveedorBean.siNo()}"
+						filterBy="#{ingreso.inventariable}" style="width:32px">
+						<h:outputText
+							value="#{ingresoBean.afirmacion(ingreso.inventariable)}" />
+					</p:column>
+					<p:column headerText="Prestamo" filterMatchMode="contains" filterOptions="#{proveedorBean.siNo()}"
+						filterBy="#{ingreso.prestamo}" style="width:32px">
+						<h:outputText value="#{ingresoBean.afirmacion(ingreso.prestamo)}" />
+					</p:column>
+					<p:column headerText="Ubicación" filterMatchMode="contains" filterOptions="#{ubicacionBean.filtroUbicacion()}"
+						filterBy="#{ingreso.ubicacion.idUbicacion}" style="width:32px">
+
+						<h:outputText value="#{ingreso.ubicacion.ubicacion}" />
+					</p:column>
+
+					<p:column headerText="Observación" filterMatchMode="contains"
+						filterBy="#{ingreso.observacion}" style="width:32px">
+						<h:outputText value="#{ingreso.observacion}" />
+					</p:column>
+
+					<p:column style="width:32px" rendered="#{userBean.sesion}">
+						<p:commandButton icon="ui-icon-close" rendered="#{userBean.sesion}"
+							action="#{ingresoBean.borrarIngreso(ingreso.idIngreso)}"
+							update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla">
+							<p:collector value="#{ingreso}"
+								removeFrom="#{ingresoBean.listaIngreso}" unique="true" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px" rendered="#{userBean.sesion}">
+						<p:commandLink actionListener="#{ingresoBean.modificar(ingreso)}" rendered="#{userBean.sesion}"
+							oncomplete="modIngreso.show();"
+							update=":ingresoUpdate:updateIngreso">
+							<h:graphicImage value="../imagenes/edit.png" />
+						</p:commandLink>
+					</p:column>
+
+
+				</p:dataTable>
+			</h:form>
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" size="50" resizable="true"
+			closable="true" collapsible="true" style="text-align: center;">
+
+			<p:commandButton value="Nuevo Ingreso" type="button" rendered="#{userBean.sesion}"
+				onclick="newIngreso.show()" style="font-size: 13px;" />
+
+
+			<p:dialog widgetVar="newIngreso" header="Nuevo Ingreso" modal="false"
+				resizable="false" style="font-size: 13px;" showEffect="pop">
+				<h:form id="ingresoForm">
+					<h:panelGrid columns="6" cellpadding="5">
+						<h:outputText for="orden" value="Orden de Compra: " />
+						<p:inputText id="orden" value="#{ingresoBean.ordenDeCompra}" required="true"/>
+
+
+
+						<h:outputText for="guia" value="Guia Despacho: " />
+						<p:inputText id="guia" value="#{ingresoBean.guiaDeDespacho}" required="true"/>
+
+						<h:outputText for="destino" value="Destino: " />
+						<p:inputText id="destino" value="#{ingresoBean.destino}" required="true"/>
+
+						<h:outputText for="fecha" value="Fecha: " />
+						<p:calendar id="fecha" value="#{ingresoBean.fecha}" required="true" />
+
+						<h:outputText value="Ubicacion:" />
+						<p:selectOneMenu value="#{ingresoBean.ubicacion}" required="true"
+							label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="ubic" />
+
+						</p:selectOneMenu>
+
+
+						<h:outputText for="proveedor" value="Proveedor: " />
+						<p:selectOneMenu value="#{ingresoBean.proveedor}" required="true"
+							label="Categoria">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{proveedorBean.comboProveedor()}"
+								var="estado" />
+						</p:selectOneMenu>
+
+
+						<h:outputText for="inventariable" value="Inventariable: " />
+						<p:selectBooleanButton id="inventariable"
+							value="#{ingresoBean.inventariable}" onLabel="Si" offLabel="No"
+							style="width:60px" />
+
+						<h:outputText for="conforme" value="Conforme: " />
+						<p:selectBooleanButton id="conforme"
+							value="#{ingresoBean.conforme}" onLabel="Si" offLabel="No"
+							style="width:60px" />
+
+						<h:outputText for="prestamo" value="Prestamo: " />
+						<p:selectBooleanButton id="prestamo"
+							value="#{ingresoBean.prestamo}" onLabel="Si" offLabel="No"
+							style="width:60px" />
+
+					</h:panelGrid>
+					<h:outputText for="observacion" value="Observacion: " />
+					<p:inputTextarea id="observacion" rows="2" cols="100"
+						value="#{ingresoBean.observacion}" maxlength="250"
+						autoResize="false" />
+					<br />
+					<br />
+					<h:panelGrid columns="3">
+
+						<h:outputText value="Factura: " />
+						<p:inputText value="#{ingresoBean.factura}" />
+						<p:commandButton id="btn_addFactura" value="Add"
+							update=":ingresoForm:listFacturas :formTablaIngreso:msgPrTablaIngreso"
+							action="#{ingresoBean.addFactura()}" />
+					</h:panelGrid>
+					<p:dataTable id="listFacturas"
+						value="#{ingresoBean.listFacturaAux}" var="fact" type="ordered"
+						style="display: inline-block;width:100%">
+						<p:column>
+							<h:outputText value="#{fact}" />
+						</p:column>
+						<p:column style="width:32px">
+							<p:commandLink value=" X " update=":ingresoForm:listFacturas"
+								process=":ingresoForm:listFacturas">
+								<p:collector value="#{fact}"
+									removeFrom="#{ingresoBean.listFacturaAux}" unique="true" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+
+					<h:panelGrid columns="9" cellpadding="4">
+						<h:outputText for="articulo" value="Articulo: " />
+						<pe:inputNumber id="articulo" value="#{ingresoBean.idArticulo}" />
+						<h:outputText for="cantidad" value="Cantidad: " />
+						<pe:inputNumber id="cantidad" value="#{ingresoBean.cantidad}" />
+						<p:commandButton id="btn_addArticulo" value="Add"
+							update=":ingresoForm:listArticulos :formTablaIngreso:msgPrTablaIngreso"
+							action="#{ingresoBean.addArticuloCantidad()}" />
+					</h:panelGrid>
+
+
+
+					<p:dataTable id="listArticulos"
+						value="#{ingresoBean.listaCantidadArticulos}" var="artCant"
+						type="ordered" style="display: inline-block;width:100%">
+						<p:column headerText="id">
+							<h:outputText value="#{artCant.articulo.idArticulos}" />
+						</p:column>
+						<p:column headerText="cod">
+							<h:outputText value="#{artCant.articulo.codigoAntiguo}" />
+						</p:column>
+						<p:column headerText="Articulo">
+							<h:outputText value="#{artCant.articulo.articulo}" />
+						</p:column>
+						<p:column headerText="Ubicacion">
+							<h:outputText value="#{artCant.articulo.ubicacion.ubicacion}" />
+						</p:column>
+						<p:column headerText="Marca">
+							<h:outputText value="#{artCant.articulo.marca}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText
+								value="#{artCant.cantidad} #{artCant.articulo.unidadMedida.unidadMedida}" />
+						</p:column>
+						<p:column>
+							<p:commandLink value=" X " update=":ingresoForm:listArticulos"
+								process=":ingresoForm:listArticulos">
+								<p:collector value="#{artCant}"
+									removeFrom="#{ingresoBean.listaCantidadArticulos}"
+									unique="true" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					<p:commandButton value="Guardar" action="#{ingresoBean.Guardar()}"
+						onclick="newIngreso.hiden()"
+						update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla" />
+				</h:form>
+			</p:dialog>
+			<h:form id="ingresoUpdate">
+				<p:dialog widgetVar="modIngreso" header="Modificar Ingreso"
+					id="updateIngreso" modal="false" resizable="false"
+					style="font-size: 13px;">
+					<h:panelGrid columns="6" cellpadding="5">
+
+
+						<h:outputText value="Proveedor :" />
+						<p:selectOneMenu
+							value="#{ingresoBean.ingresoAux.proveedor.idProveedor}"
+							required="true" label="Categoria">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{proveedorBean.comboProveedor()}"
+								var="estado" />
+						</p:selectOneMenu>
+
+						<h:outputText value="fecha :" />
+						<p:calendar value="#{ingresoBean.ingresoAux.fecha}" />
+						<h:outputText value="Conforme :" />
+						<p:selectBooleanButton value="#{ingresoBean.ingresoAux.conforme}"
+							onLabel="Si" offLabel="No" style="width:60px" />
+						<h:outputText value="Destino :" />
+						<p:inputText value="#{ingresoBean.ingresoAux.destino}" />
+						<h:outputText value="Orden de Compra :" />
+						<p:inputText value="#{ingresoBean.ingresoAux.ordenDeCompra}" />
+						<h:outputText value="Guia Despacho :" />
+						<p:inputText value="#{ingresoBean.ingresoAux.guiaDeDespacho}" />
+						<h:outputText value="Inventariable :" />
+						<p:selectBooleanButton id="prestamo"
+							value="#{ingresoBean.ingresoAux.inventariable}" onLabel="Si"
+							offLabel="No" style="width:60px" />
+						<h:outputText value="Prestamo :" />
+						<p:selectBooleanButton value="#{ingresoBean.ingresoAux.prestamo}"
+							onLabel="Si" offLabel="No" style="width:60px" />
+						<h:outputText value="Ubicación :" />
+						<p:selectOneMenu
+							value="#{ingresoBean.ingresoAux.ubicacion.idUbicacion}"
+							required="true" label="Ubicacion">
+							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+							<f:selectItems value="#{ubicacionBean.comboUbicacion()}"
+								var="estado" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Observación :" />
+						<p:inputTextarea rows="6" cols="33"
+							value="#{ingresoBean.ingresoAux.observacion}" />
+
+					</h:panelGrid>
+					<h:panelGrid columns="9" cellpadding="4">
+						<h:outputText for="articulo" value="Articulo: " />
+						<pe:inputNumber id="articulo" value="#{ingresoBean.idArticulo}" />
+						<h:outputText for="cantidad" value="Cantidad: " />
+						<pe:inputNumber id="cantidad" value="#{ingresoBean.cantidad}" />
+						<p:commandButton id="btn_addArticulo" value="Add"
+							update=":ingresoUpdate:listArticulosUpdate :formTablaIngreso:msgPrTablaIngreso"
+							action="#{ingresoBean.addArticuloIngresoMod()}" />
+					</h:panelGrid>
+					<p:dataTable id="listArticulosUpdate"
+						value="#{ingresoBean.listaRelIngresoArticulo}" var="artCant"
+						type="ordered" style="display: inline-block;width:100%">
+						<p:column headerText="id">
+							<h:outputText value="#{artCant.articulo.idArticulos}" />
+						</p:column>
+						<p:column headerText="cod">
+							<h:outputText value="#{artCant.articulo.codigoAntiguo}" />
+						</p:column>
+						<p:column headerText="Articulo">
+							<h:outputText value="#{artCant.articulo.articulo}" />
+						</p:column>
+						<p:column headerText="Ubicacion">
+							<h:outputText value="#{artCant.articulo.ubicacion.ubicacion}" />
+						</p:column>
+						<p:column headerText="Marca">
+							<h:outputText value="#{artCant.articulo.marca}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText
+								value="#{artCant.catidad} #{artCant.articulo.unidadMedida.unidadMedida}" />
+						</p:column>
+						<p:column>
+							<p:commandLink value=" X " update=":ingresoUpdate:listArticulosUpdate"
+								process=":ingresoUpdate:listArticulosUpdate" action="#{ingresoBean.removeArticuloIngreso(artCant)}">
+								<p:collector value="#{artCant}"
+									removeFrom="#{ingresoBean.listaRelIngresoArticulo}"
+									unique="true" />
+							</p:commandLink>
+						</p:column>
+
+					</p:dataTable>
+					
+					<p:commandButton value="Modificar" icon="ui-icon-check"
+						update=":formTablaIngreso:msgPrTablaIngreso :formTablaIngreso:salidaTabla"
+						actionListener="#{ingresoBean.guardarIngreso()}"
+						oncomplete="modIngreso.hide();" />
+				</p:dialog>
+			</h:form>
+			<h:form id="imprimirForm">
+				<p:dialog widgetVar="imprimirDialog" showEffect="explode" resizable="false" height="600">
+				
+			<p:panel id="print" style="width:800px;font-size: 13px;">
+				<div>
+					<h:panelGrid columns="1" style="font-size: 8px;text-align: center;">
+						<img src="../imagenes/logo.png" />
+						<h:outputText value="MUNICIPALIDAD DE SAAVEDRA" />
+						<h:outputText value="ADMINISTRACIÓN Y FINANZAS" />
+						<h:outputText value="BODEGA MUNICIPAL" />
+					</h:panelGrid>
+				</div>
+				<div style="width: 80%; font-size: 13px; text-align: right;">
+
+					<h:outputText value="FECHA: #{ingresoBean.formatearFecha(ingresoBean.ingresoAux.fecha)}" />
+					<BR />
+					<h:outputText value="HORA: #{ingresoBean.horaActual()}" />
+
+				</div>
+				<br />
+				<div style="width: 100%; font-size: 20px; text-align: center;">
+					<h:outputText value="INGRESO A BODEGA N° #{ingresoBean.ingresoAux.idIngreso}" />
+
+				</div>
+				<BR />
+				<h:dataTable id="ingresoPrint" var="ingr" border="1"
+					style="width:100%;font-size: 13px;text-align: left;"
+					value="#{ingresoBean.listaRelIngresoArticuloByIngreso(ingresoBean.ingresoAux.idIngreso)}">
+
+					<p:column headerText="Cod">
+						<f:facet name="header">
+							<h:outputText value="Cod" />
+						</f:facet>
+						<h:outputText value="#{ingr.articulo.idArticulos}" />
+					</p:column>
+					<h:column headerText="Catidad">
+						<f:facet name="header">
+							<h:outputText value="Catidad" />
+						</f:facet>
+						<h:outputText value="#{ingr.catidad}" />
+					</h:column>
+					<h:column headerText="Unidad">
+						<f:facet name="header">
+							<h:outputText value="Unidad" />
+						</f:facet>
+						<h:outputText value="#{ingr.articulo.unidadMedida.unidadMedida}" />
+					</h:column>
+					<h:column headerText="Detalle">
+						<f:facet name="header">
+							<h:outputText value="Detalle" />
+						</f:facet>
+						<h:outputText value="#{ingr.articulo.articulo}" />
+					</h:column>
+
+
+				</h:dataTable>
+
+				<br />
+				<br />
+				<br />
+
+
+				<h:outputText value="Proveedor: " />
+				<h:outputText value="#{ingresoBean.ingresoAux.proveedor.proveedor}" />
+
+
+				<br />
+				<br />
+
+				<h:panelGrid columns="2" style="text-align: left;width:80%"
+					border="1">
+					<h:outputText
+						value="Orden de Compra : #{ingresoBean.ingresoAux.ordenDeCompra}" />
+
+					<h:outputText value="Fecha :  #{ingresoBean.formatearFecha(ingresoBean.ingresoAux.fecha)}" />
+<h:panelGrid columns="2" >
+					<h:outputText value="Factura : " />
+							<ui:repeat var="fac" style="font-size: 13px;"
+							
+							value="#{ingresoBean.listaFacturasByIngreso(ingresoBean.ingresoAux.idIngreso)}">
+
+							<h:outputText value="#{fac.factura}  " />
+
+							
+						</ui:repeat>
+						</h:panelGrid>
+					<h:outputText value="Fecha :  #{ingresoBean.formatearFecha(ingresoBean.ingresoAux.fecha)}" />
+					<h:outputText
+						value="Guia Despacho : #{ingresoBean.ingresoAux.guiaDeDespacho}" />
+
+					<h:outputText value="Fecha :  #{ingresoBean.formatearFecha(ingresoBean.ingresoAux.fecha)}" />
+				</h:panelGrid>
+				<br />
+				<h:panelGrid columns="1" style="text-align: ;width:100%">
+					<h:outputText value="Destino : #{ingresoBean.ingresoAux.destino}" />
+					<h:outputText value="Inventariable : #{ingresoBean.afirmacion(ingresoBean.ingresoAux.inventariable)}" />
+					<h:outputText value="Almacenado en : #{ingresoBean.ingresoAux.ubicacion.ubicacion}" />
+					<h:outputText
+						value="Conforme : #{ingresoBean.afirmacion(ingresoBean.ingresoAux.conforme)}" />
+				</h:panelGrid>
+				<br />
+				<br />
+				<h:outputText
+					value="Obsevación : #{ingresoBean.ingresoAux.observacion}" />
+				<br />
+				<br />
+				<br />
+				<br />
+				<h:panelGrid columns="1" style="text-align: ;width:100%">
+					<h:outputText value="_______________________" />
+					<h:outputText value="Firma y Timbre " />
+					<h:outputText value="Bodega Municipal" />
+				</h:panelGrid>
+			</p:panel>
+			<br />
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+				update="print" style="font-size: 13px;">
+				<p:printer target="print" />
+			</p:commandButton>
+			</p:dialog>
+			</h:form>
+		</p:layoutUnit>
+
+
+	</p:layout>
+
+
+</body>
+</html>

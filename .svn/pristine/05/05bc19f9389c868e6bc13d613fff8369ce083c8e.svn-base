@@ -1,0 +1,17 @@
+package municipalidad.pto.dao;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import municipalidad.pto.model.Categoria;
+
+public interface CategoriaDao {
+	void persistCategoria(Categoria categoria);
+	Categoria findCategoriaById(int id);
+	void updateCategoria(Categoria categoria);
+	void deleteCategoria(Categoria categoria);
+	List<Categoria> listaCategorias();
+	List<SelectItem> comboCategoria();
+
+}

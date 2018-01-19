@@ -1,0 +1,68 @@
+package com.ugurcanlacin.simple.beans;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import com.ugurcanlacin.simple.model.Caja;
+import com.ugurcanlacin.simple.service.CajaService;
+
+
+@ManagedBean
+@SessionScoped
+public class CajaBean implements Serializable {
+
+	@ManagedProperty(value="#{cajaService}")
+	CajaService cajaService;
+
+	private Integer idCaja;
+	private Integer valor;
+	private Date fecha;
+	private String detalle;
+	
+	
+	
+	public void setCajaService(CajaService cajaService) {
+		this.cajaService = cajaService;
+	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
+	}
+	public Integer getValor() {
+		return valor;
+	}
+	public void setValor(Integer valor) {
+		this.valor = valor;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public String getDetalle() {
+		return detalle;
+	}
+	public void setDetalle(String detalle) {
+		this.detalle = detalle;
+	}
+	public void persistCaja() {
+		Caja caja =new Caja();
+		java.util.Date fecha = new Date();
+		caja.setValor(getValor());
+		caja.setDetalle(getDetalle());
+		caja.setFecha(fecha);
+		this.cajaService.persistCaja(caja);
+	}
+	public Integer totalCaja(){
+		return this.cajaService.cajaActual();
+	}
+	
+	
+}

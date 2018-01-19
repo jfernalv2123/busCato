@@ -1,0 +1,112 @@
+package municipalidad.pto.beans;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.Articulos;
+import municipalidad.pto.model.RelSalidaArticulo;
+import municipalidad.pto.objetos.CantidadArticulos;
+import municipalidad.pto.service.ArticulosService;
+import municipalidad.pto.service.SalidaService;
+import municipalidad.pto.service.UbicacionService;
+
+@ManagedBean
+@SessionScoped
+public class SalidaBean {
+
+	@ManagedProperty(value="#{salidaService}")
+	SalidaService salidaService;
+	@ManagedProperty(value="#{articulosService}")
+	ArticulosService articulosService;
+	@ManagedProperty(value="#{ubicacionService}")
+	UbicacionService ubicacionService;
+	@ManagedProperty(value="#{relSalidaArticulo}")
+	RelSalidaArticulo relSalidaArticulo;
+	
+	private String Solicitante;
+	private String numeroSolicitud;
+	private String numeroSalida;
+	private String observacion;
+	private Date fecha;
+	private boolean prestamo;
+	private List<Articulos> listaArticulos = new ArrayList<Articulos>();
+	private List<CantidadArticulos> listaCantidadArticulos = new ArrayList<CantidadArticulos>();
+	private List<RelSalidaArticulo> listaRelSalida = new ArrayList<RelSalidaArticulo>();
+	
+	
+	
+	
+	public void setSalidaService(SalidaService salidaService) {
+		this.salidaService = salidaService;
+	}
+	public void setArticulosService(ArticulosService articulosService) {
+		this.articulosService = articulosService;
+	}
+	public void setUbicacionService(UbicacionService ubicacionService) {
+		this.ubicacionService = ubicacionService;
+	}
+	public void setRelSalidaArticulo(RelSalidaArticulo relSalidaArticulo) {
+		this.relSalidaArticulo = relSalidaArticulo;
+	}
+	public String getSolicitante() {
+		return Solicitante;
+	}
+	public void setSolicitante(String solicitante) {
+		Solicitante = solicitante;
+	}
+	public String getNumeroSolicitud() {
+		return numeroSolicitud;
+	}
+	public void setNumeroSolicitud(String numeroSolicitud) {
+		this.numeroSolicitud = numeroSolicitud;
+	}
+	public String getNumeroSalida() {
+		return numeroSalida;
+	}
+	public void setNumeroSalida(String numeroSalida) {
+		this.numeroSalida = numeroSalida;
+	}
+	public String getObservacion() {
+		return observacion;
+	}
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public boolean isPrestamo() {
+		return prestamo;
+	}
+	public void setPrestamo(boolean prestamo) {
+		this.prestamo = prestamo;
+	}
+	public List<Articulos> getListaArticulos() {
+		return listaArticulos;
+	}
+	public void setListaArticulos(List<Articulos> listaArticulos) {
+		this.listaArticulos = listaArticulos;
+	}
+	public List<CantidadArticulos> getListaCantidadArticulos() {
+		return listaCantidadArticulos;
+	}
+	public void setListaCantidadArticulos(List<CantidadArticulos> listaCantidadArticulos) {
+		this.listaCantidadArticulos = listaCantidadArticulos;
+	}
+	public List<RelSalidaArticulo> getListaRelSalida() {
+		return listaRelSalida;
+	}
+	public void setListaRelSalida(List<RelSalidaArticulo> listaRelSalida) {
+		this.listaRelSalida = listaRelSalida;
+	}
+	
+	
+}

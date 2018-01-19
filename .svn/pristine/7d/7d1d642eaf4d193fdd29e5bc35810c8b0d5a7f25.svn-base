@@ -1,0 +1,222 @@
+package municipalidad.pto.beans;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import municipalidad.pto.model.Articulos;
+import municipalidad.pto.model.RelSalidaArticulo;
+import municipalidad.pto.model.Salida;
+import municipalidad.pto.objetos.CantidadArticulos;
+import municipalidad.pto.service.ArticulosService;
+import municipalidad.pto.service.RelSalidaArticuloService;
+import municipalidad.pto.service.SalidaService;
+import municipalidad.pto.service.UbicacionService;
+
+@ManagedBean
+@SessionScoped
+public class SalidaBean {
+
+	@ManagedProperty(value="#{salidaService}")
+	SalidaService salidaService;
+	@ManagedProperty(value="#{articulosService}")
+	ArticulosService articulosService;
+	@ManagedProperty(value="#{ubicacionService}")
+	UbicacionService ubicacionService;
+	@ManagedProperty(value="#{relSalidaArticuloService}")
+	RelSalidaArticuloService relSalidaArticuloService;
+	private Integer id;
+	private Salida salida;
+	private String Solicitante;
+	private String numeroSolicitud;
+	private String numeroSalida;
+	private String observacion;
+	private Date fecha;
+	private boolean prestamo;
+	private Integer cantidad;
+	private Integer idArticulo;
+	private Integer ubicacion;
+	private List<Articulos> listaArticulos = new ArrayList<Articulos>();
+	private List<CantidadArticulos> listaCantidadArticulos = new ArrayList<CantidadArticulos>();
+	private List<RelSalidaArticulo> listaRelSalida = new ArrayList<RelSalidaArticulo>();
+	private List<Salida> listaSalidaAux = new ArrayList<Salida>();
+	
+	
+	
+	
+	public void setSalidaService(SalidaService salidaService) {
+		this.salidaService = salidaService;
+	}
+	public void setArticulosService(ArticulosService articulosService) {
+		this.articulosService = articulosService;
+	}
+	public void setUbicacionService(UbicacionService ubicacionService) {
+		this.ubicacionService = ubicacionService;
+	}
+	
+	public void setRelSalidaArticuloService(RelSalidaArticuloService relSalidaArticuloService) {
+		this.relSalidaArticuloService = relSalidaArticuloService;
+	}
+	
+	public Salida getSalida() {
+		return salida;
+	}
+	public void setSalida(Salida salida) {
+		this.salida = salida;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getSolicitante() {
+		return Solicitante;
+	}
+	public void setSolicitante(String solicitante) {
+		Solicitante = solicitante;
+	}
+	public String getNumeroSolicitud() {
+		return numeroSolicitud;
+	}
+	public void setNumeroSolicitud(String numeroSolicitud) {
+		this.numeroSolicitud = numeroSolicitud;
+	}
+	public String getNumeroSalida() {
+		return numeroSalida;
+	}
+	public void setNumeroSalida(String numeroSalida) {
+		this.numeroSalida = numeroSalida;
+	}
+	public String getObservacion() {
+		return observacion;
+	}
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public boolean isPrestamo() {
+		return prestamo;
+	}
+	public void setPrestamo(boolean prestamo) {
+		this.prestamo = prestamo;
+	}
+	public List<Articulos> getListaArticulos() {
+		return listaArticulos;
+	}
+	public void setListaArticulos(List<Articulos> listaArticulos) {
+		this.listaArticulos = listaArticulos;
+	}
+	public List<CantidadArticulos> getListaCantidadArticulos() {
+		return listaCantidadArticulos;
+	}
+	public void setListaCantidadArticulos(List<CantidadArticulos> listaCantidadArticulos) {
+		this.listaCantidadArticulos = listaCantidadArticulos;
+	}
+	public List<RelSalidaArticulo> getListaRelSalida() {
+		return listaRelSalida;
+	}
+	public void setListaRelSalida(List<RelSalidaArticulo> listaRelSalida) {
+		this.listaRelSalida = listaRelSalida;
+	}
+	public List<Salida> getListaSalidaAux() {
+		return listaSalidaAux;
+	}
+	public void setListaSalidaAux(List<Salida> listaSalidaAux) {
+		this.listaSalidaAux = listaSalidaAux;
+	}
+	public List<Salida> listaSalida(){
+		return salidaService.listaSalidas();
+	}
+	
+	public Integer getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+	public void mensaje(String titulo, String mensaje) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(titulo, mensaje));
+	}
+	public Integer getIdArticulo() {
+		return idArticulo;
+	}
+	public void setIdArticulo(Integer idArticulo) {
+		this.idArticulo = idArticulo;
+	}
+	
+	public Integer getUbicacion() {
+		return ubicacion;
+	}
+	public void setUbicacion(Integer ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+	public void addArticuloCantidad() {
+		CantidadArticulos cantidadArticulos = new CantidadArticulos();
+		boolean aux = true;
+		if (getCantidad() != null) {
+			Articulos art = articulosService.findArticuloById(getIdArticulo());
+			cantidadArticulos.setArticulo(art);
+			cantidadArticulos.setCantidad(getCantidad());
+			if (art != null) {
+				for (CantidadArticulos cant : listaCantidadArticulos) {
+					if (cant.getArticulo().getIdArticulos() == art.getIdArticulos()) {
+						aux = false;
+					}
+				}
+				if (aux) {
+					listaCantidadArticulos.add(cantidadArticulos);
+				} else {
+					mensaje("Ya Existe", art.getArticulo());
+
+				}
+
+			}
+		}
+	}
+	public void guardarSalida(){
+		Salida salidaAux= new Salida();
+		salidaAux.setFecha(getFecha());
+		salidaAux.setnSalida(getNumeroSalida());
+		salidaAux.setnSolicitud(getNumeroSolicitud());
+		salidaAux.setObservaciones(getObservacion());
+		salidaAux.setPrestamo(isPrestamo());
+		salidaAux.setSolicitante(getSolicitante());
+		salidaService.persistSalida(salidaAux);
+		salidaAux= salidaService.findSalidaById(salidaService.ultimoIngreso());
+		for(CantidadArticulos catAux:listaCantidadArticulos){
+			RelSalidaArticulo relSalidaAux = new RelSalidaArticulo();
+			relSalidaAux.setArticulo(catAux.getArticulo());
+			relSalidaAux.setCantidad(catAux.getCantidad());
+			relSalidaAux.setSalida(salidaAux);
+			relSalidaArticuloService.persistRelSalidaArticulo(relSalidaAux);
+		}
+		
+		
+	}
+	public List<RelSalidaArticulo> listaSalidaArticuloBySalida(int id){
+		List<RelSalidaArticulo> aux=relSalidaArticuloService.listaRelSalidaArticuloByIngreso(id);
+		for(RelSalidaArticulo relsal:aux){
+			salida=relsal.getSalida();
+		}
+		return aux;
+	}
+	public void borrarSalida(int id){
+		for(RelSalidaArticulo relSalAux:relSalidaArticuloService.listaRelSalidaArticuloByIngreso(id)){
+			relSalidaArticuloService.deleteRelSalidaArticulo(relSalAux);
+		}
+		salidaService.deleteSalida(salidaService.findSalidaById(id));
+	}
+}

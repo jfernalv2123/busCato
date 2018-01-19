@@ -1,0 +1,54 @@
+package municipalidad.pto.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import municipalidad.pto.dao.GenericDao;
+import municipalidad.pto.dao.MailDao;
+import municipalidad.pto.model.Mail;
+import municipalidad.pto.service.MailService;
+
+@Service("mailService")
+public class MailServiceImpl implements MailService{
+
+	@Autowired
+	GenericDao genericDao;
+	@Autowired
+	MailDao mailDao;
+	
+	@Transactional
+	public void persistMail(Mail mail) {
+		genericDao.Guardar(mail);
+		
+	}
+	@Transactional
+	public Mail findMailById(int id) {
+	
+		return mailDao.findMailById(id);
+	}
+	@Transactional
+	public void updateMail(Mail mail) {
+		genericDao.update(mail);
+		
+	}
+	@Transactional
+	public void deleteMail(Mail mail) {
+		genericDao.delete(mail);
+		
+	}
+	@Transactional
+	public List<Mail> listaMail() {
+		return mailDao.listaMail();
+	}
+	@Transactional
+	public List<Mail> listaMailByProveedor(Integer proveedor){
+		return mailDao.listaMailByProveedor(proveedor);
+	}
+	@Transactional
+	public List<String> listMailByMail(String mail){
+		return mailDao.listMailByMail(mail);
+	}
+}

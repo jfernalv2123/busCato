@@ -1,0 +1,10 @@
+package com.ugurcanlacin.simple.service;
+
+import com.ugurcanlacin.simple.model.Pendientes;
+
+public interface PendientesService {
+	void persistPendientes(Pendientes pendientes);
+	Pendientes findPendientesById(int id);
+	void updatePendientes(Pendientes pendientes);
+	void deletePendientes(Pendientes pendientes);
+}

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+<script src="js/fecha.js"> </script>
+</h:head> 
+<body>
+	<p:breadCrumb style="font-size: 13px;margin-bottom:4px">
+		<p:menuitem value="Vender" url="index.xhtml" />
+		<p:menuitem value="Administrar" url="admin.xhtml" />
+	</p:breadCrumb>
+	
+	<h:form id="ventaBoletoF">
+			<p:dataTable id="ventaT" var="venta"
+				value="#{boletosBean.listaBoleto()}" style="font-size: 11px;" >
+				<p:column headerText="Origen" filterMatchMode="contains"
+					filterBy="#{venta.paradaOrigen.terminal.ciudad.ciudad}"
+					style="width:32px">
+					<h:outputText value="#{venta.paradaOrigen.terminal.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Destino" filterMatchMode="contains"
+					filterBy="#{venta.parada.terminal.ciudad.ciudad}"
+					style="width:32px">
+					<h:outputText value="#{venta.parada.terminal.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Recorrido" 
+					 style="width:32px">
+					<h:outputText value="#{venta.parada.recorrido.origen.ciudad.ciudad} - #{venta.parada.recorrido.destino.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Valor" 
+					  style="width:32px">
+					<h:outputText value="#{venta.valor}" />
+				</p:column>
+			
+				<p:column headerText="Asiento" filterMatchMode="contains"
+					filterBy="#{venta.asiento}" style="width:32px">
+					<h:outputText value="#{venta.asiento}" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Borrar">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{boletosBean.borrar(venta)}"
+						update=":ventaBoletoF:ventaT :ventaNuevo:msgs9" />
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+		
+		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+			<p:commandButton value="Nuevo" onclick="nuevoVenta.show()" />
+		</div>
+		<h:form id="ventaNuevo">
+			<p:dialog widgetVar="nuevoVenta" header="Venta" modal="false"
+				resizable="false" style="font-size: 13px;">
+
+				<p:growl id="msgs9" showDetail="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+				<h:outputText value="Fecha : " />
+				<p:calendar  value="#{boletosBean.fechaBuscar}" pattern="MM/dd/yyyy HH:mm:ss" locale="es">
+						<p:ajax listener="#{boletosBean.cargaComboCiudadDestino()}" update=":ventaNuevo:comboDestino" />
+						</p:calendar>
+						
+						<h:outputText value="Origen : " />
+				<p:selectOneMenu value="#{boletosBean.idCiudad}" required="true" id="ciudadOrigen"
+					label="origen">
+					<p:ajax listener="#{boletosBean.cargaComboCiudadDestino()}" update=":ventaNuevo:comboDestino" />
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{ciudadBean.comboCiudad()}" var="parada" />
+				</p:selectOneMenu>
+				
+						<h:outputText value="Destino : " />
+				<p:selectOneMenu value="#{boletosBean.idParadaDestino}" required="true" id="comboDestino"
+					label="ciudad">
+					<p:ajax listener="#{boletosBean.cargaComboParada()}" update=":ventaNuevo:comboDestino" />
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{boletosBean.comboCiudadDestino()}" var="ciudad" />
+				</p:selectOneMenu>
+				
+						
+		
+						
+				
+				
+				
+				
+				
+				<h:outputText value="Asiento : " />
+					<pe:inputNumber value="#{boletosBean.asiento}" decimalPlaces="0"/>
+					<h:outputText value="Valor : " />
+					<pe:inputNumber value="#{boletosBean.valor}" decimalPlaces="0"/>
+					
+				</h:panelGrid>
+				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
+					<p:commandButton value="Guardar"
+						actionListener="#{boletosBean.guardar()}"
+						update=":ventaBoletoF:ventaT :ventaNuevo:msgs9"
+						oncomplete="nuevoVenta.hide()" />
+
+				</div>
+
+
+			</p:dialog>
+		</h:form>
+</body> 
+</html>

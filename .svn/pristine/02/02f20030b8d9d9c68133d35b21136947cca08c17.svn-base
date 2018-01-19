@@ -1,0 +1,47 @@
+package com.ugurcanlacin.simple.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ugurcanlacin.simple.dao.CajaDao;
+import com.ugurcanlacin.simple.model.Caja;
+import com.ugurcanlacin.simple.service.CajaService;
+
+@Service("cajaService")
+public class CajaServiceImpl implements CajaService{
+
+	@Autowired
+	CajaDao cajaDao;
+	
+	@Transactional
+	public void persistCaja(Caja caja) {
+		cajaDao.persistCaja(caja);
+		
+	}
+	@Transactional
+	public Caja findCajaById(int id) {
+	
+		return cajaDao.findCajaById(id);
+	}
+	@Transactional
+	public void updateCaja(Caja caja) {
+		cajaDao.updateCaja(caja);
+		
+	}
+	@Transactional
+	public void deleteCaja(Caja caja) {
+		cajaDao.deleteCaja(caja);
+		
+	}
+	@Transactional
+	public List<Caja> listaCaja() {
+		return cajaDao.listaCaja();
+	}
+	@Transactional
+	public Integer cajaActual(){
+		return cajaDao.cajaActual();
+	}
+}

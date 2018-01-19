@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head></h:head>
+<body>
+	<p:panel id="ingreso" header="Ingreso"
+		style="width: 95%;display: inline-block;">
+		<h:panelGrid columns="8" cellpadding="5">
+			<h:outputLabel for="codigo" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+			<p:inputText id="nombre" value="#{ingresosBean.nombre}"
+				required="true" label="Nombre" />
+			<h:outputLabel for="nombre" value="Nombre: *" />
+
+
+		</h:panelGrid>
+
+
+	</p:panel>
+</body>
+</html>

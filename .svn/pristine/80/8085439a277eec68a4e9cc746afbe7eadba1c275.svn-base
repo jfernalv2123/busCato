@@ -1,0 +1,12 @@
+package com.ugurcanlacin.simple.dao;
+
+import com.ugurcanlacin.simple.model.Pendientes;
+
+public interface PendientesDao {
+
+	void persistPendientes(Pendientes pendientes);
+	Pendientes findPendientesById(int id);
+	void updatePendientes(Pendientes pendientes);
+	void deletePendientes(Pendientes pendientes);
+	
+}

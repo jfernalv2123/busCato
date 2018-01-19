@@ -1,0 +1,45 @@
+package municipalidad.pto.beans;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
+import municipalidad.pto.model.Tipo;
+import municipalidad.pto.service.TipoService;
+
+@ManagedBean
+@SessionScoped
+public class TipoBean implements Serializable{
+
+	@ManagedProperty(value="#{tipoService}")
+	TipoService tipoService;
+	
+	private String tipo;
+
+	public void setTipoService(TipoService tipoService) {
+		this.tipoService = tipoService;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public void guardar(){
+		Tipo tape=new Tipo(getTipo());
+		tipoService.persistTipo(tape);
+		setTipo(null);
+	}
+	public List<Tipo> listaTipos() {
+		return tipoService.listaTipos();
+	}
+	public void borrar(int id){
+		Tipo tape=tipoService.findTipoById(id);
+		tipoService.deleteTipo(tape);
+	}
+}

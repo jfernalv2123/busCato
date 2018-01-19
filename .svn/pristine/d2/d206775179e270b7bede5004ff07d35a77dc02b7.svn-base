@@ -1,0 +1,21 @@
+package com.ugurcanlacin.simple.dao.impl;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.springframework.stereotype.Repository;
+
+import com.ugurcanlacin.simple.dao.GenericDao;
+
+@Repository("genericDao")
+public class GenericDaoImpl implements GenericDao{
+	
+	public byte[] convertirTobyteArray(InputStream is) throws IOException {
+		byte[] bytes = null;
+		if (is != null) {
+			bytes = new byte[is.available()];
+			is.read(bytes);
+		}
+		return bytes;
+	}
+}

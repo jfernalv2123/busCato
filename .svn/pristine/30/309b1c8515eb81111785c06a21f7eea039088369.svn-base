@@ -1,0 +1,45 @@
+package com.ugurcanlacin.simple.service.impl;
+
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ugurcanlacin.simple.dao.ItemDao;
+import com.ugurcanlacin.simple.model.Item;
+import com.ugurcanlacin.simple.service.ItemService;
+
+@Service("itemService")
+public class ItemServiceImpl implements ItemService{
+
+	@Autowired
+	ItemDao itemDao;
+	
+	@Transactional
+	public void persistItem(Item item) {
+		itemDao.persistItem(item);
+		
+	}
+	@Transactional
+	public Item findItemById(int id) {
+	
+		return itemDao.findItemById(id);
+	}
+	@Transactional
+	public void updateItem(Item item) {
+		itemDao.updateItem(item);
+		
+	}
+	@Transactional
+	public void deleteItem(Item item) {
+		itemDao.deleteItem(item);
+		
+	}
+	@Transactional
+	public List<SelectItem> comboItem(){
+		return itemDao.comboItem();
+	}
+}

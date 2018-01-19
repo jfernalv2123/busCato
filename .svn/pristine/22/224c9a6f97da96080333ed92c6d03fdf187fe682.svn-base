@@ -1,0 +1,15 @@
+package municipalidad.pto.service;
+
+import java.util.List;
+
+import municipalidad.pto.model.RelIngresoArticulo;
+
+public interface RelIngresoArticuloService {
+	void persistRelIngresoArticulo(RelIngresoArticulo relIngresoArticulo);
+	RelIngresoArticulo findRelIngresoArticuloById(int id);
+	void updateRelIngresoArticulo(RelIngresoArticulo relIngresoArticulo);
+	void deleteRelIngresoArticulo(RelIngresoArticulo relIngresoArticulo);
+	List<RelIngresoArticulo> listaRelIngresoArticulo();
+	List<RelIngresoArticulo> listaRelIngresoArticuloByIngreso(int id);
+	Long cantidadIngresoArticulo(int id,boolean inventariable);
+}
