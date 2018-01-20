@@ -54,5 +54,15 @@ public class BoletoDaoImpl implements BoletoDao{
 		}
 		return aux;
 	}
+	public List<Integer> asientosDisponiblesPorParadas(){
+		String query="FROM Boleto as b";
+	
+		List<Boleto> listAux = sessionFactory.getCurrentSession().createQuery(query).list();
+		List<Integer> lisAsientos =new ArrayList<Integer>();
+		for(Boleto b:listAux){
+			lisAsientos.add(b.getAsiento());
+		}
+		return lisAsientos;
+	}
 	
 }
