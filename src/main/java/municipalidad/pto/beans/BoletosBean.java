@@ -11,6 +11,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
+
+import com.sun.faces.lifecycle.Phase;
+
 import municipalidad.pto.model.Boleto;
 import municipalidad.pto.model.Paradas;
 import municipalidad.pto.service.BoletoService;
@@ -46,7 +50,8 @@ public class BoletosBean {
 	  private Integer idCiudad;
 	  private List<SelectItem> comboParadaAux;
 	  private List<SelectItem> comboRecorridoAux;
-	  private Paradas paradaAux;
+	  private Paradas paradaOrigenAux;
+	  private Paradas paradaDestinoAux;
 	  private Integer idCiudadOrigen;
 	  private Integer idCiudadDestino;
 	  private Integer idRecorrido;
@@ -105,13 +110,6 @@ public class BoletosBean {
 		this.comboParadaAux = comboParadaAux;
 	}
 	
-	public Paradas getParadaAux() {
-		return paradaAux;
-	}
-	public void setParadaAux(Paradas paradaAux) {
-		this.paradaAux = paradaAux;
-	}
-	
 	public List<SelectItem> getComboRecorridoAux() {
 		return comboRecorridoAux;
 	}
@@ -144,13 +142,25 @@ public class BoletosBean {
 	public void setListaParadaAux(List<Paradas> listaParadaAux) {
 		this.listaParadaAux = listaParadaAux;
 	}
+	
+	public Paradas getParadaOrigenAux() {
+		return paradaOrigenAux;
+	}
+	public void setParadaOrigenAux(Paradas paradaOrigenAux) {
+		this.paradaOrigenAux = paradaOrigenAux;
+	}
+	public Paradas getParadaDestinoAux() {
+		return paradaDestinoAux;
+	}
+	public void setParadaDestinoAux(Paradas paradaDestinoAux) {
+		this.paradaDestinoAux = paradaDestinoAux;
+	}
 	public void guardar(){
 		Boleto boleto=new Boleto();
 		boleto.setAsiento(getAsiento());
 		boleto.setValor(getValor());
-		
-		boleto.setParadaOrigen(paradasService.paradaPorCiudadRecorrido(getIdCiudad(), paradasService.buscarPorId(getIdParadaDestino()).getRecorrido().getId()));
-		boleto.setParada(paradasService.buscarPorId(getIdParadaDestino()));
+		boleto.setParadaOrigen(paradaOrigenAux);
+		boleto.setParada(paradaDestinoAux);
 		boletoService.guardar(boleto);
 		mensaje("Guardado",boleto.getParada().getTerminal().getCiudad().getCiudad());
 	}
@@ -166,11 +176,7 @@ public class BoletosBean {
 		comboParadaAux = paradasService.comboParadasPorRecorrido(getIdRecorrido());
 		
 	}
-	public void cargaComboCiudadDestino(){
-		Date desde=new Date();
-		 
-		listaParadaAux =paradasService.listaParadasPorFechaCiudad(getIdCiudad(),desde, getFechaBuscar());
-	}
+	
 	public void cargaRecorrido(){
 	//	paradaAux=paradasService.buscarPorId(getIdparadaDestino());
 		Date desde =new Date();
@@ -197,6 +203,41 @@ public class BoletosBean {
 	public void mensaje(String titulo, String mensaje) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(titulo, mensaje));
+	}
+	public void cargaListaParadasPorCiudadFecha(){
+		List<Paradas> listAux=paradasService.listaComboParadaPorFechaCiudad(getIdCiudad(), getFechaBuscar());
+		List<Paradas> listCarga=new ArrayList<Paradas>();
+		
+//		listaParadaAux.clear();
+		if(listAux!=null){
+			for(Paradas para:listAux){
+				Integer nParadas = paradasService.numeroParada(para.getRecorrido().getId()).intValue();
+				Integer paradaOrigen = para.getParada()+1;
+				for (int i = paradaOrigen; i <= nParadas; i++) {
+					Paradas aux = paradasService.paradaCiudadNumero(para.getRecorrido().getId(), i);
+					listCarga.add(aux);
+				}
+			}
+			listaParadaAux=listCarga;
+			
+		}
+	
+		
+	}
+	public Paradas paradaPorCiudadRecorrido(Paradas parada){
+		
+		return paradasService.paradaPorCiudadRecorrido(getIdCiudad(), parada.getRecorrido().getId());
+	}
+	public void cargaVentaBoleto(Paradas paradaDestino){
+		paradaDestinoAux=paradaDestino;
+		paradaOrigenAux=paradasService.paradaPorCiudadRecorrido(getIdCiudad(), paradaDestino.getRecorrido().getId());
+	}
+	public String formatoHora(Integer hora){
+		if(hora<10){
+			return "0"+hora;
+		}else{
+		return hora.toString(); 
+		}
 	}
 	  
 }

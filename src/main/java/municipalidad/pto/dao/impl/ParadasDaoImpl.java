@@ -89,19 +89,17 @@ public class ParadasDaoImpl implements ParadasDao {
 	}
 
 	public SelectItem ComboParadasCiudadNumero(Integer idRecorrido, Integer parada) {
-		
 
-		String query = "SELECT concat(p.terminal.ciudad.ciudad,' ',p.llegada),p.id FROM Paradas as p where p.recorrido.id=" + idRecorrido
-				+ " and p.parada=" + parada;
+		String query = "SELECT concat(p.terminal.ciudad.ciudad,' ',p.llegada),p.id FROM Paradas as p where p.recorrido.id="
+				+ idRecorrido + " and p.parada=" + parada;
 		Iterator iter = sessionFactory.getCurrentSession().createQuery(query).iterate();
 		SelectItem item = new SelectItem();
 		while (iter.hasNext()) {
-			
+
 			Object[] combo = (Object[]) iter.next();
 			item.setLabel(String.valueOf(combo[0]));
 			item.setValue(String.valueOf(combo[1]));
 
-			
 		}
 		return item;
 	}
@@ -110,9 +108,11 @@ public class ParadasDaoImpl implements ParadasDao {
 		String query = "FROM Paradas as p where p.recorrido.id=" + idRecorrido;
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
-	public List<SelectItem> comboParadasPorRecorrido(Integer idRecorrido){
+
+	public List<SelectItem> comboParadasPorRecorrido(Integer idRecorrido) {
 		List<SelectItem> aux = new ArrayList<SelectItem>();
-		String query = "SELECT concat(p.terminal.ciudad.ciudad,' salida:',p.llegada ),p.id FROM Paradas as p where p.recorrido.id="+idRecorrido;
+		String query = "SELECT concat(p.terminal.ciudad.ciudad,' salida:',p.llegada ),p.id FROM Paradas as p where p.recorrido.id="
+				+ idRecorrido;
 		Iterator iter = sessionFactory.getCurrentSession().createQuery(query).iterate();
 		while (iter.hasNext()) {
 			SelectItem item = new SelectItem();
@@ -124,17 +124,39 @@ public class ParadasDaoImpl implements ParadasDao {
 		}
 		return aux;
 	}
-	public List<Paradas> listaParadasPorFechaCiudad(Integer idCiudad,Date fechaDesde,Date fechaHasta){
-//		SELECT * FROM buses.paradas as p,buses.terminal as t where p.fk_terminal=t.id_terminal 
-//				and t.fk_ciudad=8 and p.llegada BETWEEN NOW() and "2018-01-21 02:00:00";
+
+	public List<Paradas> listaParadasPorFechaCiudad(Integer idCiudad, Date fechaDesde, Date fechaHasta) {
+		// SELECT * FROM buses.paradas as p,buses.terminal as t where
+		// p.fk_terminal=t.id_terminal
+		// and t.fk_ciudad=8 and p.llegada BETWEEN NOW() and "2018-01-21
+		// 02:00:00";
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		String query = "FROM Paradas as p where p.terminal.ciudad.id=" + idCiudad;
-		query += " and p.llegada >='"+formato.format(fechaDesde)+"' and p.llegada <='"+formato.format(fechaHasta)+"'";
+		query += " and p.llegada >='" + formato.format(fechaDesde) + "' and p.llegada <='" + formato.format(fechaHasta)
+				+ "'";
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
-	public Paradas paradaPorCiudadRecorrido(Integer idCiudad,Integer idRecorido){
-		String query = "FROM Paradas as p where p.terminal.ciudad.id=" + idCiudad+" and p.recorrido.id="+idRecorido;
-		
-		return (Paradas)sessionFactory.getCurrentSession().createQuery(query).list().get(0);
+
+	public Paradas paradaPorCiudadRecorrido(Integer idCiudad, Integer idRecorido) {
+		String query = "FROM Paradas as p where p.terminal.ciudad.id=" + idCiudad + " and p.recorrido.id=" + idRecorido;
+
+		return (Paradas) sessionFactory.getCurrentSession().createQuery(query).list().get(0);
+	}
+
+	public List<Paradas> listaComboParadaPorFechaCiudad(Integer idCiudad, Date fecha) {
+
+		Date ahora = new Date();
+		SimpleDateFormat desde = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+		String query = "FROM Paradas as p";
+		query += " where p.llegada BETWEEN '" + desde.format(ahora) + "' and '" + desde.format(fecha) + "'";
+		query += " and p.terminal.ciudad.id=" + idCiudad;
+		return sessionFactory.getCurrentSession().createQuery(query).list();
+	}
+	public Paradas paradaCiudadNumero(Integer idRecorrido, Integer parada) {
+
+		String query = "FROM Paradas as p where p.recorrido.id="
+				+ idRecorrido + " and p.parada=" + parada;
+		return (Paradas) sessionFactory.getCurrentSession().createQuery(query).list().get(0);
 	}
 }

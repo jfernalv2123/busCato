@@ -17,8 +17,26 @@
 		<p:menuitem value="Vender" url="index.xhtml" />
 		<p:menuitem value="Administrar" url="admin.xhtml" />
 	</p:breadCrumb>
-	
+	<h:form id="buscarDisponible">
+	<h:panelGrid columns="4" cellpadding="5">
+				<h:outputText value="Fecha : " />
+				<p:calendar  value="#{boletosBean.fechaBuscar}" pattern="MM/dd/yyyy HH:mm:ss" locale="es">
+						<p:ajax listener="#{boletosBean.cargaListaParadasPorCiudadFecha()}" update=":viajesF:viajesT" />
+						</p:calendar>
+						
+						<h:outputText value="Origen : " />
+				<p:selectOneMenu value="#{boletosBean.idCiudad}" required="true" id="ciudadOrigen"
+					label="origen">
+					<p:ajax listener="#{boletosBean.cargaListaParadasPorCiudadFecha()}" update=":viajesF:viajesT" />
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{ciudadBean.comboCiudad()}" var="parada" />
+				</p:selectOneMenu>
+				</h:panelGrid>
+				</h:form>
+				
 	<h:form id="ventaBoletoF">
+		<p:dialog widgetVar="boletosVendidos" header="boletos" modal="false"
+				resizable="false" style="font-size: 13px;">
 			<p:dataTable id="ventaT" var="venta"
 				value="#{boletosBean.listaBoleto()}" style="font-size: 11px;" >
 				<p:column headerText="Origen" filterMatchMode="contains"
@@ -56,10 +74,73 @@
 
 
 			</p:dataTable>
+			</p:dialog>
+		</h:form>
+			<h:form id="viajesF">
+		
+			<p:dataTable id="viajesT" var="viajes"
+				value="#{boletosBean.listaParadaAux}" style="font-size: 11px;" >
+				
+				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
+					style="width:32px">
+					<h:outputText value="#{boletosBean.paradaPorCiudadRecorrido(viajes).terminal.ciudad.ciudad}" />
+				</p:column>
+				<p:column headerText="Fecha Salida" filterMatchMode="contains"
+					filterBy="#{boletosBean.paradaPorCiudadRecorrido(viajes).llegada}"
+					style="width:32px">
+					<h:outputText value="#{boletosBean.paradaPorCiudadRecorrido(viajes).llegada}" />
+				</p:column>
+				<p:column headerText="Hora Salida" filterMatchMode="contains"
+					filterBy="#{boletosBean.paradaPorCiudadRecorrido(viajes).llegada}"
+					style="width:32px">
+					<h:outputText value="#{boletosBean.paradaPorCiudadRecorrido(viajes).llegada.hours}:#{boletosBean.formatoHora(boletosBean.paradaPorCiudadRecorrido(viajes).llegada.minutes)}:#{boletosBean.paradaPorCiudadRecorrido(viajes).llegada.seconds}" />
+				</p:column>
+				
+				<p:column headerText="Ciudad Destino" filterMatchMode="contains"
+					filterBy="#{viajes.terminal.ciudad.ciudad}"
+					style="width:32px">
+					<h:outputText value="#{viajes.terminal.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Terminal" filterMatchMode="contains"
+					filterBy="#{viajes.terminal.terminal}"
+					style="width:32px">
+					<h:outputText value="#{viajes.terminal.terminal}" />
+				</p:column>
+				
+				<p:column headerText="Anden" 
+					 style="width:32px">
+					<h:outputText value="#{viajes.anden}" />
+				</p:column>
+				
+				<p:column headerText="Recorrido" 
+					  style="width:32px">
+					<h:outputText value="#{viajes.recorrido.origen.ciudad.ciudad} - #{viajes.recorrido.destino.ciudad.ciudad}" />
+				</p:column>
+			
+				<p:column headerText="Fecha Llegada" filterMatchMode="contains"
+					filterBy="#{viajes.llegada}" style="width:32px">
+					<h:outputText value="#{viajes.llegada}" />
+				</p:column>
+				<p:column headerText="Hora Llegada" filterMatchMode="contains"
+					filterBy="#{viajes.llegada.hours}" style="width:32px">
+					<h:outputText value="#{viajes.llegada.hours}:#{boletosBean.formatoHora(viajes.llegada.minutes)}:#{viajes.llegada.seconds}" />
+				</p:column>
+
+				<p:column style="width:24px" headerText="Vender">
+					<p:commandButton icon="ui-icon-close"
+						actionListener="#{boletosBean.cargaVentaBoleto(viajes)}"
+						onclick="nuevoVenta.show()"
+						update=":ventaBoletoF:ventaT :ventaNuevo:msgs9" />
+				</p:column>
+
+
+			</p:dataTable>
+			
 		</h:form>
 		
 		<div style="text-align: center; padding-top: 10px; font-size: 13px;">
-			<p:commandButton value="Nuevo" onclick="nuevoVenta.show()" />
+			<p:commandButton value="Boletos Vendidos" onclick="boletosVendidos.show()" />
 		</div>
 		<h:form id="ventaNuevo">
 			<p:dialog widgetVar="nuevoVenta" header="Venta" modal="false"
@@ -67,35 +148,7 @@
 
 				<p:growl id="msgs9" showDetail="true" />
 				<h:panelGrid columns="2" cellpadding="5">
-				<h:outputText value="Fecha : " />
-				<p:calendar  value="#{boletosBean.fechaBuscar}" pattern="MM/dd/yyyy HH:mm:ss" locale="es">
-						<p:ajax listener="#{boletosBean.cargaComboCiudadDestino()}" update=":ventaNuevo:comboDestino" />
-						</p:calendar>
-						
-						<h:outputText value="Origen : " />
-				<p:selectOneMenu value="#{boletosBean.idCiudad}" required="true" id="ciudadOrigen"
-					label="origen">
-					<p:ajax listener="#{boletosBean.cargaComboCiudadDestino()}" update=":ventaNuevo:comboDestino" />
-					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-					<f:selectItems value="#{ciudadBean.comboCiudad()}" var="parada" />
-				</p:selectOneMenu>
-				
-						<h:outputText value="Destino : " />
-				<p:selectOneMenu value="#{boletosBean.idParadaDestino}" required="true" id="comboDestino"
-					label="ciudad">
-					<p:ajax listener="#{boletosBean.cargaComboParada()}" update=":ventaNuevo:comboDestino" />
-					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-					<f:selectItems value="#{boletosBean.comboCiudadDestino()}" var="ciudad" />
-				</p:selectOneMenu>
-				
-						
-		
-						
-				
-				
-				
-				
-				
+
 				<h:outputText value="Asiento : " />
 					<pe:inputNumber value="#{boletosBean.asiento}" decimalPlaces="0"/>
 					<h:outputText value="Valor : " />

@@ -20,4 +20,6 @@ public interface ParadasService {
 	List<SelectItem> comboParadasPorRecorrido(Integer idRecorrido);
 	List<Paradas> listaParadasPorFechaCiudad(Integer idCiudad,Date fechaDesde,Date fechaHasta);
 	Paradas paradaPorCiudadRecorrido(Integer idCiudad,Integer idRecorido);
+	List<Paradas> listaComboParadaPorFechaCiudad(Integer idCiudad, Date fecha);
+	Paradas paradaCiudadNumero(Integer idRecorrido, Integer parada);
 }

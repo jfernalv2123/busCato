@@ -67,4 +67,12 @@ public class ParadasServiceImpl implements ParadasService{
 	public Paradas paradaPorCiudadRecorrido(Integer idCiudad,Integer idRecorido){
 		return paradasDao.paradaPorCiudadRecorrido(idCiudad, idRecorido);
 	}
+	@Transactional
+	public List<Paradas> listaComboParadaPorFechaCiudad(Integer idCiudad, Date fecha){
+		return paradasDao.listaComboParadaPorFechaCiudad(idCiudad, fecha);
+	}
+	@Transactional
+	public Paradas paradaCiudadNumero(Integer idRecorrido, Integer parada){
+		return paradasDao.paradaCiudadNumero(idRecorrido, parada);
+	}
 }
