@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import municipalidad.pto.dao.BoletoDao;
 import municipalidad.pto.model.Boleto;
+import municipalidad.pto.model.Paradas;
 import municipalidad.pto.service.BoletoService;
 
 @Service("boletoService")
@@ -35,5 +36,9 @@ public class BoletoServiceImpl implements BoletoService{
 	@Transactional
 	public List<Boleto> listaBoleto(){
 		return boletoDao.listaBoleto();
+	}
+	@Transactional
+	public List<Boleto> asientosDisponiblesPorParadas(Paradas paradaOrigen,Paradas paradaDestino){
+		return boletoDao.asientosDisponiblesPorParadas(paradaOrigen, paradaDestino);
 	}
 }

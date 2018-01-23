@@ -38,7 +38,10 @@
 		<p:dialog widgetVar="boletosVendidos" header="boletos" modal="false"
 				resizable="false" style="font-size: 13px;">
 			<p:dataTable id="ventaT" var="venta"
-				value="#{boletosBean.listaBoleto()}" style="font-size: 11px;" >
+				value="#{boletosBean.listaBoleto()}" style="font-size: 11px;" 
+					resizableColumns="true" rows="10" paginator="true"  rendered="true"	
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+				
 				<p:column headerText="Origen" filterMatchMode="contains"
 					filterBy="#{venta.paradaOrigen.terminal.ciudad.ciudad}"
 					style="width:32px">
@@ -79,7 +82,9 @@
 			<h:form id="viajesF">
 		
 			<p:dataTable id="viajesT" var="viajes"
-				value="#{boletosBean.listaParadaAux}" style="font-size: 11px;" >
+				value="#{boletosBean.listaParadaAux}" style="font-size: 11px;"
+				resizableColumns="true" rows="20" paginator="true" selectionMode="single" rendered="true"	
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
 				
 				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
 					style="width:32px">
@@ -128,10 +133,10 @@
 				</p:column>
 
 				<p:column style="width:24px" headerText="Vender">
-					<p:commandButton icon="ui-icon-close"
+					<p:commandButton icon="ui-icon-cart"
 						actionListener="#{boletosBean.cargaVentaBoleto(viajes)}"
 						onclick="nuevoVenta.show()"
-						update=":ventaBoletoF:ventaT :ventaNuevo:msgs9" />
+						update=":ventaBoletoF:ventaT :ventaNuevo:msgs9 :ventaNuevo:asientos" />
 				</p:column>
 
 
@@ -150,7 +155,12 @@
 				<h:panelGrid columns="2" cellpadding="5">
 
 				<h:outputText value="Asiento : " />
-					<pe:inputNumber value="#{boletosBean.asiento}" decimalPlaces="0"/>
+						<p:selectOneMenu value="#{boletosBean.asiento}" required="true" id="asientos"
+					label="origen">
+					
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{boletosBean.comboParadaAux}" var="parada" />
+				</p:selectOneMenu>
 					<h:outputText value="Valor : " />
 					<pe:inputNumber value="#{boletosBean.valor}" decimalPlaces="0"/>
 					
