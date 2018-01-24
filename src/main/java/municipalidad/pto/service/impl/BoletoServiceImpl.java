@@ -56,6 +56,10 @@ public class BoletoServiceImpl implements BoletoService{
 		}
 		return total;
 	}
+	@Transactional
+	public List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido){
+		return boletoDao.listaBoletosPorRecorrido(recorrido);
+	}
 }
 
 

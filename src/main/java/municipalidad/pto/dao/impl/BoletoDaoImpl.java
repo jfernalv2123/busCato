@@ -61,7 +61,7 @@ public class BoletoDaoImpl implements BoletoDao{
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
 	public List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido){
-		String query="FROM Boleto as p where p.parada.recorrido.id="+recorrido.getId();
+		String query="FROM Boleto as b where b.parada.recorrido.id="+recorrido.getId();
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
 	

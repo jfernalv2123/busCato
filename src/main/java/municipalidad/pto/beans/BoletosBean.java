@@ -62,6 +62,8 @@ public class BoletosBean {
 	private List<Paradas> listaParadaAux;
 	private Integer totalVentas;
 	private Integer totalAsientos;
+	private List<Boleto> listaBoletoAux;
+	private Recorrido recorridoAux;
 
 	public Integer getIdCiudadOrigen() {
 		return idCiudadOrigen;
@@ -199,6 +201,14 @@ public class BoletosBean {
 		this.totalAsientos = totalAsientos;
 	}
 
+	public Recorrido getRecorridoAux() {
+		return recorridoAux;
+	}
+
+	public void setRecorridoAux(Recorrido recorridoAux) {
+		this.recorridoAux = recorridoAux;
+	}
+
 	public void guardar() {
 		Boleto boleto = new Boleto();
 		boleto.setAsiento(getAsiento());
@@ -223,6 +233,14 @@ public class BoletosBean {
 	public void cargaComboParada() {
 		comboParadaAux = paradasService.comboParadasPorRecorrido(getIdRecorrido());
 
+	}
+
+	public List<Boleto> getListaBoletoAux() {
+		return listaBoletoAux;
+	}
+
+	public void setListaBoletoAux(List<Boleto> listaBoletoAux) {
+		this.listaBoletoAux = listaBoletoAux;
 	}
 
 	public void cargaRecorrido() {
@@ -319,5 +337,8 @@ public Integer totalVentas(Recorrido recorrido){
 			return hora.toString();
 		}
 	}
-
+public void cargaDetalleBoletos(Recorrido recorrido){
+	listaBoletoAux=boletoService.listaBoletosPorRecorrido(recorrido);
+	recorridoAux=recorrido;
+}
 }

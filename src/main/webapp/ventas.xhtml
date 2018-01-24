@@ -58,8 +58,55 @@
 				<p:column headerText="Total"  >
 					<h:outputText value="$ #{boletosBean.totalVentas(recorrido)}" />
 				</p:column>
-				
+				<p:column style="width:24px" headerText="Detalle">
+					<p:commandButton icon="ui-icon-search"
+						actionListener="#{boletosBean.cargaDetalleBoletos(recorrido)}"
+						oncomplete="detalleBoleto.show()"
+						update=":detalleBoletosF:detalle" />
+				</p:column>
 			</p:dataTable>
 			</h:form>
+			
+			<h:form id="detalleBoletosF">
+		<p:dialog widgetVar="detalleBoleto" header="boletos" modal="false"
+				resizable="false" style="font-size: 13px;">
+				
+			<p:dataTable id="detalle" var="detalle"
+				value="#{boletosBean.listaBoletoAux}" style="font-size: 11px;" 
+					resizableColumns="true" rows="10" paginator="true"  rendered="true"	
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+				
+				<p:column headerText="Origen" filterMatchMode="contains"
+					filterBy="#{detalle.paradaOrigen.terminal.ciudad.ciudad}"
+					style="width:32px">
+					<h:outputText value="#{detalle.paradaOrigen.terminal.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Destino" filterMatchMode="contains"
+					filterBy="#{detalle.parada.terminal.ciudad.ciudad}"
+					style="width:32px">
+					<h:outputText value="#{detalle.parada.terminal.ciudad.ciudad}" />
+				</p:column>
+				
+				<p:column headerText="Fecha" >
+					<h:outputText value="#{detalle.paradaOrigen.llegada}" />
+				</p:column>
+				
+				<p:column headerText="Asiento" filterMatchMode="contains"
+					filterBy="#{detalle.asiento}">
+					<h:outputText value="#{detalle.asiento}" />
+				</p:column>
+			
+				<p:column headerText="Asiento" filterMatchMode="contains"
+					filterBy="#{detalle.valor}" >
+					<h:outputText value="$ #{detalle.valor}" />
+				</p:column>
+
+				
+
+
+			</p:dataTable>
+			</p:dialog>
+		</h:form>
 </body> 
 </html>

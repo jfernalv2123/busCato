@@ -15,4 +15,5 @@ public interface BoletoService {
 	List<Boleto> asientosDisponiblesPorParadas(Paradas paradaOrigen,Paradas paradaDestino);
 	Integer asientosVendidos(Recorrido recorrido);
 	Integer totalVentasRecorrido(Recorrido recorrido);
+	List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido);
 }
