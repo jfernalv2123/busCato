@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import municipalidad.pto.dao.BoletoDao;
 import municipalidad.pto.model.Boleto;
 import municipalidad.pto.model.Paradas;
+import municipalidad.pto.model.Recorrido;
 
 
 @Repository("boletoDao")
@@ -57,6 +58,10 @@ public class BoletoDaoImpl implements BoletoDao{
 	}
 	public List<Boleto> asientosDisponiblesPorParadas(Paradas paradaOrigen,Paradas paradaDestino){
 		String query="FROM Boleto as b where b.parada.id="+paradaDestino.getId()+" and b.paradaOrigen.id="+paradaOrigen.getId();
+		return sessionFactory.getCurrentSession().createQuery(query).list();
+	}
+	public List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido){
+		String query="FROM Boleto as p where p.parada.recorrido.id="+recorrido.getId();
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
 	

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import municipalidad.pto.dao.BoletoDao;
 import municipalidad.pto.model.Boleto;
 import municipalidad.pto.model.Paradas;
+import municipalidad.pto.model.Recorrido;
 import municipalidad.pto.service.BoletoService;
 
 @Service("boletoService")
@@ -41,4 +42,20 @@ public class BoletoServiceImpl implements BoletoService{
 	public List<Boleto> asientosDisponiblesPorParadas(Paradas paradaOrigen,Paradas paradaDestino){
 		return boletoDao.asientosDisponiblesPorParadas(paradaOrigen, paradaDestino);
 	}
+	@Transactional
+	public Integer asientosVendidos(Recorrido recorrido){
+		Integer asientos=0;
+		asientos += boletoDao.listaBoletosPorRecorrido(recorrido).size();
+		return asientos;
+	}
+	@Transactional
+	public Integer totalVentasRecorrido(Recorrido recorrido){
+		Integer total=0;
+		for(Boleto b:boletoDao.listaBoletosPorRecorrido(recorrido)){
+			total += b.getValor();
+		}
+		return total;
+	}
 }
+
+

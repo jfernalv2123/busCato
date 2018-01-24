@@ -11,11 +11,14 @@
 
 <h:head>
 	<title>Administración</title>
+	<link rel="icon" type="image/png" href="imagenes/logo.png" />
+<script src="js/fecha.js"> </script>
 </h:head>
 <body>
 	<p:breadCrumb style="font-size: 13px;">
 		<p:menuitem value="Vender" url="index.xhtml" />
 		<p:menuitem value="Administrar" url="admin.xhtml" />
+		<p:menuitem value="Ventas" url="ventas.xhtml" />
 	</p:breadCrumb>
 
 	<p:panel id="busPanel" header="Buses" toggleable="true"
@@ -44,9 +47,11 @@
 					<h:outputText value="#{bus.wc}" />
 				</p:column>
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificarBus.show()" actionListener="#{busBean.carga(bus)}" update=":busesModificar:mod"/>
+					<p:commandButton value="Modificar" oncomplete="modificarBus.show()"
+						actionListener="#{busBean.carga(bus)}"
+						update=":busesModificar:mod" />
 				</p:column>
-				
+
 				<p:column style="width:24px" headerText="Borrar">
 					<p:commandButton icon="ui-icon-close"
 						actionListener="#{busBean.borrar(bus)}" update=":busesT:busT" />
@@ -70,50 +75,53 @@
 					<h:outputText value="patente : " />
 					<p:inputText value="#{busBean.patente}" />
 					<h:outputText value=" asientos : " />
-					<pe:inputNumber value="#{busBean.asientos}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.asientos}" decimalPlaces="0" />
 					<h:outputText value=" pisos : " />
-					<pe:inputNumber value="#{busBean.pisos}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.pisos}" decimalPlaces="0" />
 					<h:outputText value=" wc : " />
-					<pe:inputNumber value="#{busBean.wc}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.wc}" decimalPlaces="0" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Guardar"
-						actionListener="#{busBean.guardar()}" update=":busesT:busT :busesModificar:mod" oncomplete="nuevoBus.hide()"/>
+						actionListener="#{busBean.guardar()}"
+						update=":busesT:busT :busesModificar:mod"
+						oncomplete="nuevoBus.hide()" />
 
 				</div>
 
 
 			</p:dialog>
 		</h:form>
-		
-		
-			<p:dialog widgetVar="modificarBus" header="Modifica Bus" modal="false"
-				resizable="false" style="font-size: 13px;">
-<h:form id="busesModificar">
-				
+
+
+		<p:dialog widgetVar="modificarBus" header="Modifica Bus" modal="false"
+			resizable="false" style="font-size: 13px;">
+			<h:form id="busesModificar">
+
 				<h:panelGrid id="mod" columns="4" cellpadding="5">
 
 					<h:outputText value="patente : " />
 					<p:inputText value="#{busBean.bus.patente}" />
 					<h:outputText value=" asientos : " />
-					<pe:inputNumber value="#{busBean.bus.asientos}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.bus.asientos}" decimalPlaces="0" />
 					<h:outputText value=" pisos : " />
-					<pe:inputNumber value="#{busBean.bus.pisos}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.bus.pisos}" decimalPlaces="0" />
 					<h:outputText value=" wc : " />
-					<pe:inputNumber value="#{busBean.bus.wc}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{busBean.bus.wc}" decimalPlaces="0" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Modificar"
-						actionListener="#{busBean.actualizar()}" update=":busesT:busT" oncomplete="modificarBus.hide()"/>
+						actionListener="#{busBean.actualizar()}" update=":busesT:busT"
+						oncomplete="modificarBus.hide()" />
 
 				</div>
 
-</h:form>
-			</p:dialog>
-		
+			</h:form>
+		</p:dialog>
+
 	</p:panel>
 
-<!-- SECCION PANEL CHOFER INICIO-->
+	<!-- SECCION PANEL CHOFER INICIO-->
 	<p:panel id="choferPanel" header="Chofer" toggleable="true"
 		toggleSpeed="500" widgetVar="panelChofer" collapsed="true"
 		style="margin-bottom:1px">
@@ -135,7 +143,8 @@
 				</p:column>
 
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificarChofer.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificarChofer.show()"
 						actionListener="#{choferBean.carga(chofer)}"
 						update=":choferModificar:modChofer" />
 				</p:column>
@@ -208,10 +217,10 @@
 		</p:dialog>
 
 	</p:panel>
-<!-- SECCION PANEL CHOFER FIN-->
-<!-- SECCION PANEL CIUDAD INICIO-->
+	<!-- SECCION PANEL CHOFER FIN-->
+	<!-- SECCION PANEL CIUDAD INICIO-->
 
-<p:panel id="ciudadPanel" header="Ciudad" toggleable="true"
+	<p:panel id="ciudadPanel" header="Ciudad" toggleable="true"
 		toggleSpeed="500" widgetVar="panelCiudad" collapsed="true"
 		style="margin-bottom:1px">
 		<h:form id="ciudadF">
@@ -223,13 +232,15 @@
 					<h:outputText value="#{ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Region" filterMatchMode="contains"
-					filterBy="#{ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					filterBy="#{ciudad.region.id}"
+					filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
 					<h:outputText value="#{ciudad.region.region}" />
 				</p:column>
-				
+
 
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificarCiudad.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificarCiudad.show()"
 						actionListener="#{ciudadBean.carga(ciudad)}"
 						update=":ciudadModificar:modCiudad" />
 				</p:column>
@@ -258,14 +269,13 @@
 					<h:outputText value="Ciudad : " />
 					<p:inputText value="#{ciudadBean.ciudad}" />
 					<h:outputText value=" Region : " />
-					<p:selectOneMenu
-							value="#{ciudadBean.idRegion}"
-							required="true" label="region">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
+					<p:selectOneMenu value="#{ciudadBean.idRegion}" required="true"
+						label="region">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
 
-						</p:selectOneMenu>
-					
+					</p:selectOneMenu>
+
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Guardar"
@@ -289,13 +299,12 @@
 					<h:outputText value="Ciudad : " />
 					<p:inputText value="#{ciudadBean.ciudadAux.ciudad}" />
 					<h:outputText value=" region : " />
-					<p:selectOneMenu
-							value="#{ciudadBean.ciudadAux.region.id}"
-							required="true" label="region">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
+					<p:selectOneMenu value="#{ciudadBean.ciudadAux.region.id}"
+						required="true" label="region">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{regionBean.comboRegion()}" var="region" />
 
-						</p:selectOneMenu>
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
@@ -311,10 +320,10 @@
 
 	</p:panel>
 	<!-- SECCION CIUDAD FIN-->
-	
-<!-- SECCION TERMINALES INICIO-->
 
-<p:panel id="terminalPanel" header="Terminal" toggleable="true"
+	<!-- SECCION TERMINALES INICIO-->
+
+	<p:panel id="terminalPanel" header="Terminal" toggleable="true"
 		toggleSpeed="500" widgetVar="panelTerminal" collapsed="true"
 		style="margin-bottom:1px">
 		<h:form id="terminalF">
@@ -326,7 +335,8 @@
 					<h:outputText value="#{terminal.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Region" filterMatchMode="contains"
-					filterBy="#{terminal.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					filterBy="#{terminal.ciudad.region.id}"
+					filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
 					<h:outputText value="#{terminal.ciudad.region.region}" />
 				</p:column>
 				<p:column headerText="Terminal" filterMatchMode="contains"
@@ -334,11 +344,13 @@
 					<h:outputText value="#{terminal.terminal}" />
 				</p:column>
 				<p:column headerText="Andenes" filterMatchMode="contains"
-					filterBy="#{terminal.andenes}" filterOptions="#{terminalBean.filtroAndenes()}" style="width:32px">
+					filterBy="#{terminal.andenes}"
+					filterOptions="#{terminalBean.filtroAndenes()}" style="width:32px">
 					<h:outputText value="#{terminal.andenes}" />
 				</p:column>
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificarTerminal.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificarTerminal.show()"
 						actionListener="#{terminalBean.carga(terminal)}"
 						update=":terminalModificar:modTerminal" />
 				</p:column>
@@ -358,8 +370,8 @@
 
 
 		<h:form id="terminalNuevo">
-			<p:dialog widgetVar="nuevoTerminal" header="Nuevo Terminal" modal="false"
-				resizable="false" style="font-size: 13px;">
+			<p:dialog widgetVar="nuevoTerminal" header="Nuevo Terminal"
+				modal="false" resizable="false" style="font-size: 13px;">
 
 				<p:growl id="msgs6" showDetail="true" />
 				<h:panelGrid columns="2" cellpadding="5">
@@ -367,16 +379,15 @@
 					<h:outputText value="Terminal : " />
 					<p:inputText value="#{terminalBean.terminal}" />
 					<h:outputText value="Andenes : " />
-					<pe:inputNumber value="#{terminalBean.andenes}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{terminalBean.andenes}" decimalPlaces="0" />
 					<h:outputText value="Ciudad : " />
-					<p:selectOneMenu
-							value="#{terminalBean.idCiudad}"
-							required="true" label="ciudad">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
+					<p:selectOneMenu value="#{terminalBean.idCiudad}" required="true"
+						label="ciudad">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
 
-						</p:selectOneMenu>
-					
+					</p:selectOneMenu>
+
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Guardar"
@@ -402,13 +413,12 @@
 					<h:outputText value="Andenes : " />
 					<p:inputText value="#{terminalBean.terminalAux.andenes}" />
 					<h:outputText value=" Ciudad : " />
-					<p:selectOneMenu
-							value="#{terminalBean.terminalAux.ciudad.id}"
-							required="true" label="ciudad">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
+					<p:selectOneMenu value="#{terminalBean.terminalAux.ciudad.id}"
+						required="true" label="ciudad">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{ciudadBean.comboCiudad()}" var="ciudad" />
 
-						</p:selectOneMenu>
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
@@ -424,8 +434,8 @@
 
 	</p:panel>
 	<!-- SECCION PANEL TERMINAL FIN-->
-<!-- SECCION RECORRIDO INICIO-->
-<p:panel id="recorridoPanel" header="Recorrido" toggleable="true"
+	<!-- SECCION RECORRIDO INICIO-->
+	<p:panel id="recorridoPanel" header="Recorrido" toggleable="true"
 		toggleSpeed="500" widgetVar="panelRecorrido" collapsed="true"
 		style="margin-bottom:1px">
 		<h:form id="recorridoF">
@@ -437,7 +447,8 @@
 					<h:outputText value="#{recorrido.origen.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Region Origen" filterMatchMode="contains"
-					filterBy="#{recorrido.origen.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					filterBy="#{recorrido.origen.ciudad.region.id}"
+					filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
 					<h:outputText value="#{recorrido.origen.ciudad.region.region}" />
 				</p:column>
 				<p:column headerText="Ciudad Destino" filterMatchMode="contains"
@@ -445,15 +456,18 @@
 					<h:outputText value="#{recorrido.destino.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Region Destino" filterMatchMode="contains"
-					filterBy="#{recorrido.destino.ciudad.region.id}" filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
+					filterBy="#{recorrido.destino.ciudad.region.id}"
+					filterOptions="#{ciudadBean.filtroRegion()}" style="width:32px">
 					<h:outputText value="#{recorrido.destino.ciudad.region.region}" />
 				</p:column>
 				<p:column headerText="Bus" filterMatchMode="contains"
-					filterBy="#{recorrido.bus.bus}" filterOptions="#{busBean.filtroBus()}" style="width:32px">
+					filterBy="#{recorrido.bus.bus}"
+					filterOptions="#{busBean.filtroBus()}" style="width:32px">
 					<h:outputText value="#{recorrido.bus.patente}" />
 				</p:column>
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificaRecorrido.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificaRecorrido.show()"
 						actionListener="#{recoridoBean.carga(recorrido)}"
 						update=":recorridoModificar:modRecorrido" />
 				</p:column>
@@ -473,8 +487,8 @@
 
 
 		<h:form id="recorridoNuevo">
-			<p:dialog widgetVar="nuevoRecorrido" header="Nuevo Recorrido" modal="false"
-				resizable="false" style="font-size: 13px;">
+			<p:dialog widgetVar="nuevoRecorrido" header="Nuevo Recorrido"
+				modal="false" resizable="false" style="font-size: 13px;">
 
 				<p:growl id="msgs7" showDetail="true" />
 				<h:panelGrid columns="2" cellpadding="5">
@@ -494,14 +508,13 @@
 						<f:selectItems value="#{terminalBean.comboTerminal()}"
 							var="terminalDestino" />
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Bus : " />
-						<p:selectOneMenu value="#{recoridoBean.idBus}"
-							required="true" label="bus">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{busBean.comboBus()}"
-								var="bus" />
-						</p:selectOneMenu>
+					<p:selectOneMenu value="#{recoridoBean.idBus}" required="true"
+						label="bus">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{busBean.comboBus()}" var="bus" />
+					</p:selectOneMenu>
 					<p:outputLabel for="fSalida" value="Fecha Salida" />
 					<p:calendar id="fSalida" value="#{recoridoBean.fechaSalida}"
 						pattern="MM/dd/yyyy HH:mm:ss" />
@@ -528,35 +541,36 @@
 
 				<h:panelGrid id="modRecorrido" columns="2" cellpadding="5">
 
-										<h:outputText value="Terminal Origen : " />
-					<p:selectOneMenu value="#{recoridoBean.recorridoAux.origen.id}" required="true"
-						label="terminalOrigen">
+					<h:outputText value="Terminal Origen : " />
+					<p:selectOneMenu value="#{recoridoBean.recorridoAux.origen.id}"
+						required="true" label="terminalOrigen">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{terminalBean.comboTerminal()}"
 							var="terminalOrigen" />
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Terminal Destino : " />
-					<p:selectOneMenu value="#{recoridoBean.recorridoAux.destino.id}" required="true"
-						label="terminalDestino">
+					<p:selectOneMenu value="#{recoridoBean.recorridoAux.destino.id}"
+						required="true" label="terminalDestino">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{terminalBean.comboTerminal()}"
 							var="terminalDestino" />
 						<h:outputText value="Bus : " />
-						</p:selectOneMenu>
-						<h:outputText value="Bus : " />
-						<p:selectOneMenu value="#{recoridoBean.recorridoAux.bus.bus}"
-							required="true" label="terminalDestino">
-							<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-							<f:selectItems value="#{busBean.comboBus()}"
-								var="bus" />
+					</p:selectOneMenu>
+					<h:outputText value="Bus : " />
+					<p:selectOneMenu value="#{recoridoBean.recorridoAux.bus.bus}"
+						required="true" label="terminalDestino">
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+						<f:selectItems value="#{busBean.comboBus()}" var="bus" />
 
-						</p:selectOneMenu>
-						<p:outputLabel for="fSalidaMod" value="Fecha Salida" />
-					<p:calendar id="fSalidaMod" value="#{recoridoBean.recorridoAux.fechaSalida}"
+					</p:selectOneMenu>
+					<p:outputLabel for="fSalidaMod" value="Fecha Salida" />
+					<p:calendar id="fSalidaMod"
+						value="#{recoridoBean.recorridoAux.fechaSalida}"
 						pattern="MM/dd/yyyy HH:mm:ss" />
 					<p:outputLabel for="fLlegadaMod" value="Fecha Llegada" />
-					<p:calendar id="fLlegadaMod" value="#{recoridoBean.recorridoAux.fechaLlegada}"
+					<p:calendar id="fLlegadaMod"
+						value="#{recoridoBean.recorridoAux.fechaLlegada}"
 						pattern="MM/dd/yyyy HH:mm:ss" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
@@ -571,42 +585,45 @@
 		</p:dialog>
 
 	</p:panel>
-	
-<!-- SECCION PANEL RECORRIDO FIN-->
-<!-- SECCION CHOFER-RECORRIDO INICIO-->
-<p:panel id="chofeRecorridoPanel" header="Chofe Recorrido" toggleable="true"
-		toggleSpeed="500" widgetVar="panelChofeRecorrido" collapsed="true"
-		style="margin-bottom:1px">
+
+	<!-- SECCION PANEL RECORRIDO FIN-->
+	<!-- SECCION CHOFER-RECORRIDO INICIO-->
+	<p:panel id="chofeRecorridoPanel" header="Chofe Recorrido"
+		toggleable="true" toggleSpeed="500" widgetVar="panelChofeRecorrido"
+		collapsed="true" style="margin-bottom:1px">
 		<h:form id="chofeRecorridoF">
 			<p:dataTable id="chofeRecorridoT" var="cR"
-				value="#{choferRecorridoBean.listaChoferRecorrido()}" style="font-size: 11px;">
+				value="#{choferRecorridoBean.listaChoferRecorrido()}"
+				style="font-size: 11px;">
 
 				<p:column headerText="Rut Chofer" filterMatchMode="contains"
 					filterBy="#{cR.chofer.rut}" style="width:32px">
 					<h:outputText value="#{cR.chofer.rut}" />
 				</p:column>
 				<p:column headerText="Nombre" filterMatchMode="contains"
-					filterBy="#{cR.chofer.nombre}"  style="width:32px">
+					filterBy="#{cR.chofer.nombre}" style="width:32px">
 					<h:outputText value="#{cR.chofer.nombre}" />
 				</p:column>
 				<p:column headerText="Apellido" filterMatchMode="contains"
 					filterBy="#{cR.chofer.apellido}" style="width:32px">
 					<h:outputText value="#{cR.chofer.apellido}" />
 				</p:column>
-				<p:column headerText="Tiempo de Conducción" filterMatchMode="contains"
-					filterBy="#{cR.tiempo}" style="width:32px">
+				<p:column headerText="Tiempo de Conducción"
+					filterMatchMode="contains" filterBy="#{cR.tiempo}"
+					style="width:32px">
 					<h:outputText value="#{cR.tiempo}" />
 				</p:column>
 				<p:column headerText="Destino" filterMatchMode="contains"
-					filterBy="#{cR.recorrido.destino.ciudad.ciudad}"  style="width:32px">
+					filterBy="#{cR.recorrido.destino.ciudad.ciudad}" style="width:32px">
 					<h:outputText value="#{cR.recorrido.destino.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Origen" filterMatchMode="contains"
-					filterBy="#{cR.recorrido.origen.ciudad.ciudad}"  style="width:32px">
+					filterBy="#{cR.recorrido.origen.ciudad.ciudad}" style="width:32px">
 					<h:outputText value="#{cR.recorrido.origen.ciudad.ciudad}" />
 				</p:column>
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificaChofeRecorrido.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificaChofeRecorrido.show()"
 						actionListener="#{choferRecorridoBean.carga(cR)}"
 						update=":chofeRecorridoModificar:modChofeRecorrido" />
 				</p:column>
@@ -626,31 +643,32 @@
 
 
 		<h:form id="chofeRecorridoNuevo">
-			<p:dialog widgetVar="nuevoChofeRecorrido" header="Nuevo Chofer-Recorrido" modal="false"
-				resizable="false" style="font-size: 13px;">
+			<p:dialog widgetVar="nuevoChofeRecorrido"
+				header="Nuevo Chofer-Recorrido" modal="false" resizable="false"
+				style="font-size: 13px;">
 
 				<p:growl id="msgs8" showDetail="true" />
 				<h:panelGrid columns="2" cellpadding="5">
 
 					<h:outputText value="Chofer : " />
-					<p:selectOneMenu value="#{choferRecorridoBean.idChofer}" required="true"
-						label="choferR">
+					<p:selectOneMenu value="#{choferRecorridoBean.idChofer}"
+						required="true" label="choferR">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-						<f:selectItems value="#{choferBean.comboChofer()}"
-							var="choferR" />
+						<f:selectItems value="#{choferBean.comboChofer()}" var="choferR" />
 
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Recorrido : " />
-					<p:selectOneMenu value="#{choferRecorridoBean.idRecorrido}" required="true"
-						label="recorrido">
+					<p:selectOneMenu value="#{choferRecorridoBean.idRecorrido}"
+						required="true" label="recorrido">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
 							var="recorrido" />
 					</p:selectOneMenu>
-					
-			<h:outputText value=" Minutos de Conducción : " />
-					<pe:inputNumber value="#{choferRecorridoBean.tiempo}" decimalPlaces="0" minValue="1" maxValue="240"/>
+
+					<h:outputText value=" Minutos de Conducción : " />
+					<pe:inputNumber value="#{choferRecorridoBean.tiempo}"
+						decimalPlaces="0" minValue="1" maxValue="240" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Guardar"
@@ -665,31 +683,35 @@
 		</h:form>
 
 
-		<p:dialog widgetVar="modificaChofeRecorrido" header="Modifica Chofer-Recorrido"
-			modal="false" resizable="false" style="font-size: 13px;">
+		<p:dialog widgetVar="modificaChofeRecorrido"
+			header="Modifica Chofer-Recorrido" modal="false" resizable="false"
+			style="font-size: 13px;">
 			<h:form id="chofeRecorridoModificar">
 
 				<h:panelGrid id="modChofeRecorrido" columns="2" cellpadding="5">
 
-										<h:outputText value="Chofer : " />
-					<p:selectOneMenu value="#{choferRecorridoBean.choferRecorridoAux.chofer.id}" required="true"
-						label="choferRe">
+					<h:outputText value="Chofer : " />
+					<p:selectOneMenu
+						value="#{choferRecorridoBean.choferRecorridoAux.chofer.id}"
+						required="true" label="choferRe">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
-						<f:selectItems value="#{choferBean.comboChofer()}"
-							var="choferRe" />
+						<f:selectItems value="#{choferBean.comboChofer()}" var="choferRe" />
 
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Recorrido : " />
-					<p:selectOneMenu value="#{choferRecorridoBean.choferRecorridoAux.recorrido.id}" required="true"
-						label="recorridoM">
+					<p:selectOneMenu
+						value="#{choferRecorridoBean.choferRecorridoAux.recorrido.id}"
+						required="true" label="recorridoM">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
 							var="recorridoM" />
 					</p:selectOneMenu>
-					
-			<h:outputText value=" Minutos de Conducción : " />
-					<pe:inputNumber value="#{choferRecorridoBean.choferRecorridoAux.tiempo}" minValue="1" maxValue="240" decimalPlaces="0"/>
+
+					<h:outputText value=" Minutos de Conducción : " />
+					<pe:inputNumber
+						value="#{choferRecorridoBean.choferRecorridoAux.tiempo}"
+						minValue="1" maxValue="240" decimalPlaces="0" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
 					<p:commandButton value="Modificar"
@@ -703,53 +725,56 @@
 		</p:dialog>
 
 	</p:panel>
-	
-	<!-- SECCION PANEL CHOFER-RECORRIDO FIN-->
-<!-- SECCION PARADAS INICIO-->
 
-<p:panel id="paradaPanel" header="Parada" toggleable="true"
+	<!-- SECCION PANEL CHOFER-RECORRIDO FIN-->
+	<!-- SECCION PARADAS INICIO-->
+
+	<p:panel id="paradaPanel" header="Parada" toggleable="true"
 		toggleSpeed="500" widgetVar="panelParada" collapsed="true"
 		style="margin-bottom:1px">
 		<h:form id="paradaF">
 			<p:dataTable id="paradaT" var="parada"
 				value="#{paradasBean.listaParadas()}" style="font-size: 11px;">
 				<p:column headerText="N° Parada" filterMatchMode="contains"
-					filterBy="#{parada.parada}"
-					style="width:32px">
+					filterBy="#{parada.parada}" style="width:32px">
 					<h:outputText value="#{parada.parada}" />
 				</p:column>
 				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
-					filterBy="#{parada.recorrido.origen.ciudad.ciudad}" style="width:32px">
+					filterBy="#{parada.recorrido.origen.ciudad.ciudad}"
+					style="width:32px">
 					<h:outputText value="#{parada.recorrido.origen.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Ciudad" filterMatchMode="contains"
-					filterBy="#{parada.terminal.ciudad.ciudad}"  style="width:32px">
+					filterBy="#{parada.terminal.ciudad.ciudad}" style="width:32px">
 					<h:outputText value="#{parada.terminal.ciudad.ciudad}" />
 				</p:column>
-			
+
 				<p:column headerText="Terminal" filterMatchMode="contains"
 					filterBy="#{parada.terminal.terminal}" style="width:32px">
 					<h:outputText value="#{parada.terminal.terminal}" />
 				</p:column>
-					<p:column headerText="Recorrido" filterMatchMode="contains"
-					filterBy="#{parada.recorrido.origen}"  style="width:32px">
-					<h:outputText value="#{parada.recorrido.origen.ciudad.ciudad}-#{parada.recorrido.destino.ciudad.ciudad}" />
+				<p:column headerText="Recorrido" filterMatchMode="contains"
+					filterBy="#{parada.recorrido.origen}" style="width:32px">
+					<h:outputText
+						value="#{parada.recorrido.origen.ciudad.ciudad}-#{parada.recorrido.destino.ciudad.ciudad}" />
 				</p:column>
 				<p:column headerText="Anden" filterMatchMode="contains"
 					filterBy="#{parada.anden}" style="width:32px">
 					<h:outputText value="#{parada.anden}" />
 				</p:column>
 				<p:column headerText="Fecha Salida" filterMatchMode="contains"
-					filterBy="#{parada.llegada}"  style="width:32px">
+					filterBy="#{parada.llegada}" style="width:32px">
 					<h:outputText value="#{parada.llegada}" />
 				</p:column>
 				<p:column headerText="Hora Salida" filterMatchMode="contains"
-					filterBy="#{parada.llegada.hours}"  style="width:32px">
-					<h:outputText value="#{parada.llegada.hours}:#{parada.llegada.minutes}" />
+					filterBy="#{parada.llegada.hours}" style="width:32px">
+					<h:outputText
+						value="#{parada.llegada.hours}:#{parada.llegada.minutes}" />
 				</p:column>
-				
+
 				<p:column style="width:24px" headerText="Modificar">
-					<p:commandButton value="Modificar" oncomplete="modificaParada.show()"
+					<p:commandButton value="Modificar"
+						oncomplete="modificaParada.show()"
 						actionListener="#{paradasBean.carga(parada)}"
 						update=":paradaModificar:modParada" />
 				</p:column>
@@ -783,7 +808,7 @@
 							var="choferR" />
 
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Recorrido : " />
 					<p:selectOneMenu value="#{paradasBean.idRecorrido}" required="true"
 						label="recorrido">
@@ -791,12 +816,12 @@
 						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
 							var="recorrido" />
 					</p:selectOneMenu>
-					
-			<h:outputText value="Anden : " />
-					<pe:inputNumber value="#{paradasBean.anden}" decimalPlaces="0"/>
-					
+
+					<h:outputText value="Anden : " />
+					<pe:inputNumber value="#{paradasBean.anden}" decimalPlaces="0" />
+
 					<h:outputText value="Salida : " />
-					<p:calendar  value="#{paradasBean.llegada}"
+					<p:calendar value="#{paradasBean.llegada}"
 						pattern="MM/dd/yyyy HH:mm:ss" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">
@@ -818,29 +843,31 @@
 
 				<h:panelGrid id="modParada" columns="2" cellpadding="5">
 
-													<h:outputText value="Terminal : " />
-					<p:selectOneMenu value="#{paradasBean.paradasAux.terminal.id}" required="true"
-						label="choferR">
+					<h:outputText value="Terminal : " />
+					<p:selectOneMenu value="#{paradasBean.paradasAux.terminal.id}"
+						required="true" label="choferR">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{terminalBean.comboTerminal()}"
 							var="choferR" />
 
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Recorrido : " />
-					<p:selectOneMenu value="#{paradasBean.paradasAux.recorrido.id}" required="true"
-						label="recorrido">
+					<p:selectOneMenu value="#{paradasBean.paradasAux.recorrido.id}"
+						required="true" label="recorrido">
 						<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 						<f:selectItems value="#{recoridoBean.comboRecorrido()}"
 							var="recorrido" />
 					</p:selectOneMenu>
-					
-			<h:outputText value="Anden : " />
-					<pe:inputNumber value="#{paradasBean.paradasAux.anden}" decimalPlaces="0"/>
+
+					<h:outputText value="Anden : " />
+					<pe:inputNumber value="#{paradasBean.paradasAux.anden}"
+						decimalPlaces="0" />
 					<h:outputText value="Parada N° : " />
-					<pe:inputNumber value="#{paradasBean.paradasAux.parada}" decimalPlaces="0"/>
+					<pe:inputNumber value="#{paradasBean.paradasAux.parada}"
+						decimalPlaces="0" />
 					<h:outputText value="Salida: " />
-					<p:calendar  value="#{paradasBean.paradasAux.llegada}"
+					<p:calendar value="#{paradasBean.paradasAux.llegada}"
 						pattern="MM/dd/yyyy HH:mm:ss" />
 				</h:panelGrid>
 				<div style="text-align: center; padding-top: 10px; font-size: 13px;">

@@ -17,6 +17,7 @@ import com.sun.faces.lifecycle.Phase;
 
 import municipalidad.pto.model.Boleto;
 import municipalidad.pto.model.Paradas;
+import municipalidad.pto.model.Recorrido;
 import municipalidad.pto.service.BoletoService;
 import municipalidad.pto.service.ParadasService;
 import municipalidad.pto.service.RecorridosService;
@@ -59,6 +60,8 @@ public class BoletosBean {
 	private Integer idParadaOrigen;
 	private Integer idParadaDestino;
 	private List<Paradas> listaParadaAux;
+	private Integer totalVentas;
+	private Integer totalAsientos;
 
 	public Integer getIdCiudadOrigen() {
 		return idCiudadOrigen;
@@ -180,6 +183,22 @@ public class BoletosBean {
 		this.paradaDestinoAux = paradaDestinoAux;
 	}
 
+	public Integer getTotalVentas() {
+		return totalVentas;
+	}
+
+	public void setTotalVentas(Integer totalVentas) {
+		this.totalVentas = totalVentas;
+	}
+
+	public Integer getTotalAsientos() {
+		return totalAsientos;
+	}
+
+	public void setTotalAsientos(Integer totalAsientos) {
+		this.totalAsientos = totalAsientos;
+	}
+
 	public void guardar() {
 		Boleto boleto = new Boleto();
 		boleto.setAsiento(getAsiento());
@@ -283,7 +302,16 @@ public class BoletosBean {
 	
 		comboParadaAux = lista;
 	}
-
+public void cargaBoletosYventasPorRecorrido(Paradas parada){
+	totalVentas=boletoService.totalVentasRecorrido(parada.getRecorrido());
+	totalAsientos=boletoService.asientosVendidos(parada.getRecorrido());
+}
+public Integer boletosVendidos(Recorrido recorrido){
+	return boletoService.asientosVendidos(recorrido);
+}
+public Integer totalVentas(Recorrido recorrido){
+	return boletoService.totalVentasRecorrido(recorrido);
+}
 	public String formatoHora(Integer hora) {
 		if (hora < 10) {
 			return "0" + hora;

@@ -9,13 +9,15 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
-<link rel="icon" type="image/png" href="../imagenes/logo.png" />
+<title>Venta Boletos</title>
+<link rel="icon" type="image/png" href="imagenes/logo.png" />
 <script src="js/fecha.js"> </script>
 </h:head> 
 <body>
 	<p:breadCrumb style="font-size: 13px;margin-bottom:4px">
 		<p:menuitem value="Vender" url="index.xhtml" />
 		<p:menuitem value="Administrar" url="admin.xhtml" />
+		<p:menuitem value="Ventas" url="ventas.xhtml" />
 	</p:breadCrumb>
 	<h:form id="buscarDisponible">
 	<h:panelGrid columns="4" cellpadding="5">
@@ -83,7 +85,7 @@
 		
 			<p:dataTable id="viajesT" var="viajes"
 				value="#{boletosBean.listaParadaAux}" style="font-size: 11px;"
-				resizableColumns="true" rows="20" paginator="true" selectionMode="single" rendered="true"	
+				resizableColumns="true" rows="20" paginator="true"  	
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
 				
 				<p:column headerText="Ciudad Origen" filterMatchMode="contains"
