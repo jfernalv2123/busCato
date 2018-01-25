@@ -64,6 +64,10 @@ public class BoletosBean {
 	private Integer totalAsientos;
 	private List<Boleto> listaBoletoAux;
 	private Recorrido recorridoAux;
+	private Date fechaDesde;
+	private Date fechaHasta;
+	private Integer totalVentasFecha;
+
 
 	public Integer getIdCiudadOrigen() {
 		return idCiudadOrigen;
@@ -209,6 +213,30 @@ public class BoletosBean {
 		this.recorridoAux = recorridoAux;
 	}
 
+	public Date getFechaDesde() {
+		return fechaDesde;
+	}
+
+	public void setFechaDesde(Date fechaDesde) {
+		this.fechaDesde = fechaDesde;
+	}
+
+	public Date getFechaHasta() {
+		return fechaHasta;
+	}
+
+	public void setFechaHasta(Date fechaHasta) {
+		this.fechaHasta = fechaHasta;
+	}
+
+	public Integer getTotalVentasFecha() {
+		return totalVentasFecha;
+	}
+
+	public void setTotalVentasFecha(Integer totalVentasFecha) {
+		this.totalVentasFecha = totalVentasFecha;
+	}
+
 	public void guardar() {
 		Boleto boleto = new Boleto();
 		boleto.setAsiento(getAsiento());
@@ -341,4 +369,10 @@ public void cargaDetalleBoletos(Recorrido recorrido){
 	listaBoletoAux=boletoService.listaBoletosPorRecorrido(recorrido);
 	recorridoAux=recorrido;
 }
+
+public void cargaListaPorFecha(){
+	listaBoletoAux=boletoService.listaBoletoPorFechas(getFechaDesde(), getFechaHasta(),getIdCiudadOrigen(),getIdCiudadDestino());
+	setTotalVentasFecha(boletoService.ventasPorFecha(getFechaDesde(), getFechaHasta(),getIdCiudadOrigen(),getIdCiudadDestino()));
+}
+
 }

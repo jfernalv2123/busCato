@@ -1,5 +1,6 @@
 package municipalidad.pto.service;
 
+import java.util.Date;
 import java.util.List;
 
 import municipalidad.pto.model.Boleto;
@@ -16,4 +17,6 @@ public interface BoletoService {
 	Integer asientosVendidos(Recorrido recorrido);
 	Integer totalVentasRecorrido(Recorrido recorrido);
 	List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido);
+	List<Boleto> listaBoletoPorFechas(Date desde, Date hasta, Integer idCiudadOrigen, Integer idCiudadDestino);
+	Integer ventasPorFecha(Date desde, Date hasta, Integer idCiudadOrigen, Integer idCiudadDestino);
 }

@@ -9,53 +9,48 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
-<title>Total Ventas</title>
-<link rel="icon" type="image/png" href="imagenes/logo.png" />
-<script src="js/fecha.js"> </script>
-</h:head> 
+	<title>Total Ventas</title>
+	<link rel="icon" type="image/png" href="imagenes/logo.png" />
+	<script src="js/fecha.js"> </script>
+</h:head>
 <body>
 	<p:breadCrumb style="font-size: 13px;margin-bottom:4px">
 		<p:menuitem value="Vender" url="index.xhtml" />
 		<p:menuitem value="Administrar" url="admin.xhtml" />
 		<p:menuitem value="Ventas" url="ventas.xhtml" />
 	</p:breadCrumb>
-	<h:form id="totales">
-	<p:dataTable id="total" var="recorrido"
-				value="#{recoridoBean.listaRecorrido()}" style="font-size: 11px;with:100%" 
-					resizableColumns="true" rows="20" paginator="true"  
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
-				
+	<p:panel id="recorridosVentas" header="Ventas por Recorrido"
+		toggleable="true" toggleSpeed="500" widgetVar="ventasRecorrido"
+		collapsed="true" style="margin-bottom:1px;margin-top:15px">
+		<h:form id="totales">
+			<p:dataTable id="total" var="recorrido"
+				value="#{recoridoBean.listaRecorrido()}"
+				style="font-size: 11px;with:100%" rows="20"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
 				<p:column headerText="Origen" filterMatchMode="contains"
-					filterBy="#{recorrido.origen.ciudad.ciudad}"
-					style="width:32px">
+					filterBy="#{recorrido.origen.ciudad.ciudad}" style="width:32px">
 					<h:outputText value="#{recorrido.origen.ciudad.ciudad}" />
 				</p:column>
-				
+
 				<p:column headerText="Destino" filterMatchMode="contains"
-					filterBy="#{recorrido.destino.ciudad.ciudad}"
-					style="width:32px">
+					filterBy="#{recorrido.destino.ciudad.ciudad}" style="width:32px">
 					<h:outputText value="#{recorrido.destino.ciudad.ciudad}" />
 				</p:column>
-				
+
 				<p:column headerText="Fecha Llegada" filterMatchMode="contains"
-					filterBy="#{recorrido.fechaSalida}"
-					style="width:32px">
-					<h:outputText value="#{recorrido.fechaSalida}" />
+					filterBy="#{recorrido.fechaSalida.toString()}">
+					<h:outputText value="#{recorrido.fechaSalida.toString()}" />
 				</p:column>
-				<p:column headerText="Fecha Llegada" filterMatchMode="contains"
-					filterBy="#{recorrido.fechaLlegada}"
-					style="width:32px">
-					<h:outputText value="#{recorrido.fechaLlegada}" />
-				</p:column>
-				<p:column headerText="bus" filterMatchMode="contains"
-					filterBy="#{recorrido.bus.patente}"
-					style="width:32px">
+
+				<p:column headerText="Bus" filterMatchMode="contains"
+					filterBy="#{recorrido.bus.patente}" style="width:32px">
 					<h:outputText value="#{recorrido.bus.patente}" />
 				</p:column>
-				<p:column headerText="Boletos Vendidos"  >
+				<p:column headerText="Boletos Vendidos">
 					<h:outputText value="#{boletosBean.boletosVendidos(recorrido)}" />
 				</p:column>
-				<p:column headerText="Total"  >
+				<p:column headerText="Total">
 					<h:outputText value="$ #{boletosBean.totalVentas(recorrido)}" />
 				</p:column>
 				<p:column style="width:24px" headerText="Detalle">
@@ -65,48 +60,130 @@
 						update=":detalleBoletosF:detalle" />
 				</p:column>
 			</p:dataTable>
-			</h:form>
-			
-			<h:form id="detalleBoletosF">
-		<p:dialog widgetVar="detalleBoleto" header="boletos" modal="false"
+		</h:form>
+
+		<h:form id="detalleBoletosF">
+			<p:dialog widgetVar="detalleBoleto" header="boletos" modal="false"
 				resizable="false" style="font-size: 13px;">
-				
-			<p:dataTable id="detalle" var="detalle"
-				value="#{boletosBean.listaBoletoAux}" style="font-size: 11px;" 
-					resizableColumns="true" rows="10" paginator="true"  rendered="true"	
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
-				
-				<p:column headerText="Origen" filterMatchMode="contains"
-					filterBy="#{detalle.paradaOrigen.terminal.ciudad.ciudad}"
-					style="width:32px">
-					<h:outputText value="#{detalle.paradaOrigen.terminal.ciudad.ciudad}" />
+
+				<p:dataTable id="detalle" var="detalle"
+					value="#{boletosBean.listaBoletoAux}" style="font-size: 11px;"
+					rows="10" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+					<p:column headerText="Origen" filterMatchMode="contains"
+						filterBy="#{detalle.paradaOrigen.terminal.ciudad.ciudad}"
+						style="width:32px">
+						<h:outputText
+							value="#{detalle.paradaOrigen.terminal.ciudad.ciudad}" />
+					</p:column>
+
+					<p:column headerText="Destino" filterMatchMode="contains"
+						filterBy="#{detalle.parada.terminal.ciudad.ciudad}"
+						style="width:32px">
+						<h:outputText value="#{detalle.parada.terminal.ciudad.ciudad}" />
+					</p:column>
+
+					<p:column headerText="Fecha">
+						<h:outputText value="#{detalle.paradaOrigen.llegada}" />
+					</p:column>
+
+					<p:column headerText="Asiento" filterMatchMode="contains"
+						filterBy="#{detalle.asiento}">
+						<h:outputText value="#{detalle.asiento}" />
+					</p:column>
+
+					<p:column headerText="Valor" filterMatchMode="contains"
+						filterBy="#{detalle.valor}">
+						<h:outputText value="$ #{detalle.valor}" />
+					</p:column>
+
+
+
+
+				</p:dataTable>
+			</p:dialog>
+		</h:form>
+	</p:panel>
+	<p:panel id="fechasVentas" header="Ventas por Fecha" toggleable="true"
+		toggleSpeed="500" widgetVar="ventasFecha" collapsed="true"
+		style="margin-bottom:1px;margin-top:15px">
+
+		<h:form id="fechasLista">
+			<h:panelGrid columns="8" cellpadding="5">
+				<h:outputText value="Desde : " />
+				<p:calendar value="#{boletosBean.fechaDesde}"
+					pattern="MM/dd/yyyy HH:mm:ss" locale="es">
+					<p:ajax listener="#{boletosBean.cargaListaPorFecha()}"
+						update=":fechas:listaFecha" />
+				</p:calendar>
+
+				<h:outputText value="Hasta : " />
+				<p:calendar value="#{boletosBean.fechaHasta}"
+					pattern="MM/dd/yyyy HH:mm:ss" locale="es">
+					<p:ajax listener="#{boletosBean.cargaListaPorFecha()}"
+						update=":fechas:listaFecha" />
+				</p:calendar>
+				<h:outputText value="Ciudad Origen : " />
+				<p:selectOneMenu value="#{boletosBean.idCiudadOrigen}"
+					required="true" id="ciudadOrigen" label="origen">
+					<p:ajax listener="#{boletosBean.cargaListaPorFecha()}"
+						update=":fechas:listaFecha" />
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{ciudadBean.comboCiudad()}"
+						var="paradaOrigen" />
+				</p:selectOneMenu>
+
+				<h:outputText value="Ciudad Destino : " />
+				<p:selectOneMenu value="#{boletosBean.idCiudadDestino}"
+					required="true" id="ciudadDestino" label="origen">
+					<p:ajax listener="#{boletosBean.cargaListaPorFecha()}"
+						update=":fechas:listaFecha" />
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+					<f:selectItems value="#{ciudadBean.comboCiudad()}"
+						var="paradaDestino" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+		</h:form>
+		<h:form id="fechas">
+			<p:dataTable id="listaFecha" var="detalle"
+				value="#{boletosBean.listaBoletoAux}" style="font-size: 11px;"
+				rows="10" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+				<p:column headerText="Origen" style="width:32px">
+					<h:outputText
+						value="#{detalle.paradaOrigen.terminal.ciudad.ciudad}" />
 				</p:column>
-				
-				<p:column headerText="Destino" filterMatchMode="contains"
-					filterBy="#{detalle.parada.terminal.ciudad.ciudad}"
-					style="width:32px">
+
+				<p:column headerText="Destino" style="width:32px">
 					<h:outputText value="#{detalle.parada.terminal.ciudad.ciudad}" />
 				</p:column>
-				
-				<p:column headerText="Fecha" >
+
+				<p:column headerText="Fecha">
 					<h:outputText value="#{detalle.paradaOrigen.llegada}" />
 				</p:column>
-				
-				<p:column headerText="Asiento" filterMatchMode="contains"
-					filterBy="#{detalle.asiento}">
+
+				<p:column headerText="Asiento">
 					<h:outputText value="#{detalle.asiento}" />
 				</p:column>
-			
-				<p:column headerText="Asiento" filterMatchMode="contains"
-					filterBy="#{detalle.valor}" >
+
+				<p:column headerText="Valor">
 					<h:outputText value="$ #{detalle.valor}" />
 				</p:column>
 
-				
+
+				<f:facet name="footer">
+					<h:outputText style="font-size: 18px;"
+						value="Total ventas $ #{boletosBean.totalVentasFecha}" />
+					<br />
+					<h:outputText style="font-size: 18px;"
+						value=" Boletos vendidos: #{boletosBean.listaBoletoAux.size()}" />
+				</f:facet>
 
 
 			</p:dataTable>
-			</p:dialog>
 		</h:form>
-</body> 
+	</p:panel>
+</body>
 </html>

@@ -1,5 +1,6 @@
 package municipalidad.pto.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import municipalidad.pto.model.Boleto;
@@ -14,4 +15,5 @@ public interface BoletoDao {
 	List<Boleto> listaBoleto();
 	List<Boleto> asientosDisponiblesPorParadas(Paradas paradaOrigen,Paradas paradaDestino);
 	List<Boleto> listaBoletosPorRecorrido(Recorrido recorrido);
+	List<Boleto> listaBoletoPorFechas(Date desde, Date hasta, Integer idCiudadOrigen, Integer idCiudadDestino);
 }
